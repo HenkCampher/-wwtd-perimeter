@@ -1,6 +1,4 @@
 {
-  "scripts": {
-    "build": "react-scripts build"
-  },
+  "buildCommand": "react-scripts build",
   "outputDirectory": "build"
 }
