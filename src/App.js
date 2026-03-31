@@ -61,7 +61,7 @@ function GlitchText({ text, active }) {
   return <span>{disp}</span>;
 }
 
-async function callAPI(level, levelLabel, input) {
+async function callAPI(level, levelLabel, input, formatLabel = "") {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 35000);
   const res = await fetch("/api/rewrite", {
@@ -69,7 +69,7 @@ async function callAPI(level, levelLabel, input) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001", max_tokens: 1000, system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: `Rewrite at level ${level} (${levelLabel}):\n\n${input}` }]
+      messages: [{ role: "user", content: `Rewrite at level ${level} (${levelLabel})${formatLabel ? ` as a ${formatLabel}` : ""}:\n\n${input}` }]
     })
   });
   clearTimeout(timeout);
@@ -123,6 +123,7 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [substance, setSubstance] = useState(null);
   const [scoringSubstance, setScoringSubstance] = useState(false);
+  const [format, setFormat] = useState("");
   const [sharpenQuestions, setSharpenQuestions] = useState([]);
   const [sharpenAnswers, setSharpenAnswers] = useState({});
   const [sharpenLoading, setSharpenLoading] = useState(false);
@@ -152,7 +153,7 @@ export default function App() {
     setLoading(true); setOutput(""); setShowHint(false); setTimedOut(false);
     const timeoutWarning = setTimeout(() => setTimedOut(true), 30000);
     try {
-      const text = await callAPI(level, currentLevel.label, input);
+      const text = await callAPI(level, currentLevel.label, input, format);
       clearTimeout(timeoutWarning);
       setTimedOut(false);
       setOutput(text);
@@ -268,6 +269,7 @@ export default function App() {
     setSharpenLoading(false);
     setSharpenOutput("");
     setShowSharpen(false);
+    setFormat("");
   };
   const scoreColor = substance ? (substance.score <= 3 ? "#e63946" : substance.score <= 5 ? "#f3722c" : substance.score <= 7 ? "#f9c74f" : "#a8e063") : "#555";
 
@@ -378,6 +380,19 @@ export default function App() {
 
           {tab === "rewrite" && (
             <div style={{ padding: "20px 24px 24px" }}>
+              <div style={{ marginBottom: 18 }}>
+                <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Format (optional)</div>
+                <select value={format} onChange={e => setFormat(e.target.value)} style={{ width: "100%", padding: "12px 16px", background: "#080810", border: "1px solid #1e1e35", borderRadius: 8, color: format ? "#e8e8e8" : "#555", fontSize: 14, fontFamily: "'EB Garamond', serif", cursor: "pointer", appearance: "none", WebkitAppearance: "none" }}>
+                  <option value="">No format — just make it bolder</option>
+                  <option value="Social Post">Social Post (X, Bluesky, Threads)</option>
+                  <option value="LinkedIn Post">LinkedIn Post</option>
+                  <option value="Ad Copy">Ad Copy</option>
+                  <option value="Elevator Pitch">Elevator Pitch</option>
+                  <option value="Press Release">Press Release</option>
+                  <option value="Bio">Bio</option>
+                  <option value="Email">Email (with subject line)</option>
+                </select>
+              </div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
                 <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Boldness Level</div>
                 <div style={{ color: "#666", fontSize: 13, fontStyle: "italic" }}>{currentLevel.desc}</div>
