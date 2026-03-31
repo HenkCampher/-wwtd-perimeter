@@ -228,10 +228,7 @@ What 3 to 5 specific questions would unlock the details needed to make this rewr
   const handleSharpenRewrite = async () => {
     setSharpenLoading(true);
     setSharpenOutput("");
-    const answeredQs = sharpenQuestions.map((q, i) => sharpenAnswers[i] ? `Q: ${q}
-A: ${sharpenAnswers[i]}` : null).filter(Boolean).join("
-
-");
+    const answeredQs = sharpenQuestions.map((q, i) => sharpenAnswers[i] ? `Q: ${q}\nA: ${sharpenAnswers[i]}` : null).filter(Boolean).join("\n\n");
     try {
       const res = await fetch("/api/rewrite", {
         method: "POST",
