@@ -26,7 +26,7 @@ LEVEL 5 - I'M NOT OKAY: Abandon all restraint. Fever dream that makes perfect se
 
 LEVEL 6 - WHAT WOULD TEQUILA DO: All rules are dead. Fully absurdist — impossible images, language that shouldn't work but captures truth better than anything sensible. Provocative, poetic, unhinged. Every single fact from the original must survive in some form. End with a single line in ALL CAPS that hits like a slap and a revelation simultaneously. Make the reader laugh, wince, and forward it immediately.
 
-Rules: Match level precisely. PRESERVE ALL FACTS. Output ONLY the rewritten text. No preamble. Never start with "I".`;
+Rules: Match level precisely. PRESERVE ALL FACTS. Output ONLY the rewritten text. No preamble. No headers. No level labels. Never start with "I".`;
 
 const SUBSTANCE_PROMPT = `You are a copy quality analyst. Analyze the following text and give it a substance score out of 10 based on these criteria:
 - Specific facts, numbers, or data (0-2 points)
