@@ -237,8 +237,8 @@ export default function App() {
         body: JSON.stringify({
           model: "claude-haiku-4-5-20251001",
           max_tokens: 1000,
-          system: `You are the rewriter behind What Would Tequila Do. Rewrite the original copy at spice level "${currentLevel.label}" using the additional specifics provided. Make it sharper, more personal, more specific. Preserve all facts. Output ONLY the rewritten text. No preamble.`,
-          messages: [{ role: "user", content: `Original copy: ${input}\n\nFirst rewrite: ${output}\n\nAdditional specifics from the author:\n${answeredQs}\n\nNow rewrite it sharper using these details.` }]
+          system: `You are the rewriter behind What Would Tequila Do. Output ONLY the rewritten text. No preamble. No labels. No separators. No repetition of the input. Just the rewrite.`,
+          messages: [{ role: "user", content: `Rewrite this at spice level "${currentLevel.label}", using the additional specifics below to make it sharper and more specific.\n\nORIGINAL: ${input}\n\nSPECIFICS TO WEAVE IN:\n${answeredQs}\n\nOutput only the rewritten text.` }]
         })
       });
       const data = await res.json();
