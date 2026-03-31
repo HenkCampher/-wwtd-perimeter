@@ -136,6 +136,8 @@ export default function App() {
   const [sharpenAnswers, setSharpenAnswers] = useState({});
   const [sharpenLoading, setSharpenLoading] = useState(false);
   const [sharpenOutput, setSharpenOutput] = useState("");
+  const [sharpenCopied, setSharpenCopied] = useState(false);
+  const [sharpenLinkCopied, setSharpenLinkCopied] = useState(false);
   const [showSharpen, setShowSharpen] = useState(false);
   const scoreTimer = useRef(null);
 
@@ -303,6 +305,8 @@ export default function App() {
     setSharpenOutput("");
     setShowSharpen(false);
     setFormat("");
+    setSharpenCopied(false);
+    setSharpenLinkCopied(false);
     setLinkCopied(false);
     setLinkLoading(false);
   };
@@ -540,14 +544,14 @@ export default function App() {
                 <>
                   <div style={{ fontSize: 11, letterSpacing: 3, color: "#4a8a4a", textTransform: "uppercase", marginBottom: 16 }}>Sharpened rewrite</div>
                   <p style={{ color: "#f0f0f0", fontSize: 17, lineHeight: 1.9, margin: "0 0 24px", whiteSpace: "pre-wrap" }}>{sharpenOutput}</p>
-                  <button onClick={() => navigator.clipboard.writeText(sharpenOutput)} style={{ background: "transparent", border: "1px solid #2a3a2a", color: "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>Copy</button>
+                  <button onClick={() => { navigator.clipboard.writeText(sharpenOutput); setSharpenCopied(true); setTimeout(() => setSharpenCopied(false), 2000); }} style={{ background: "transparent", border: "1px solid #2a3a2a", color: sharpenCopied ? "#aaaacc" : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{sharpenCopied ? "Copied ✓" : "Copy"}</button>
                   <button onClick={async () => {
                     try {
                       const res = await fetch("/api/share", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ input, output: sharpenOutput, level, format }) });
                       const data = await res.json();
-                      if (data.id) { await navigator.clipboard.writeText(`${window.location.origin}/share/${data.id}`); }
+                      if (data.id) { await navigator.clipboard.writeText(`${window.location.origin}/share/${data.id}`); setSharpenLinkCopied(true); setTimeout(() => setSharpenLinkCopied(false), 2000); }
                     } catch(e) { console.error(e); }
-                  }} style={{ background: "transparent", border: "1px solid #2a3a2a", color: "#aaaacc", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>Get Link</button>
+                  }} style={{ background: "transparent", border: "1px solid #2a3a2a", color: sharpenLinkCopied ? "#aaaacc" : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{sharpenLinkCopied ? "Link Copied ✓" : "Get Link"}</button>
                 </>
               )}
               {!sharpenLoading && sharpenQuestions.length > 0 && (sharpenOutput === "NONE" || !sharpenOutput) && (
