@@ -112,6 +112,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [timedOut, setTimedOut] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [shared, setShared] = useState(false);
   const [wwtdUnlocked, setWwtdUnlocked] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [glitching, setGlitching] = useState(false);
@@ -184,7 +185,7 @@ export default function App() {
   };
 
   const copy = (text) => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); };
-  const share = (text, lvl) => { navigator.clipboard.writeText(`I ran my copy through the WWTD Peri-Ometer at "${lvl.label}" and got this:\n\n${text}\n\n— whatwouldtequilado.com`); setCopied(true); setTimeout(() => setCopied(false), 2000); };
+  const share = (text, lvl) => { navigator.clipboard.writeText(`I ran my copy through the WWTD Peri-Ometer at "${lvl.label}" and got this:\n\n${text}\n\n— whatwouldtequilado.com`); setShared(true); setTimeout(() => setShared(false), 2000); };
 
   const bg = isWWTD ? "#0a0600" : "#080810";
   const scoreColor = substance ? (substance.score <= 3 ? "#e63946" : substance.score <= 5 ? "#f3722c" : substance.score <= 7 ? "#f9c74f" : "#a8e063") : "#555";
@@ -361,7 +362,7 @@ export default function App() {
                 {output && output !== "TIMEOUT" && (
                   <div style={{ display: "flex", gap: 8 }}>
                     <button onClick={() => copy(output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: copied ? currentLevel.color : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{copied ? "Copied ✓" : "Copy"}</button>
-                    <button onClick={() => share(output, currentLevel)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>Share</button>
+                    <button onClick={() => share(output, currentLevel)} style={{ background: "transparent", border: "1px solid #2a2a40", color: shared ? currentLevel.color : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{shared ? "Shared ✓" : "Share"}</button>
                   </div>
                 )}
               </div>
@@ -375,9 +376,9 @@ export default function App() {
                       <p style={{ color: isWWTD ? "#f0d090" : "#f0f0f0", fontSize: isWWTD ? 19 : 17, lineHeight: isWWTD ? 2.1 : 1.9, margin: "0 0 24px", whiteSpace: "pre-wrap", fontStyle: isWWTD ? "italic" : "normal" }}>
                         {isWWTD ? <GlitchText text={output} active={glitching} /> : output}
                       </p>
-                      <div style={{ borderTop: `1px solid ${currentLevel.color}22`, paddingTop: 16 }}>
-                        <p style={{ color: "#555", fontSize: 13, fontStyle: "italic", margin: 0, lineHeight: 1.7 }}>
-                          This is a starting point, not a final draft. Steal what works, kill what doesn't. Tequila got you here — your voice takes it home.
+                      <div style={{ borderTop: `1px solid ${currentLevel.color}33`, paddingTop: 20, marginTop: 8 }}>
+                        <p style={{ color: "#aaa", fontSize: 15, fontStyle: "italic", margin: 0, lineHeight: 1.8 }}>
+                          🥃 <strong style={{ color: "#ddd", fontStyle: "normal" }}>This is a starting point, not a final draft.</strong> Steal what works, kill what doesn't. Tequila got you here — your voice takes it home.
                         </p>
                       </div>
                     </>
