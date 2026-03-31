@@ -188,6 +188,21 @@ export default function App() {
   const share = (text, lvl) => { navigator.clipboard.writeText(`I ran my copy through the WWTD Peri-Ometer at "${lvl.label}" and got this:\n\n${text}\n\n— whatwouldtequilado.com`); setShared(true); setTimeout(() => setShared(false), 2000); };
 
   const bg = isWWTD ? "#0a0600" : "#080810";
+
+  const handleReset = () => {
+    setInput("");
+    setOutput("");
+    setSubstance(null);
+    setLevel(1);
+    setTab("rewrite");
+    setWwtdUnlocked(false);
+    setShowHint(false);
+    setGlitching(false);
+    setCompareResults([]);
+    setHistory([]);
+    setSidebarOpen(false);
+    setTimedOut(false);
+  };
   const scoreColor = substance ? (substance.score <= 3 ? "#e63946" : substance.score <= 5 ? "#f3722c" : substance.score <= 7 ? "#f9c74f" : "#a8e063") : "#555";
 
   return (
@@ -229,7 +244,8 @@ export default function App() {
 
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 32 }}>
-          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
+            <button onClick={handleReset} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "EB Garamond, serif" }}>🍹 Clear the Bar</button>
             <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "'EB Garamond', serif" }}>
               {history.length > 0 ? `History (${history.length})` : "History"}
             </button>
