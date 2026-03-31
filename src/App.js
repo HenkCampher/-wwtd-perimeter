@@ -494,7 +494,6 @@ export default function App() {
                 {output && output !== "TIMEOUT" && (
                   <div style={{ display: "flex", gap: 8 }}>
                     <button onClick={() => copy(output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: copied ? currentLevel.color : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{copied ? "Copied ✓" : "Copy"}</button>
-                    <button onClick={() => share(output, currentLevel)} style={{ background: "transparent", border: "1px solid #2a2a40", color: shared ? currentLevel.color : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{shared ? "Shared ✓" : "Share"}</button>
                     <button onClick={getShareLink} style={{ background: "transparent", border: "1px solid #2a2a40", color: linkCopied ? currentLevel.color : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{linkLoading ? "Saving..." : linkCopied ? "Link Copied ✓" : "Get Link"}</button>
                   </div>
                 )}
