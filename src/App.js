@@ -197,7 +197,7 @@ export default function App() {
     setSharpenLoading(true);
     setSharpenQuestions([]);
     setSharpenAnswers({});
-    setSharpenOutput("");
+    setSharpenOutput("NONE");
     try {
       const res = await fetch("/api/rewrite", {
         method: "POST",
@@ -221,7 +221,10 @@ What 3 to 5 specific questions would unlock the details needed to make this rewr
         (parsed.questions || []).forEach((_, i) => { initAnswers[i] = ""; });
         setSharpenAnswers(initAnswers);
       }
-    } catch(e) { setSharpenQuestions(["Something went wrong. Try again."]); }
+    } catch(e) { 
+      console.error("Sharpen error:", e);
+      setSharpenQuestions(["Something went wrong. Try again."]); 
+    }
     setSharpenLoading(false);
   };
 
@@ -467,7 +470,7 @@ Now rewrite it sharper using these details.`
                           🥃 <strong style={{ color: "#ddd", fontStyle: "normal" }}>This is a starting point, not a final draft.</strong> Steal what works, kill what doesn't. Tequila got you here — your voice takes it home.
                         </p>
                         {!showSharpen && (
-                          <button onClick={handleSharpen} style={{ width: "100%", padding: "14px", background: "transparent", border: `1px dashed ${currentLevel.color}88`, borderRadius: 8, color: currentLevel.color, fontSize: 14, cursor: "pointer", fontFamily: "'EB Garamond', serif", letterSpacing: 1, transition: "all 0.2s" }}>
+                          <button onClick={handleSharpen} style={{ width: "100%", padding: "14px", background: "transparent", border: `1px dashed ${currentLevel.color}88`, borderRadius: 8, color: "#fff", fontSize: 16, cursor: "pointer", fontFamily: "'EB Garamond', serif", letterSpacing: 1, transition: "all 0.2s", fontWeight: "600" }}>
                             Don't leave it half naked. 3 quick questions will fix that.
                           </button>
                         )}
@@ -492,14 +495,14 @@ Now rewrite it sharper using these details.`
                   <div style={{ display: "flex", gap: 6 }}>{[0,1,2].map(i => <div key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: "#4a8a4a", animation: `bounce 1s ease-in-out ${i*0.15}s infinite` }} />)}</div>
                 </div>
               )}
-              {!sharpenLoading && sharpenOutput && (
+              {!sharpenLoading && sharpenOutput && sharpenOutput !== "NONE" && (
                 <>
                   <div style={{ fontSize: 11, letterSpacing: 3, color: "#4a8a4a", textTransform: "uppercase", marginBottom: 16 }}>Sharpened rewrite</div>
                   <p style={{ color: "#f0f0f0", fontSize: 17, lineHeight: 1.9, margin: "0 0 24px", whiteSpace: "pre-wrap" }}>{sharpenOutput}</p>
                   <button onClick={() => navigator.clipboard.writeText(sharpenOutput)} style={{ background: "transparent", border: "1px solid #2a3a2a", color: "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>Copy</button>
                 </>
               )}
-              {!sharpenLoading && sharpenQuestions.length > 0 && !sharpenOutput && (
+              {!sharpenLoading && sharpenQuestions.length > 0 && (sharpenOutput === "NONE" || !sharpenOutput) && (
                 <>
                   {sharpenQuestions.map((q, i) => (
                     <div key={i} style={{ marginBottom: 20 }}>
