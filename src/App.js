@@ -476,9 +476,9 @@ export default function App() {
 
         {/* Sharpen card */}
         {showSharpen && tab === "rewrite" && (
-          <div style={{ background: "#0d1117", border: "1px solid #2a3a2a", borderRadius: 12, overflow: "hidden", boxShadow: "0 0 40px rgba(100,200,100,0.08)", animation: "fadeIn 0.4s", marginTop: 16 }}>
-            <div style={{ padding: "24px 28px 20px", borderBottom: "1px solid #1a2a1a", background: "linear-gradient(135deg,#0a1a0a,#0d1117)" }}>
-              <div style={{ fontSize: 11, letterSpacing: 3, color: "#4a8a4a", textTransform: "uppercase", marginBottom: 4 }}>Make it sharper</div>
+          <div style={{ background: "#0f0f18", border: "1px solid #8888aa", borderRadius: 12, overflow: "hidden", boxShadow: "0 0 40px rgba(180,180,220,0.15)", animation: "fadeIn 0.4s", marginTop: 16 }}>
+            <div style={{ padding: "24px 28px 20px", borderBottom: "1px solid #2a2a40", background: "linear-gradient(135deg,#12121f,#0f0f18)" }}>
+              <div style={{ fontSize: 11, letterSpacing: 3, color: "#aaaacc", textTransform: "uppercase", marginBottom: 4 }}>Make it sharper</div>
               <div style={{ color: "#ccc", fontSize: 16, fontFamily: "'Bebas Neue', sans-serif", letterSpacing: 2 }}>Give it more you.</div>
             </div>
             <div style={{ padding: "28px" }}>
