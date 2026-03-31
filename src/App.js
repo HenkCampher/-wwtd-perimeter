@@ -203,12 +203,10 @@ export default function App() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 1000,
           system: `You are a copy sharpener. A user has submitted marketing copy and received a rewrite at spice level "${currentLevel.label}". Your job is to identify 3 to 5 specific questions that, if answered, would make the rewrite dramatically more specific, personal, and powerful. Ask only about concrete details that are missing: real numbers, specific differentiators, named competitors, actual customer outcomes, unique process details. Never ask generic questions. Respond ONLY with valid JSON: {"questions": ["question 1", "question 2", "question 3"]}`,
-          prompt: `Original copy: ${input}
-
-Rewrite: ${output}
-
-What 3 to 5 specific questions would unlock the details needed to make this rewrite hit harder?`
+          messages: [{ role: "user", content: `Original copy: ${input}\n\nRewrite: ${output}\n\nWhat 3 to 5 specific questions would unlock the details needed to make this rewrite hit harder?` }]
         })
       });
       const data = await res.json();
@@ -237,15 +235,10 @@ What 3 to 5 specific questions would unlock the details needed to make this rewr
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 1000,
           system: `You are the rewriter behind What Would Tequila Do. Rewrite the original copy at spice level "${currentLevel.label}" using the additional specifics provided. Make it sharper, more personal, more specific. Preserve all facts. Output ONLY the rewritten text. No preamble.`,
-          prompt: `Original copy: ${input}
-
-First rewrite: ${output}
-
-Additional specifics from the author:
-${answeredQs}
-
-Now rewrite it sharper using these details.`
+          messages: [{ role: "user", content: `Original copy: ${input}\n\nFirst rewrite: ${output}\n\nAdditional specifics from the author:\n${answeredQs}\n\nNow rewrite it sharper using these details.` }]
         })
       });
       const data = await res.json();
