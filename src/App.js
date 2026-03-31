@@ -89,7 +89,11 @@ async function scoreSubstance(input) {
   });
   const data = await res.json();
   const text = data.content?.find(b => b.type === "text")?.text || "";
-  try { return JSON.parse(text); } catch { return null; }
+  try {
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) return JSON.parse(match[0]);
+    return null;
+  } catch { return null; }
 }
 
 function ScoreBar({ score }) {
