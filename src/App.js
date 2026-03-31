@@ -69,7 +69,14 @@ async function callAPI(level, levelLabel, input, formatLabel = "") {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001", max_tokens: 1000, system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: `Rewrite at level ${level} (${levelLabel})${formatLabel ? ` as a ${formatLabel}` : ""}:\n\n${input}` }]
+      messages: [{ role: "user", content: `Rewrite at level ${level} (${levelLabel})${formatLabel ? ` as a ${formatLabel}${
+  formatLabel === "Social Post" ? " (max 280 characters)" :
+  formatLabel === "LinkedIn Post" ? " (max 1300 characters)" :
+  formatLabel === "Ad Copy" ? " (max 150 characters)" :
+  formatLabel === "Elevator Pitch" ? " (max 300 characters)" :
+  formatLabel === "Bio" ? " (max 300 characters)" :
+  formatLabel === "Email" ? " (must include a subject line)" : ""
+}` : ""}:\n\n${input}` }]
     })
   });
   clearTimeout(timeout);
@@ -346,11 +353,9 @@ export default function App() {
         {/* Main card */}
         <div style={{ background: isWWTD ? "#110900" : "#0f0f1e", border: `1px solid ${isWWTD ? "#3a2500" : "#1e1e35"}`, borderRadius: 12, overflow: "hidden", boxShadow: `0 0 60px ${currentLevel.glow}`, transition: "all 0.5s", marginBottom: 16 }}>
           <div style={{ padding: "24px 24px 0" }}>
-            <div style={{ color: "#888", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>The Bland Original</div>
+            <div style={{ color: "#888", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Step 1: The Bland Original</div>
             <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="Paste your copy here..." style={{ width: "100%", minHeight: 130, background: isWWTD ? "#0a0600" : "#080810", border: `1px solid ${isWWTD ? "#2a1800" : "#1e1e35"}`, borderRadius: 8, color: "#e8e8e8", fontSize: 15, padding: "16px", fontFamily: "'EB Garamond', serif", lineHeight: 1.7, resize: "vertical", boxSizing: "border-box" }} />
-            <p style={{ color: "#555", fontSize: 13, fontStyle: "italic", margin: "10px 0 4px" }}>
-              📧 emails &nbsp;·&nbsp; 🎤 pitches &nbsp;·&nbsp; 💼 LinkedIn posts &nbsp;·&nbsp; 📝 bios &nbsp;·&nbsp; 📣 ad copy &nbsp;·&nbsp; ✍️ anything really
-            </p>
+
 
             {/* Substance score */}
             {(scoringSubstance || substance) && (
@@ -381,7 +386,7 @@ export default function App() {
           {tab === "rewrite" && (
             <div style={{ padding: "20px 24px 24px" }}>
               <div style={{ marginBottom: 18 }}>
-                <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Format (optional)</div>
+                <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Step 2: Pick Your Format (optional)</div>
                 <select value={format} onChange={e => setFormat(e.target.value)} style={{ width: "100%", padding: "12px 16px", background: "#080810", border: "1px solid #1e1e35", borderRadius: 8, color: format ? "#e8e8e8" : "#555", fontSize: 14, fontFamily: "'EB Garamond', serif", cursor: "pointer", appearance: "none", WebkitAppearance: "none" }}>
                   <option value="">No format — just make it bolder</option>
                   <option value="Social Post">Social Post (X, Bluesky, Threads)</option>
@@ -394,7 +399,7 @@ export default function App() {
                 </select>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-                <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Boldness Level</div>
+                <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 3: Pick Your Spice Level</div>
                 <div style={{ color: "#666", fontSize: 13, fontStyle: "italic" }}>{currentLevel.desc}</div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 14 }}>
