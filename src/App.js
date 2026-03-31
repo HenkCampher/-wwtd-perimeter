@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const LEVELS = [
   { value: 1, label: "Hello There",           short: "HELLO", desc: "You've got my attention.",        color: "#a8e063", glow: "rgba(168,224,99,0.25)",  emoji: "👀" },
@@ -12,6 +12,8 @@ const ALL_LEVELS = [...LEVELS, WWTD];
 
 const SYSTEM_PROMPT = `You are the rewriter behind "What Would Tequila Do" — a tool that transforms bland, safe, forgettable communication into something that cuts through noise.
 
+CRITICAL RULE: At every level, you MUST preserve ALL factual content from the original — names, numbers, claims, statistics, product details, calls to action, and specific benefits. The creativity is in the DELIVERY, never the content. Facts survive everything.
+
 LEVEL 1 - HELLO THERE: Sharper, cleaner, more confident. Strip all corporate flab. Real spine. Still professional but finally has a pulse.
 
 LEVEL 2 - SAY WHAT NOW: Punchy and direct. Says the thing people think but never write. Makes someone read it again out loud to the person next to them.
@@ -20,11 +22,28 @@ LEVEL 3 - OH THAT'S DANGEROUS: Bold creative angles. Unexpected metaphors. Confi
 
 LEVEL 4 - SOMEONE CALL SECURITY: This should not be allowed. Vivid, wildly creative, over-the-top but the core message survives barely. Written by someone with zero regrets.
 
-LEVEL 5 - I'M NOT OKAY: Abandon all restraint. Fever dream that makes perfect sense. Weird, loud, uncomfortably specific. Use fragments. Use repetition. Break grammar with intention. End with a single line so raw it makes the reader put their phone down.
+LEVEL 5 - I'M NOT OKAY: Abandon all restraint. Fever dream that makes perfect sense. Weird, loud, uncomfortably specific. Use fragments. Use repetition. Break grammar with intention. End with a single line so raw it makes the reader put their phone down. ALL facts from the original must still be present.
 
-LEVEL 6 - WHAT WOULD TEQUILA DO: All rules are dead. Fully absurdist — impossible images, language that shouldn't work but captures truth better than anything sensible. Provocative, poetic, unhinged. End with a single line in ALL CAPS that hits like a slap and a revelation simultaneously. Make the reader laugh, wince, and forward it immediately.
+LEVEL 6 - WHAT WOULD TEQUILA DO: All rules are dead. Fully absurdist — impossible images, language that shouldn't work but captures truth better than anything sensible. Provocative, poetic, unhinged. Every single fact from the original must survive in some form. End with a single line in ALL CAPS that hits like a slap and a revelation simultaneously. Make the reader laugh, wince, and forward it immediately.
 
-Rules: Match level precisely. Preserve core intent. Output ONLY the rewritten text. No preamble. Never start with "I".`;
+Rules: Match level precisely. PRESERVE ALL FACTS. Output ONLY the rewritten text. No preamble. Never start with "I".`;
+
+const SUBSTANCE_PROMPT = `You are a copy quality analyst. Analyze the following text and give it a substance score out of 10 based on these criteria:
+- Specific facts, numbers, or data (0-2 points)
+- Clear value proposition (0-2 points)  
+- Concrete ask or call to action (0-2 points)
+- Real claims vs vague buzzwords (0-2 points)
+- Named audience or specific problem (0-2 points)
+
+Respond ONLY with valid JSON in exactly this format, nothing else:
+{"score": 7, "missing": ["specific numbers", "clear CTA"], "verdict": "There's something here. Barely."}
+
+Verdicts by score:
+1-3: "This is essentially air."
+4-5: "There's something here. Barely."
+6-7: "Solid foundation. Let's light it up."
+8-9: "This was already good. Now it'll be dangerous."
+10: "Pure substance. Tequila will make this legendary."`;
 
 function GlitchText({ text, active }) {
   const [disp, setDisp] = useState(text);
@@ -33,7 +52,7 @@ function GlitchText({ text, active }) {
     if (!active) { setDisp(text); return; }
     let i = 0;
     const iv = setInterval(() => {
-      setDisp(text.split("").map((c, j) => j < i ? c : c === " " ? " " : chars[Math.floor(Math.random() * chars.length)]).join(""));
+      setDisp(text.split("").map((c, j) => j < i ? c : c === " " ? " " : chars[Math.floor(Math.random()*chars.length)]).join(""));
       if (i >= text.length) clearInterval(iv);
       i += 1.5;
     }, 40);
@@ -44,15 +63,12 @@ function GlitchText({ text, active }) {
 
 async function callAPI(level, levelLabel, input) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 30000);
+  const timeout = setTimeout(() => controller.abort(), 35000);
   const res = await fetch("/api/rewrite", {
-    method: "POST",
-    signal: controller.signal,
+    method: "POST", signal: controller.signal,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 1000,
-      system: SYSTEM_PROMPT,
+      model: "claude-haiku-4-5-20251001", max_tokens: 1000, system: SYSTEM_PROMPT,
       messages: [{ role: "user", content: `Rewrite at level ${level} (${levelLabel}):\n\n${input}` }]
     })
   });
@@ -62,11 +78,35 @@ async function callAPI(level, levelLabel, input) {
   return data.content?.find(b => b.type === "text")?.text || "Something went wrong.";
 }
 
+async function scoreSubstance(input) {
+  const res = await fetch("/api/rewrite", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "claude-haiku-4-5-20251001", max_tokens: 200, system: SUBSTANCE_PROMPT,
+      messages: [{ role: "user", content: input }]
+    })
+  });
+  const data = await res.json();
+  const text = data.content?.find(b => b.type === "text")?.text || "";
+  try { return JSON.parse(text); } catch { return null; }
+}
+
+function ScoreBar({ score }) {
+  const color = score <= 3 ? "#e63946" : score <= 5 ? "#f3722c" : score <= 7 ? "#f9c74f" : "#a8e063";
+  return (
+    <div style={{ height: 4, background: "#1e1e35", borderRadius: 2, overflow: "hidden", marginTop: 6 }}>
+      <div style={{ height: "100%", width: `${score * 10}%`, background: color, borderRadius: 2, transition: "width 0.6s, background 0.4s" }} />
+    </div>
+  );
+}
+
 export default function App() {
   const [input, setInput] = useState("");
   const [level, setLevel] = useState(1);
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [timedOut, setTimedOut] = useState(false);
   const [copied, setCopied] = useState(false);
   const [wwtdUnlocked, setWwtdUnlocked] = useState(false);
   const [showHint, setShowHint] = useState(false);
@@ -76,21 +116,44 @@ export default function App() {
   const [comparing, setComparing] = useState(false);
   const [history, setHistory] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [substance, setSubstance] = useState(null);
+  const [scoringSubstance, setScoringSubstance] = useState(false);
+  const scoreTimer = useRef(null);
 
   const isWWTD = level === 6;
   const currentLevel = isWWTD ? WWTD : LEVELS[level - 1];
   const activeLevels = wwtdUnlocked ? ALL_LEVELS : LEVELS;
 
+  // Auto-score substance after 1.5s of no typing
+  useEffect(() => {
+    if (scoreTimer.current) clearTimeout(scoreTimer.current);
+    if (input.trim().length < 30) { setSubstance(null); return; }
+    scoreTimer.current = setTimeout(async () => {
+      setScoringSubstance(true);
+      const result = await scoreSubstance(input);
+      setSubstance(result);
+      setScoringSubstance(false);
+    }, 1500);
+    return () => clearTimeout(scoreTimer.current);
+  }, [input]);
+
   const rewrite = async () => {
     if (!input.trim()) return;
-    setLoading(true); setOutput(""); setShowHint(false);
+    setLoading(true); setOutput(""); setShowHint(false); setTimedOut(false);
+    const timeoutWarning = setTimeout(() => setTimedOut(true), 30000);
     try {
       const text = await callAPI(level, currentLevel.label, input);
+      clearTimeout(timeoutWarning);
+      setTimedOut(false);
       setOutput(text);
       setHistory(h => [{ id: Date.now(), level: currentLevel, input: input.slice(0, 80) + (input.length > 80 ? "..." : ""), output: text, ts: new Date().toLocaleTimeString() }, ...h].slice(0, 20));
       if (level === 5) setTimeout(() => setShowHint(true), 1200);
       if (isWWTD) { setGlitching(true); setTimeout(() => setGlitching(false), 2500); }
-    } catch (e) { setOutput(e.name === "AbortError" ? "Timed out. Try again." : `Error: ${e.message}`); }
+    } catch (e) {
+      clearTimeout(timeoutWarning);
+      setTimedOut(false);
+      setOutput(e.name === "AbortError" ? "TIMEOUT" : `Error: ${e.message}`);
+    }
     setLoading(false);
   };
 
@@ -120,13 +183,16 @@ export default function App() {
   const share = (text, lvl) => { navigator.clipboard.writeText(`I ran my copy through the WWTD Peri-Ometer at "${lvl.label}" and got this:\n\n${text}\n\n— whatwouldtequilado.com`); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   const bg = isWWTD ? "#0a0600" : "#080810";
+  const scoreColor = substance ? (substance.score <= 3 ? "#e63946" : substance.score <= 5 ? "#f3722c" : substance.score <= 7 ? "#f9c74f" : "#a8e063") : "#555";
 
   return (
-    <div style={{ minHeight: "100vh", background: bg, color: "#e8e8e8", fontFamily: "Georgia, serif", transition: "background 0.6s", position: "relative", overflow: "hidden" }}>
+    <div style={{ minHeight: "100vh", background: bg, color: "#e8e8e8", fontFamily: "'EB Garamond', Georgia, serif", transition: "background 0.6s", position: "relative", overflow: "hidden" }}>
+      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
       <style>{`
         @keyframes pulse { 0%,100%{box-shadow:0 0 20px rgba(245,166,35,0.2)} 50%{box-shadow:0 0 40px rgba(245,166,35,0.6),0 0 80px rgba(245,166,35,0.2)} }
         @keyframes bounce { 0%,100%{transform:translateY(0);opacity:0.4} 50%{transform:translateY(-6px);opacity:1} }
         @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes scoreIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
         textarea:focus, input:focus { outline: none; }
         ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: #111; } ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
       `}</style>
@@ -138,16 +204,16 @@ export default function App() {
           <button onClick={() => setSidebarOpen(false)} style={{ background: "none", border: "none", color: "#777", fontSize: 22, cursor: "pointer", lineHeight: 1 }}>×</button>
         </div>
         {history.length === 0
-          ? <div style={{ color: "#555", fontSize: 13, fontStyle: "italic" }}>No rewrites yet.</div>
+          ? <div style={{ color: "#555", fontSize: 14, fontStyle: "italic" }}>No rewrites yet.</div>
           : history.map(h => (
             <div key={h.id} style={{ marginBottom: 16, background: "#080810", border: `1px solid ${h.level.color}33`, borderRadius: 8, padding: "14px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                <span style={{ color: h.level.color, fontSize: 12, fontWeight: "bold" }}>{h.level.emoji} {h.level.label}</span>
+                <span style={{ color: h.level.color, fontSize: 13, fontWeight: "bold" }}>{h.level.emoji} {h.level.label}</span>
                 <span style={{ color: "#555", fontSize: 11 }}>{h.ts}</span>
               </div>
-              <div style={{ color: "#666", fontSize: 11, marginBottom: 8, fontStyle: "italic" }}>{h.input}</div>
-              <div style={{ color: "#aaa", fontSize: 12, lineHeight: 1.6, marginBottom: 10 }}>{h.output.slice(0, 140)}...</div>
-              <button onClick={() => copy(h.output)} style={{ background: "none", border: "1px solid #222", color: "#666", borderRadius: 4, padding: "4px 12px", fontSize: 11, cursor: "pointer" }}>Copy</button>
+              <div style={{ color: "#666", fontSize: 12, marginBottom: 8, fontStyle: "italic" }}>{h.input}</div>
+              <div style={{ color: "#aaa", fontSize: 13, lineHeight: 1.6, marginBottom: 10 }}>{h.output.slice(0, 140)}...</div>
+              <button onClick={() => copy(h.output)} style={{ background: "none", border: "1px solid #222", color: "#666", borderRadius: 4, padding: "4px 12px", fontSize: 12, cursor: "pointer" }}>Copy</button>
             </div>
           ))
         }
@@ -159,21 +225,30 @@ export default function App() {
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 32 }}>
           <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
-            <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 11, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase" }}>
+            <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "'EB Garamond', serif" }}>
               {history.length > 0 ? `History (${history.length})` : "History"}
             </button>
           </div>
-          <div style={{ fontSize: 11, letterSpacing: 4, color: "#777", textTransform: "uppercase", marginBottom: 10, fontStyle: "italic" }}>A tool from</div>
-          <h1 style={{ fontSize: 42, fontWeight: "bold", letterSpacing: -1, margin: "0 0 10px", background: isWWTD ? "linear-gradient(135deg, #f5a623, #fff, #f5a623)" : "linear-gradient(135deg, #a8e063, #f9c74f, #f8961e, #e63946)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <div style={{ fontSize: 12, letterSpacing: 4, color: "#777", textTransform: "uppercase", marginBottom: 10, fontStyle: "italic" }}>A tool from</div>
+          <h1 style={{
+            fontFamily: "'Bebas Neue', sans-serif",
+            fontSize: 64,
+            letterSpacing: 3,
+            margin: "0 0 10px",
+            lineHeight: 1,
+            background: isWWTD ? "linear-gradient(135deg, #f5a623, #fff, #f5a623)" : "linear-gradient(135deg, #a8e063, #f9c74f, #f8961e, #e63946)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent"
+          }}>
             {isWWTD ? <GlitchText text="What Would Tequila Do" active={glitching} /> : "What Would Tequila Do"}
           </h1>
-          <div style={{ color: "#777", fontSize: 11, letterSpacing: 3, textTransform: "uppercase" }}>Cut through the bland</div>
+          <div style={{ color: "#777", fontSize: 13, letterSpacing: 3, textTransform: "uppercase" }}>Cut through the bland</div>
         </div>
 
         {/* Tabs */}
         <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
           {["rewrite", "compare"].map(t => (
-            <button key={t} onClick={() => setTab(t)} style={{ flex: 1, padding: "13px", background: tab === t ? "#1e1e35" : "transparent", border: `1px solid ${tab === t ? "#2a2a45" : "#1e1e35"}`, borderRadius: 8, color: tab === t ? "#ddd" : "#777", fontSize: 12, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", transition: "all 0.2s" }}>
+            <button key={t} onClick={() => setTab(t)} style={{ flex: 1, padding: "13px", background: tab === t ? "#1e1e35" : "transparent", border: `1px solid ${tab === t ? "#2a2a45" : "#1e1e35"}`, borderRadius: 8, color: tab === t ? "#ddd" : "#777", fontSize: 13, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", transition: "all 0.2s", fontFamily: "'EB Garamond', serif" }}>
               {t === "rewrite" ? "✍️ Rewrite" : "⚡ Run the Gauntlet"}
             </button>
           ))}
@@ -182,29 +257,54 @@ export default function App() {
         {/* Main card */}
         <div style={{ background: isWWTD ? "#110900" : "#0f0f1e", border: `1px solid ${isWWTD ? "#3a2500" : "#1e1e35"}`, borderRadius: 12, overflow: "hidden", boxShadow: `0 0 60px ${currentLevel.glow}`, transition: "all 0.5s", marginBottom: 16 }}>
           <div style={{ padding: "24px 24px 0" }}>
-            <div style={{ color: "#888", fontSize: 11, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>The Bland Original</div>
-            <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="Paste your copy here..." style={{ width: "100%", minHeight: 130, background: isWWTD ? "#0a0600" : "#080810", border: `1px solid ${isWWTD ? "#2a1800" : "#1e1e35"}`, borderRadius: 8, color: "#e8e8e8", fontSize: 14, padding: "16px", fontFamily: "Georgia, serif", lineHeight: 1.7, resize: "vertical", boxSizing: "border-box" }} />
-            <p style={{ color: "#555", fontSize: 12, fontStyle: "italic", margin: "10px 0 4px" }}>
+            <div style={{ color: "#888", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>The Bland Original</div>
+            <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="Paste your copy here..." style={{ width: "100%", minHeight: 130, background: isWWTD ? "#0a0600" : "#080810", border: `1px solid ${isWWTD ? "#2a1800" : "#1e1e35"}`, borderRadius: 8, color: "#e8e8e8", fontSize: 15, padding: "16px", fontFamily: "'EB Garamond', serif", lineHeight: 1.7, resize: "vertical", boxSizing: "border-box" }} />
+            <p style={{ color: "#555", fontSize: 13, fontStyle: "italic", margin: "10px 0 4px" }}>
               📧 emails &nbsp;·&nbsp; 🎤 pitches &nbsp;·&nbsp; 💼 LinkedIn posts &nbsp;·&nbsp; 📝 bios &nbsp;·&nbsp; 📣 ad copy &nbsp;·&nbsp; ✍️ anything really
             </p>
+
+            {/* Substance score */}
+            {(scoringSubstance || substance) && (
+              <div style={{ margin: "14px 0 4px", padding: "14px 16px", background: "#080810", border: `1px solid ${scoreColor}33`, borderRadius: 8, animation: "scoreIn 0.3s" }}>
+                {scoringSubstance ? (
+                  <div style={{ color: "#444", fontSize: 13, fontStyle: "italic" }}>Checking substance...</div>
+                ) : substance && (
+                  <>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <span style={{ color: "#777", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>Substance Score</span>
+                        <span style={{ color: scoreColor, fontSize: 20, fontFamily: "'Bebas Neue', sans-serif", letterSpacing: 1 }}>{substance.score}/10</span>
+                        <span style={{ color: scoreColor, fontSize: 13, fontStyle: "italic" }}>{substance.verdict}</span>
+                      </div>
+                    </div>
+                    <ScoreBar score={substance.score} />
+                    {substance.missing?.length > 0 && substance.score < 7 && (
+                      <div style={{ marginTop: 10, color: "#666", fontSize: 12, fontStyle: "italic" }}>
+                        Consider adding: {substance.missing.join(" · ")}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
           </div>
 
           {tab === "rewrite" && (
             <div style={{ padding: "20px 24px 24px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-                <div style={{ color: "#777", fontSize: 11, letterSpacing: 3, textTransform: "uppercase" }}>Boldness Level</div>
-                <div style={{ color: "#666", fontSize: 12, fontStyle: "italic" }}>{currentLevel.desc}</div>
+                <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Boldness Level</div>
+                <div style={{ color: "#666", fontSize: 13, fontStyle: "italic" }}>{currentLevel.desc}</div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 14 }}>
                 {LEVELS.map(l => (
-                  <button key={l.value} onClick={() => setLevel(l.value)} style={{ width: "100%", padding: "14px 20px", background: level === l.value ? `${l.color}18` : "#080810", border: `1px solid ${level === l.value ? l.color : "#1e1e35"}`, borderRadius: 8, color: level === l.value ? l.color : "#777", fontSize: 14, fontWeight: level === l.value ? "bold" : "normal", cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 14, textAlign: "left" }}>
+                  <button key={l.value} onClick={() => setLevel(l.value)} style={{ width: "100%", padding: "14px 20px", background: level === l.value ? `${l.color}18` : "#080810", border: `1px solid ${level === l.value ? l.color : "#1e1e35"}`, borderRadius: 8, color: level === l.value ? l.color : "#777", fontSize: 15, fontWeight: level === l.value ? "bold" : "normal", cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 14, textAlign: "left", fontFamily: "'EB Garamond', serif" }}>
                     <span style={{ fontSize: 20, lineHeight: 1 }}>{l.emoji}</span>
                     <span style={{ flex: 1 }}>{l.label}</span>
                     {level === l.value && <span style={{ fontSize: 10, letterSpacing: 2, opacity: 0.7, textTransform: "uppercase" }}>Selected</span>}
                   </button>
                 ))}
                 {wwtdUnlocked && (
-                  <button onClick={() => setLevel(6)} style={{ width: "100%", padding: "14px 20px", background: isWWTD ? `${WWTD.color}18` : "#080810", border: `1px solid ${isWWTD ? WWTD.color : "#3a2500"}`, borderRadius: 8, color: isWWTD ? WWTD.color : "#f5a62388", fontSize: 14, fontWeight: "bold", cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 14, textAlign: "left" }}>
+                  <button onClick={() => setLevel(6)} style={{ width: "100%", padding: "14px 20px", background: isWWTD ? `${WWTD.color}18` : "#080810", border: `1px solid ${isWWTD ? WWTD.color : "#3a2500"}`, borderRadius: 8, color: isWWTD ? WWTD.color : "#f5a62388", fontSize: 15, fontWeight: "bold", cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 14, textAlign: "left", fontFamily: "'EB Garamond', serif" }}>
                     <span style={{ fontSize: 20, lineHeight: 1 }}>🥃</span>
                     <span style={{ flex: 1 }}>What Would Tequila Do</span>
                     {isWWTD && <span style={{ fontSize: 10, letterSpacing: 2, opacity: 0.7, textTransform: "uppercase" }}>Selected</span>}
@@ -212,10 +312,10 @@ export default function App() {
                 )}
               </div>
               <div style={{ height: 3, background: "#1e1e35", borderRadius: 2, overflow: "hidden", marginBottom: 16 }}>
-                <div style={{ height: "100%", width: isWWTD ? "100%" : `${((level - 1) / 4) * 100}%`, background: isWWTD ? "linear-gradient(90deg,#f5a623,#fff176,#f5a623)" : "linear-gradient(90deg,#a8e063,#f9c74f,#f8961e,#f3722c,#e63946)", transition: "width 0.4s", boxShadow: isWWTD ? `0 0 8px ${WWTD.color}` : "none" }} />
+                <div style={{ height: "100%", width: isWWTD ? "100%" : `${((level-1)/4)*100}%`, background: isWWTD ? "linear-gradient(90deg,#f5a623,#fff176,#f5a623)" : "linear-gradient(90deg,#a8e063,#f9c74f,#f8961e,#f3722c,#e63946)", transition: "width 0.4s", boxShadow: isWWTD ? `0 0 8px ${WWTD.color}` : "none" }} />
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                <button onClick={rewrite} disabled={!input.trim() || loading} style={{ flex: 1, background: input.trim() && !loading ? (isWWTD ? "linear-gradient(135deg,#f5a623,#e8890a)" : `linear-gradient(135deg,${currentLevel.color},${LEVELS[Math.min(level, 4) - 1].color})`) : "#1e1e35", color: input.trim() && !loading ? "#000" : "#444", border: "none", borderRadius: 8, padding: "16px", fontSize: 14, fontWeight: "bold", letterSpacing: 2, textTransform: "uppercase", cursor: input.trim() && !loading ? "pointer" : "not-allowed", transition: "all 0.3s" }}>
+                <button onClick={rewrite} disabled={!input.trim() || loading} style={{ flex: 1, background: input.trim() && !loading ? (isWWTD ? "linear-gradient(135deg,#f5a623,#e8890a)" : `linear-gradient(135deg,${currentLevel.color},${LEVELS[Math.min(level,4)-1].color})`) : "#1e1e35", color: input.trim() && !loading ? "#000" : "#444", border: "none", borderRadius: 8, padding: "16px", fontSize: 15, fontWeight: "bold", letterSpacing: 2, textTransform: "uppercase", cursor: input.trim() && !loading ? "pointer" : "not-allowed", transition: "all 0.3s", fontFamily: "'EB Garamond', serif" }}>
                   {loading ? "Rewriting..." : isWWTD ? "🥃 WWTD?" : `${currentLevel.emoji} Make it ${currentLevel.label} →`}
                 </button>
                 <button onClick={randomLevel} title="Random level" style={{ background: "#080810", border: "1px solid #1e1e35", color: "#777", borderRadius: 8, padding: "16px 18px", fontSize: 18, cursor: "pointer" }}>🎲</button>
@@ -225,13 +325,22 @@ export default function App() {
 
           {tab === "compare" && (
             <div style={{ padding: "20px 24px 24px" }}>
-              <p style={{ color: "#777", fontSize: 13, lineHeight: 1.6, marginBottom: 16, fontStyle: "italic" }}>Runs your copy through all {activeLevels.length} levels sequentially. See the full arc at once.</p>
-              <button onClick={runGauntlet} disabled={!input.trim() || comparing} style={{ width: "100%", background: input.trim() && !comparing ? "linear-gradient(135deg,#a8e063,#f9c74f,#f8961e,#e63946)" : "#1e1e35", color: input.trim() && !comparing ? "#000" : "#444", border: "none", borderRadius: 8, padding: "16px", fontSize: 14, fontWeight: "bold", letterSpacing: 2, textTransform: "uppercase", cursor: input.trim() && !comparing ? "pointer" : "not-allowed" }}>
+              <p style={{ color: "#777", fontSize: 14, lineHeight: 1.6, marginBottom: 16, fontStyle: "italic" }}>Runs your copy through all {activeLevels.length} levels sequentially. See the full arc at once.</p>
+              <button onClick={runGauntlet} disabled={!input.trim() || comparing} style={{ width: "100%", background: input.trim() && !comparing ? "linear-gradient(135deg,#a8e063,#f9c74f,#f8961e,#e63946)" : "#1e1e35", color: input.trim() && !comparing ? "#000" : "#444", border: "none", borderRadius: 8, padding: "16px", fontSize: 15, fontWeight: "bold", letterSpacing: 2, textTransform: "uppercase", cursor: input.trim() && !comparing ? "pointer" : "not-allowed", fontFamily: "'EB Garamond', serif" }}>
                 {comparing ? "Running..." : "⚡ Run the Gauntlet"}
               </button>
             </div>
           )}
         </div>
+
+        {/* Timeout warning */}
+        {timedOut && loading && (
+          <div style={{ textAlign: "center", padding: "16px", background: "#1a0a00", border: "1px solid #f3722c44", borderRadius: 10, marginBottom: 16, animation: "fadeIn 0.4s" }}>
+            <p style={{ color: "#f3722c", fontSize: 15, fontStyle: "italic", margin: 0 }}>
+              This is too hot for even super fast broadband to handle. Please refresh and try again. You're worth it.
+            </p>
+          </div>
+        )}
 
         {/* Single rewrite output */}
         {tab === "rewrite" && (output || loading) && (
@@ -241,22 +350,33 @@ export default function App() {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <span style={{ fontSize: 32 }}>{currentLevel.emoji}</span>
-                  <span style={{ color: currentLevel.color, fontSize: 26, fontWeight: "bold", letterSpacing: -0.5, textShadow: `0 0 20px ${currentLevel.color}55` }}>
+                  <span style={{ fontFamily: "'Bebas Neue', sans-serif", color: currentLevel.color, fontSize: 32, letterSpacing: 2, textShadow: `0 0 20px ${currentLevel.color}55` }}>
                     {isWWTD ? <GlitchText text={currentLevel.label} active={glitching} /> : currentLevel.label}
                   </span>
                 </div>
-                {output && (
+                {output && output !== "TIMEOUT" && (
                   <div style={{ display: "flex", gap: 8 }}>
-                    <button onClick={() => copy(output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: copied ? currentLevel.color : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 12, cursor: "pointer" }}>{copied ? "Copied ✓" : "Copy"}</button>
-                    <button onClick={() => share(output, currentLevel)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 14px", fontSize: 12, cursor: "pointer" }}>Share</button>
+                    <button onClick={() => copy(output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: copied ? currentLevel.color : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{copied ? "Copied ✓" : "Copy"}</button>
+                    <button onClick={() => share(output, currentLevel)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>Share</button>
                   </div>
                 )}
               </div>
             </div>
             <div style={{ padding: "28px" }}>
               {loading
-                ? <div><div style={{ color: currentLevel.color, fontStyle: "italic", fontSize: 14, marginBottom: 16 }}>{isWWTD ? "Tequila is thinking..." : `Making it ${currentLevel.label}...`}</div><div style={{ display: "flex", gap: 6 }}>{[0, 1, 2].map(i => <div key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: currentLevel.color, animation: `bounce 1s ease-in-out ${i * 0.15}s infinite` }} />)}</div></div>
-                : <p style={{ color: isWWTD ? "#f0d090" : "#f0f0f0", fontSize: isWWTD ? 18 : 17, lineHeight: isWWTD ? 2.1 : 1.9, margin: 0, whiteSpace: "pre-wrap", fontStyle: isWWTD ? "italic" : "normal" }}>{isWWTD ? <GlitchText text={output} active={glitching} /> : output}</p>
+                ? <div><div style={{ color: currentLevel.color, fontStyle: "italic", fontSize: 15, marginBottom: 16 }}>{isWWTD ? "Tequila is thinking..." : `Making it ${currentLevel.label}...`}</div><div style={{ display: "flex", gap: 6 }}>{[0,1,2].map(i => <div key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: currentLevel.color, animation: `bounce 1s ease-in-out ${i*0.15}s infinite` }} />)}</div></div>
+                : output === "TIMEOUT"
+                  ? <p style={{ color: "#f3722c", fontSize: 15, fontStyle: "italic", margin: 0 }}>This is too hot for even super fast broadband to handle. Please refresh and try again. You're worth it.</p>
+                  : <>
+                      <p style={{ color: isWWTD ? "#f0d090" : "#f0f0f0", fontSize: isWWTD ? 19 : 17, lineHeight: isWWTD ? 2.1 : 1.9, margin: "0 0 24px", whiteSpace: "pre-wrap", fontStyle: isWWTD ? "italic" : "normal" }}>
+                        {isWWTD ? <GlitchText text={output} active={glitching} /> : output}
+                      </p>
+                      <div style={{ borderTop: `1px solid ${currentLevel.color}22`, paddingTop: 16 }}>
+                        <p style={{ color: "#555", fontSize: 13, fontStyle: "italic", margin: 0, lineHeight: 1.7 }}>
+                          This is a starting point, not a final draft. Steal what works, kill what doesn't. Tequila got you here — your voice takes it home.
+                        </p>
+                      </div>
+                    </>
               }
             </div>
           </div>
@@ -270,19 +390,24 @@ export default function App() {
                 <div style={{ padding: "16px 20px", borderBottom: `1px solid ${r.color}22`, display: "flex", justifyContent: "space-between", alignItems: "center", background: r.value === 6 ? "linear-gradient(90deg,#1a0e00,#0a0600)" : `linear-gradient(135deg,${r.color}08,transparent)` }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <span style={{ fontSize: 22 }}>{r.emoji}</span>
-                    <span style={{ color: r.color, fontSize: 16, fontWeight: "bold" }}>{r.label}</span>
+                    <span style={{ fontFamily: "'Bebas Neue', sans-serif", color: r.color, fontSize: 20, letterSpacing: 1 }}>{r.label}</span>
                   </div>
                   {r.done && r.output && (
                     <div style={{ display: "flex", gap: 6 }}>
-                      <button onClick={() => copy(r.output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 4, padding: "4px 12px", fontSize: 11, cursor: "pointer" }}>Copy</button>
-                      <button onClick={() => share(r.output, r)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 4, padding: "4px 12px", fontSize: 11, cursor: "pointer" }}>Share</button>
+                      <button onClick={() => copy(r.output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 4, padding: "4px 12px", fontSize: 12, cursor: "pointer" }}>Copy</button>
+                      <button onClick={() => share(r.output, r)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 4, padding: "4px 12px", fontSize: 12, cursor: "pointer" }}>Share</button>
                     </div>
                   )}
                 </div>
                 <div style={{ padding: "20px" }}>
                   {!r.done
-                    ? <div style={{ display: "flex", gap: 5 }}>{[0, 1, 2].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: r.color, animation: `bounce 1s ease-in-out ${i * 0.15}s infinite`, opacity: 0.7 }} />)}</div>
-                    : <p style={{ color: r.value === 6 ? "#f0d090" : "#f0f0f0", fontSize: 15, lineHeight: 1.85, margin: 0, whiteSpace: "pre-wrap", fontStyle: r.value === 6 ? "italic" : "normal" }}>{r.output}</p>
+                    ? <div style={{ display: "flex", gap: 5 }}>{[0,1,2].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: r.color, animation: `bounce 1s ease-in-out ${i*0.15}s infinite`, opacity: 0.7 }} />)}</div>
+                    : <>
+                        <p style={{ color: r.value === 6 ? "#f0d090" : "#f0f0f0", fontSize: 15, lineHeight: 1.85, margin: "0 0 16px", whiteSpace: "pre-wrap", fontStyle: r.value === 6 ? "italic" : "normal" }}>{r.output}</p>
+                        <div style={{ borderTop: `1px solid ${r.color}22`, paddingTop: 12 }}>
+                          <p style={{ color: "#555", fontSize: 12, fontStyle: "italic", margin: 0 }}>This is a starting point, not a final draft. Steal what works, kill what doesn't. Tequila got you here — your voice takes it home.</p>
+                        </div>
+                      </>
                   }
                 </div>
               </div>
@@ -295,18 +420,18 @@ export default function App() {
           <div style={{ textAlign: "center", marginTop: 28 }}>
             <div style={{ display: "inline-block", background: "linear-gradient(135deg,#1a0900,#2d1200)", border: "1px solid #f5a62355", borderRadius: 10, padding: "24px 40px", animation: "pulse 2s infinite" }}>
               <div style={{ color: "#f5a623", fontSize: 11, letterSpacing: 4, textTransform: "uppercase", marginBottom: 12, opacity: 0.8 }}>⚠️ Wait. There's more.</div>
-              <button onClick={() => { setWwtdUnlocked(true); setLevel(6); setShowHint(false); setOutput(""); }} style={{ background: "transparent", border: "none", color: "#f5a623", fontSize: 24, fontStyle: "italic", fontWeight: "bold", cursor: "pointer", display: "block", marginBottom: 12, textShadow: "0 0 20px rgba(245,166,35,0.8)", lineHeight: 1.4 }}>
+              <button onClick={() => { setWwtdUnlocked(true); setLevel(6); setShowHint(false); setOutput(""); }} style={{ background: "transparent", border: "none", color: "#f5a623", fontSize: 24, fontStyle: "italic", fontWeight: "bold", cursor: "pointer", display: "block", marginBottom: 12, textShadow: "0 0 20px rgba(245,166,35,0.8)", lineHeight: 1.4, fontFamily: "'EB Garamond', serif" }}>
                 ...but what would tequila do?
               </button>
-              <div style={{ color: "#f5a62399", fontSize: 12, fontStyle: "italic" }}>tap to find out ↑</div>
+              <div style={{ color: "#f5a62399", fontSize: 13, fontStyle: "italic" }}>tap to find out ↑</div>
             </div>
           </div>
         )}
 
         {/* Footer */}
         <div style={{ textAlign: "center", marginTop: 48, borderTop: "1px solid #111", paddingTop: 24 }}>
-          <div style={{ color: "#777", fontSize: 11, letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>What Would Tequila Do</div>
-          <div style={{ color: "#555", fontSize: 11, fontStyle: "italic" }}>The book. Coming soon.</div>
+          <div style={{ fontFamily: "'Bebas Neue', sans-serif", color: "#777", fontSize: 18, letterSpacing: 3, marginBottom: 6 }}>What Would Tequila Do</div>
+          <div style={{ color: "#555", fontSize: 13, fontStyle: "italic" }}>The book. Coming soon.</div>
         </div>
       </div>
     </div>
