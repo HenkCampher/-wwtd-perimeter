@@ -123,6 +123,11 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [substance, setSubstance] = useState(null);
   const [scoringSubstance, setScoringSubstance] = useState(false);
+  const [sharpenQuestions, setSharpenQuestions] = useState([]);
+  const [sharpenAnswers, setSharpenAnswers] = useState({});
+  const [sharpenLoading, setSharpenLoading] = useState(false);
+  const [sharpenOutput, setSharpenOutput] = useState("");
+  const [showSharpen, setShowSharpen] = useState(false);
   const scoreTimer = useRef(null);
 
   const isWWTD = level === 6;
@@ -187,6 +192,69 @@ export default function App() {
   const copy = (text) => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); };
   const share = (text, lvl) => { navigator.clipboard.writeText(`I ran my copy through the WWTD Peri-Ometer at "${lvl.label}" and got this:\n\n${text}\n\n— whatwouldtequilado.com`); setShared(true); setTimeout(() => setShared(false), 2000); };
 
+  const handleSharpen = async () => {
+    setShowSharpen(true);
+    setSharpenLoading(true);
+    setSharpenQuestions([]);
+    setSharpenAnswers({});
+    setSharpenOutput("");
+    try {
+      const res = await fetch("/api/rewrite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system: `You are a copy sharpener. A user has submitted marketing copy and received a rewrite at spice level "${currentLevel.label}". Your job is to identify 3 to 5 specific questions that, if answered, would make the rewrite dramatically more specific, personal, and powerful. Ask only about concrete details that are missing: real numbers, specific differentiators, named competitors, actual customer outcomes, unique process details. Never ask generic questions. Respond ONLY with valid JSON: {"questions": ["question 1", "question 2", "question 3"]}`,
+          prompt: `Original copy: ${input}
+
+Rewrite: ${output}
+
+What 3 to 5 specific questions would unlock the details needed to make this rewrite hit harder?`
+        })
+      });
+      const data = await res.json();
+      const text = data.content?.find(b => b.type === "text")?.text || "";
+      const match = text.match(/\{[\s\S]*\}/);
+      if (match) {
+        const parsed = JSON.parse(match[0]);
+        setSharpenQuestions(parsed.questions || []);
+        const initAnswers = {};
+        (parsed.questions || []).forEach((_, i) => { initAnswers[i] = ""; });
+        setSharpenAnswers(initAnswers);
+      }
+    } catch(e) { setSharpenQuestions(["Something went wrong. Try again."]); }
+    setSharpenLoading(false);
+  };
+
+  const handleSharpenRewrite = async () => {
+    setSharpenLoading(true);
+    setSharpenOutput("");
+    const answeredQs = sharpenQuestions.map((q, i) => sharpenAnswers[i] ? `Q: ${q}
+A: ${sharpenAnswers[i]}` : null).filter(Boolean).join("
+
+");
+    try {
+      const res = await fetch("/api/rewrite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system: `You are the rewriter behind What Would Tequila Do. Rewrite the original copy at spice level "${currentLevel.label}" using the additional specifics provided. Make it sharper, more personal, more specific. Preserve all facts. Output ONLY the rewritten text. No preamble.`,
+          prompt: `Original copy: ${input}
+
+First rewrite: ${output}
+
+Additional specifics from the author:
+${answeredQs}
+
+Now rewrite it sharper using these details.`
+        })
+      });
+      const data = await res.json();
+      const text = data.content?.find(b => b.type === "text")?.text || "Something went wrong.";
+      setSharpenOutput(text);
+    } catch(e) { setSharpenOutput("Something went wrong. Try again."); }
+    setSharpenLoading(false);
+  };
+
   const bg = isWWTD ? "#0a0600" : "#080810";
 
   const handleReset = () => {
@@ -202,6 +270,11 @@ export default function App() {
     setHistory([]);
     setSidebarOpen(false);
     setTimedOut(false);
+    setSharpenQuestions([]);
+    setSharpenAnswers({});
+    setSharpenLoading(false);
+    setSharpenOutput("");
+    setShowSharpen(false);
   };
   const scoreColor = substance ? (substance.score <= 3 ? "#e63946" : substance.score <= 5 ? "#f3722c" : substance.score <= 7 ? "#f9c74f" : "#a8e063") : "#555";
 
@@ -393,12 +466,60 @@ export default function App() {
                         {isWWTD ? <GlitchText text={output} active={glitching} /> : output}
                       </p>
                       <div style={{ borderTop: `1px solid ${currentLevel.color}33`, paddingTop: 20, marginTop: 8 }}>
-                        <p style={{ color: "#aaa", fontSize: 15, fontStyle: "italic", margin: 0, lineHeight: 1.8 }}>
+                        <p style={{ color: "#aaa", fontSize: 15, fontStyle: "italic", margin: "0 0 20px", lineHeight: 1.8 }}>
                           🥃 <strong style={{ color: "#ddd", fontStyle: "normal" }}>This is a starting point, not a final draft.</strong> Steal what works, kill what doesn't. Tequila got you here — your voice takes it home.
                         </p>
+                        {!showSharpen && (
+                          <button onClick={handleSharpen} style={{ width: "100%", padding: "14px", background: "transparent", border: `1px dashed ${currentLevel.color}88`, borderRadius: 8, color: currentLevel.color, fontSize: 14, cursor: "pointer", fontFamily: "'EB Garamond', serif", letterSpacing: 1, transition: "all 0.2s" }}>
+                            Don't leave it half naked. 3 quick questions will fix that.
+                          </button>
+                        )}
                       </div>
                     </>
               }
+            </div>
+          </div>
+        )}
+
+        {/* Sharpen card */}
+        {showSharpen && tab === "rewrite" && (
+          <div style={{ background: "#0d1117", border: "1px solid #2a3a2a", borderRadius: 12, overflow: "hidden", boxShadow: "0 0 40px rgba(100,200,100,0.08)", animation: "fadeIn 0.4s", marginTop: 16 }}>
+            <div style={{ padding: "24px 28px 20px", borderBottom: "1px solid #1a2a1a", background: "linear-gradient(135deg,#0a1a0a,#0d1117)" }}>
+              <div style={{ fontSize: 11, letterSpacing: 3, color: "#4a8a4a", textTransform: "uppercase", marginBottom: 4 }}>Make it sharper</div>
+              <div style={{ color: "#ccc", fontSize: 16, fontFamily: "'Bebas Neue', sans-serif", letterSpacing: 2 }}>Give it more you.</div>
+            </div>
+            <div style={{ padding: "28px" }}>
+              {sharpenLoading && !sharpenOutput && (
+                <div>
+                  <div style={{ color: "#4a8a4a", fontStyle: "italic", fontSize: 15, marginBottom: 16 }}>Finding the gaps...</div>
+                  <div style={{ display: "flex", gap: 6 }}>{[0,1,2].map(i => <div key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: "#4a8a4a", animation: `bounce 1s ease-in-out ${i*0.15}s infinite` }} />)}</div>
+                </div>
+              )}
+              {!sharpenLoading && sharpenOutput && (
+                <>
+                  <div style={{ fontSize: 11, letterSpacing: 3, color: "#4a8a4a", textTransform: "uppercase", marginBottom: 16 }}>Sharpened rewrite</div>
+                  <p style={{ color: "#f0f0f0", fontSize: 17, lineHeight: 1.9, margin: "0 0 24px", whiteSpace: "pre-wrap" }}>{sharpenOutput}</p>
+                  <button onClick={() => navigator.clipboard.writeText(sharpenOutput)} style={{ background: "transparent", border: "1px solid #2a3a2a", color: "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>Copy</button>
+                </>
+              )}
+              {!sharpenLoading && sharpenQuestions.length > 0 && !sharpenOutput && (
+                <>
+                  {sharpenQuestions.map((q, i) => (
+                    <div key={i} style={{ marginBottom: 20 }}>
+                      <div style={{ color: "#bbb", fontSize: 14, marginBottom: 8, lineHeight: 1.6 }}>{i + 1}. {q}</div>
+                      <textarea
+                        value={sharpenAnswers[i] || ""}
+                        onChange={e => setSharpenAnswers(prev => ({ ...prev, [i]: e.target.value }))}
+                        placeholder="Your answer (or skip)..."
+                        style={{ width: "100%", minHeight: 70, background: "#080f08", border: "1px solid #1a2a1a", borderRadius: 6, color: "#e8e8e8", fontSize: 14, padding: "12px", fontFamily: "'EB Garamond', serif", lineHeight: 1.6, resize: "vertical", boxSizing: "border-box" }}
+                      />
+                    </div>
+                  ))}
+                  <button onClick={handleSharpenRewrite} style={{ width: "100%", padding: "14px", background: "#1a2a1a", border: "1px solid #2a3a2a", borderRadius: 8, color: "#a8e063", fontSize: 15, cursor: "pointer", fontFamily: "'Bebas Neue', sans-serif", letterSpacing: 3 }}>
+                    Hit me.
+                  </button>
+                </>
+              )}
             </div>
           </div>
         )}
