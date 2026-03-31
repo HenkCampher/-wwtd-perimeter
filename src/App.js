@@ -119,7 +119,6 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [timedOut, setTimedOut] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [shared, setShared] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
   const [linkLoading, setLinkLoading] = useState(false);
   const [wwtdUnlocked, setWwtdUnlocked] = useState(false);
@@ -200,7 +199,6 @@ export default function App() {
   };
 
   const copy = (text) => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); };
-  const share = (text, lvl) => { navigator.clipboard.writeText(`I ran my copy through the WWTD Peri-Ometer at "${lvl.label}" and got this:\n\n${text}\n\n— whatwouldtequilado.com`); setShared(true); setTimeout(() => setShared(false), 2000); };
 
   const getShareLink = async () => {
     setLinkLoading(true);
@@ -580,7 +578,6 @@ export default function App() {
                   {r.done && r.output && (
                     <div style={{ display: "flex", gap: 6 }}>
                       <button onClick={() => copy(r.output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 4, padding: "4px 12px", fontSize: 12, cursor: "pointer" }}>Copy</button>
-                      <button onClick={() => share(r.output, r)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 4, padding: "4px 12px", fontSize: 12, cursor: "pointer" }}>Share</button>
                     </div>
                   )}
                 </div>
