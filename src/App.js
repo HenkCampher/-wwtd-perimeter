@@ -246,7 +246,14 @@ export default function App() {
           model: "claude-haiku-4-5-20251001",
           max_tokens: 1000,
           system: `You are the rewriter behind What Would Tequila Do. Output ONLY the rewritten text. No preamble. No labels. No separators. No repetition of the input. Just the rewrite.`,
-          messages: [{ role: "user", content: `Rewrite this at spice level "${currentLevel.label}", using the additional specifics below to make it sharper and more specific.\n\nORIGINAL: ${input}\n\nSPECIFICS TO WEAVE IN:\n${answeredQs}\n\nOutput only the rewritten text.` }]
+          messages: [{ role: "user", content: `Rewrite this at spice level "${currentLevel.label}"${format ? ` as a ${format}${
+  format === "Social Post" ? " (max 280 characters)" :
+  format === "LinkedIn Post" ? " (max 1300 characters)" :
+  format === "Ad Copy" ? " (max 150 characters)" :
+  format === "Elevator Pitch" ? " (max 300 characters)" :
+  format === "Bio" ? " (max 300 characters)" :
+  format === "Email" ? " (must include a subject line)" : ""
+}` : ""}, using the additional specifics below to make it sharper and more specific.\n\nORIGINAL: ${input}\n\nSPECIFICS TO WEAVE IN:\n${answeredQs}\n\nOutput only the rewritten text.` }]
         })
       });
       const data = await res.json();
