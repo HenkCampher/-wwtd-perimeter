@@ -32,7 +32,8 @@ function renderOutput(text) {
         break;
       }
     }
-    return <span key={i}>{parts}<br /></span>;
+    if (line === "") return <div key={i} style={{ height: "0.8em" }} />;
+    return <div key={i}>{parts}</div>;
   });
 }
 
@@ -100,7 +101,10 @@ export default function Share() {
                 </div>
               </div>
               <div style={{ padding: "28px" }}>
-                <p style={{ color: level.value === 6 ? "#f0d090" : "#f0f0f0", fontSize: level.value === 6 ? 19 : 17, lineHeight: level.value === 6 ? 2.1 : 1.9, margin: "0 0 24px", fontStyle: level.value === 6 ? "italic" : "normal" }}>{renderOutput(data.output)}</p>
+                <p style={{ color: level.value === 6 ? "#f0d090" : "#f0f0f0", fontSize: level.value === 6 ? 19 : 17, lineHeight: level.value === 6 ? 2.1 : 1.9, margin: "0 0 16px", fontStyle: level.value === 6 ? "italic" : "normal" }}>{renderOutput(data.output)}</p>
+                <div style={{ marginBottom: 16 }}>
+                  <button onClick={() => navigator.clipboard.writeText(data.output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>Copy</button>
+                </div>
                 {data.input && (
                   <div style={{ borderTop: `1px solid ${level.color}22`, paddingTop: 20 }}>
                     <div style={{ fontSize: 11, letterSpacing: 3, color: "#444", textTransform: "uppercase", marginBottom: 8 }}>The bland original</div>

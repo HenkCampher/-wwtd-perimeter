@@ -316,7 +316,8 @@ export default function App() {
           break;
         }
       }
-      return <span key={i}>{parts}<br /></span>;
+      if (line === "") return <div key={i} style={{ height: "0.8em" }} />;
+      return <div key={i}>{parts}</div>;
     });
   };
 
@@ -463,7 +464,7 @@ export default function App() {
             <div style={{ padding: "20px 24px 24px" }}>
               <div style={{ marginBottom: 18 }}>
                 <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Step 2: Pick Your Format (optional)</div>
-                <select value={format} onChange={e => setFormat(e.target.value)} style={{ width: "100%", padding: "12px 16px", background: "#080810", border: "1px solid #1e1e35", borderRadius: 8, color: format ? "#e8e8e8" : "#555", fontSize: 14, fontFamily: "'EB Garamond', serif", cursor: "pointer", appearance: "none", WebkitAppearance: "none" }}>
+                <select value={format} onChange={e => setFormat(e.target.value)} style={{ width: "100%", padding: "12px 16px", background: "#080810", border: `1px solid ${format ? "#2a2a50" : "#1e1e35"}`, borderRadius: 8, color: format ? "#e8e8e8" : "#555", fontSize: 14, fontFamily: "'EB Garamond', serif", cursor: "pointer", appearance: "none", WebkitAppearance: "none", outline: "none" }}>
                   <option value="">No format — just make it bolder</option>
                   <option value="Social Post">Social Post (X, Bluesky, Threads)</option>
                   <option value="LinkedIn Post">LinkedIn Post</option>
@@ -557,7 +558,7 @@ export default function App() {
                 : output === "TIMEOUT"
                   ? <p style={{ color: "#f3722c", fontSize: 15, fontStyle: "italic", margin: 0 }}>This is too hot for even super fast broadband to handle. Please refresh and try again. You're worth it.</p>
                   : <>
-                      <p style={{ color: isWWTD ? "#f0d090" : "#f0f0f0", fontSize: isWWTD ? 19 : 17, lineHeight: isWWTD ? 2.1 : 1.9, margin: "0 0 24px", whiteSpace: "pre-wrap", fontStyle: isWWTD ? "italic" : "normal" }}>
+                      <p style={{ color: isWWTD ? "#f0d090" : "#f0f0f0", fontSize: isWWTD ? 19 : 17, lineHeight: isWWTD ? 2.1 : 1.9, margin: "0 0 24px", fontStyle: isWWTD ? "italic" : "normal" }}>
                         {isWWTD ? <GlitchText text={output} active={glitching} /> : renderOutput(output)}
                       </p>
                       <div style={{ borderTop: `1px solid ${currentLevel.color}33`, paddingTop: 20, marginTop: 8 }}>
