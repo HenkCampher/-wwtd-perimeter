@@ -164,6 +164,7 @@ export default function App() {
     const timeoutWarning = setTimeout(() => setTimedOut(true), 30000);
     try {
       const text = await callAPI(level, currentLevel.label, input, format);
+      if (window.gtag) window.gtag('event', 'rewrite', { level: currentLevel.label, format: format || 'none' });
       clearTimeout(timeoutWarning);
       setTimedOut(false);
       setOutput(text);
@@ -203,6 +204,7 @@ export default function App() {
   const copy = (text) => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   const getShareLink = async () => {
+    if (window.gtag) window.gtag('event', 'get_link', { level: currentLevel.label, format: format || 'none' });
     setLinkLoading(true);
     try {
       const res = await fetch("/api/share", {
@@ -222,6 +224,7 @@ export default function App() {
   };
 
   const handleSharpen = async () => {
+    if (window.gtag) window.gtag('event', 'sharpen_started', { level: currentLevel.label });
     setShowSharpen(true);
     setSharpenLoading(true);
     setSharpenQuestions([]);
@@ -280,6 +283,7 @@ export default function App() {
       const data = await res.json();
       const text = data.content?.find(b => b.type === "text")?.text || "Something went wrong.";
       setSharpenOutput(text);
+      if (window.gtag) window.gtag('event', 'sharpen_completed', { level: currentLevel.label, format: format || 'none' });
     } catch(e) { setSharpenOutput("Something went wrong. Try again."); }
     setSharpenLoading(false);
   };
