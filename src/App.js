@@ -450,7 +450,7 @@ export default function App() {
                     </div>
                     <ScoreBar score={substance.score} />
                     {substance.missing?.length > 0 && substance.score < 7 && (
-                      <div style={{ marginTop: 10, color: "#666", fontSize: 12, fontStyle: "italic" }}>
+                      <div style={{ marginTop: 10, color: "#999", fontSize: 13, fontStyle: "italic" }}>
                         Consider adding: {substance.missing.join(" · ")}
                       </div>
                     )}
@@ -548,8 +548,8 @@ export default function App() {
               </div>
             </div>
             {output && output !== "TIMEOUT" && !loading && (
-              <div style={{ padding: "10px 28px", borderBottom: `1px solid ${currentLevel.color}11`, background: isWWTD ? "#0d0700" : "#0a0a18" }}>
-                <p style={{ color: "#888", fontSize: 14, fontStyle: "italic", margin: 0, letterSpacing: 0.5 }}>90% done. The last 10% is yours — make it unmistakably you.</p>
+              <div style={{ padding: "10px 28px", borderBottom: `1px solid ${currentLevel.color}22`, borderLeft: `3px solid ${currentLevel.color}88`, background: isWWTD ? "#0d0700" : "#0c0c1e" }}>
+                <p style={{ color: "#aaa", fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: 0.5 }}>90% done. The last 10% is yours — make it unmistakably you.</p>
               </div>
             )}
             <div style={{ padding: "28px" }}>
