@@ -13,12 +13,25 @@ function renderOutput(text) {
   if (!text) return null;
   return text.split("\n").map((line, i) => {
     if (line.match(/^---+$/)) return <hr key={i} style={{ border: "none", borderTop: "1px solid #333", margin: "12px 0" }} />;
-    const parts = line.split(/(\*\*[^*]+\*\*)/g).map((part, j) => {
-      if (part.startsWith("**") && part.endsWith("**")) {
-        return <strong key={j} style={{ color: "#fff", fontWeight: "bold" }}>{part.slice(2,-2)}</strong>;
+    const parts = [];
+    let remaining = line;
+    let j = 0;
+    while (remaining.length > 0) {
+      const boldMatch = remaining.match(/^(.*?)\*\*([^*]+)\*\*(.*)/s);
+      const italicMatch = remaining.match(/^(.*?)\*([^*]+)\*(.*)/s);
+      if (boldMatch && (!italicMatch || boldMatch[1].length <= italicMatch[1].length)) {
+        if (boldMatch[1]) parts.push(boldMatch[1]);
+        parts.push(<strong key={j++} style={{ color: "#fff", fontWeight: "bold" }}>{boldMatch[2]}</strong>);
+        remaining = boldMatch[3];
+      } else if (italicMatch) {
+        if (italicMatch[1]) parts.push(italicMatch[1]);
+        parts.push(<em key={j++}>{italicMatch[2]}</em>);
+        remaining = italicMatch[3];
+      } else {
+        parts.push(remaining);
+        break;
       }
-      return part;
-    });
+    }
     return <span key={i}>{parts}<br /></span>;
   });
 }
