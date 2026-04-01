@@ -165,6 +165,7 @@ export default function App() {
     try {
       const text = await callAPI(level, currentLevel.label, input, format);
       if (window.gtag) window.gtag('event', 'rewrite', { level: currentLevel.label, format: format || 'none' });
+      track('rewrite', { level: currentLevel.label, format: format || '' });
       clearTimeout(timeoutWarning);
       setTimedOut(false);
       setOutput(text);
@@ -205,6 +206,7 @@ export default function App() {
 
   const getShareLink = async () => {
     if (window.gtag) window.gtag('event', 'get_link', { level: currentLevel.label, format: format || 'none' });
+    track('get_link', { level: currentLevel.label, format: format || '' });
     setLinkLoading(true);
     try {
       const res = await fetch("/api/share", {
@@ -225,6 +227,7 @@ export default function App() {
 
   const handleSharpen = async () => {
     if (window.gtag) window.gtag('event', 'sharpen_started', { level: currentLevel.label });
+    track('sharpen_started', { level: currentLevel.label });
     setShowSharpen(true);
     setSharpenLoading(true);
     setSharpenQuestions([]);
@@ -284,8 +287,17 @@ export default function App() {
       const text = data.content?.find(b => b.type === "text")?.text || "Something went wrong.";
       setSharpenOutput(text);
       if (window.gtag) window.gtag('event', 'sharpen_completed', { level: currentLevel.label, format: format || 'none' });
+      track('sharpen_completed', { level: currentLevel.label, format: format || '' });
     } catch(e) { setSharpenOutput("Something went wrong. Try again."); }
     setSharpenLoading(false);
+  };
+
+  const track = (event, extra = {}) => {
+    fetch("/api/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event, ...extra })
+    }).catch(() => {});
   };
 
   const bg = isWWTD ? "#0a0600" : "#080810";

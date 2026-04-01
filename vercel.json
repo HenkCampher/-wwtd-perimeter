@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/share/(.*)", "destination": "/" }
+    { "source": "/share/(.*)", "destination": "/" },
+    { "source": "/stats", "destination": "/" }
   ]
 }
