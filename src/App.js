@@ -546,6 +546,11 @@ export default function App() {
                 )}
               </div>
             </div>
+            {output && output !== "TIMEOUT" && !loading && (
+              <div style={{ padding: "10px 28px", borderBottom: `1px solid ${currentLevel.color}11`, background: isWWTD ? "#0d0700" : "#0a0a18" }}>
+                <p style={{ color: "#555", fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: 0.5 }}>90% done. The last 10% is yours — make it unmistakably you.</p>
+              </div>
+            )}
             <div style={{ padding: "28px" }}>
               {loading
                 ? <div><div style={{ color: currentLevel.color, fontStyle: "italic", fontSize: 15, marginBottom: 16 }}>{isWWTD ? "Tequila is thinking..." : `Making it ${currentLevel.label}...`}</div><div style={{ display: "flex", gap: 6 }}>{[0,1,2].map(i => <div key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: currentLevel.color, animation: `bounce 1s ease-in-out ${i*0.15}s infinite` }} />)}</div></div>
@@ -556,9 +561,6 @@ export default function App() {
                         {isWWTD ? <GlitchText text={output} active={glitching} /> : renderOutput(output)}
                       </p>
                       <div style={{ borderTop: `1px solid ${currentLevel.color}33`, paddingTop: 20, marginTop: 8 }}>
-                        <p style={{ color: "#aaa", fontSize: 15, fontStyle: "italic", margin: "0 0 20px", lineHeight: 1.8 }}>
-                          🥃 <strong style={{ color: "#ddd", fontStyle: "normal" }}>90% done. The last 10% is yours.</strong> This is the scaffold — your voice, your story, your specific details finish it. Steal what works, kill what doesn't, make it unmistakably you.
-                        </p>
                         {!showSharpen && (
                           <button onClick={handleSharpen} style={{ width: "100%", padding: "14px", background: "transparent", border: `1px dashed ${currentLevel.color}88`, borderRadius: 8, color: "#fff", fontSize: 16, cursor: "pointer", fontFamily: "'EB Garamond', serif", letterSpacing: 1, transition: "all 0.2s", fontWeight: "600" }}>
                             Don't leave it half naked. 3 quick questions will fix that.
