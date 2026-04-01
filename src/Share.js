@@ -27,7 +27,7 @@ export default function Share() {
   return (
     <div style={{ minHeight: "100vh", background: "#080810", color: "#e8e8e8", fontFamily: "'EB Garamond', Georgia, serif" }}>
       <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
-      <style>{\`@keyframes bounce { 0%,100%{transform:translateY(0);opacity:0.4} 50%{transform:translateY(-6px);opacity:1} } @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }\`}</style>
+      <style>{`@keyframes bounce { 0%,100%{transform:translateY(0);opacity:0.4} 50%{transform:translateY(-6px);opacity:1} } @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }`}</style>
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "48px 24px" }}>
 
         <div style={{ textAlign: "center", marginBottom: 48 }}>
