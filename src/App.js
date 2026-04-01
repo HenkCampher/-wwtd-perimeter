@@ -26,7 +26,7 @@ LEVEL 5 - I'M NOT OKAY: Abandon all restraint. Fever dream that makes perfect se
 
 LEVEL 6 - WHAT WOULD TEQUILA DO: All rules are dead. Fully absurdist — impossible images, language that shouldn't work but captures truth better than anything sensible. Provocative, poetic, unhinged. Every single fact from the original must survive in some form. End with a single line in ALL CAPS that hits like a slap and a revelation simultaneously. Make the reader laugh, wince, and forward it immediately.
 
-Rules: Match level precisely. PRESERVE ALL FACTS. Output ONLY the rewritten text. No preamble. No headers. No level labels. Never start with "I".`;
+Rules: Match level precisely. PRESERVE ALL FACTS. Output ONLY the rewritten text. No preamble. No headers. No level labels. Never start with "I". BANNED CLICHÉS — never use these: "2am", "3am", "coffee-stained", "burning the midnight oil", "hustle", "game changer", "move the needle", "crushing it", "on a journey", "passionate about", "I am excited to", "synergy", "disruptive", "bleeding edge", "at the end of the day", "it is what it is". Find fresh, specific angles instead. POP CULTURE: At levels 4, 5, and 6 only, you may use a single pop culture reference (film, TV, music, sport, history) but ONLY when it is the sharpest, most unexpected way to make the point. If it feels like decoration or a stretch, skip it. It should feel like a surprise, not a pattern.`;
 
 const SUBSTANCE_PROMPT = `You are a copy quality analyst. Analyze the following text and give it a substance score out of 10 based on these criteria:
 - Specific facts, numbers, or data (0-2 points)
@@ -279,7 +279,8 @@ export default function App() {
   format === "Ad Copy" ? " (max 150 characters)" :
   format === "Elevator Pitch" ? " (max 300 characters)" :
   format === "Bio" ? " (max 300 characters)" :
-  format === "Email" ? " (must include a subject line)" : ""
+  format === "Email" ? " (must include a subject line)" :
+  format === "Boilerplate" ? " (max 100 words, punchy and specific)" : ""
 }` : ""}, using the additional specifics below to make it sharper and more specific.\n\nORIGINAL: ${input}\n\nSPECIFICS TO WEAVE IN:\n${answeredQs}\n\nOutput only the rewritten text.` }]
         })
       });
@@ -471,6 +472,7 @@ export default function App() {
                   <option value="Press Release">Press Release</option>
                   <option value="Bio">Bio</option>
                   <option value="Email">Email (with subject line)</option>
+                  <option value="Boilerplate">Boilerplate / About</option>
                 </select>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
@@ -555,7 +557,7 @@ export default function App() {
                       </p>
                       <div style={{ borderTop: `1px solid ${currentLevel.color}33`, paddingTop: 20, marginTop: 8 }}>
                         <p style={{ color: "#aaa", fontSize: 15, fontStyle: "italic", margin: "0 0 20px", lineHeight: 1.8 }}>
-                          🥃 <strong style={{ color: "#ddd", fontStyle: "normal" }}>This is a starting point, not a final draft.</strong> Steal what works, kill what doesn't. Tequila got you here — your voice takes it home.
+                          🥃 <strong style={{ color: "#ddd", fontStyle: "normal" }}>90% done. The last 10% is yours.</strong> This is the scaffold — your voice, your story, your specific details finish it. Steal what works, kill what doesn't, make it unmistakably you.
                         </p>
                         {!showSharpen && (
                           <button onClick={handleSharpen} style={{ width: "100%", padding: "14px", background: "transparent", border: `1px dashed ${currentLevel.color}88`, borderRadius: 8, color: "#fff", fontSize: 16, cursor: "pointer", fontFamily: "'EB Garamond', serif", letterSpacing: 1, transition: "all 0.2s", fontWeight: "600" }}>
