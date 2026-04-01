@@ -9,6 +9,20 @@ const ALL_LEVELS = [
   { value: 6, label: "What Would Tequila Do", color: "#f5a623", emoji: "🥃" },
 ];
 
+function renderOutput(text) {
+  if (!text) return null;
+  return text.split("\n").map((line, i) => {
+    if (line.match(/^---+$/)) return <hr key={i} style={{ border: "none", borderTop: "1px solid #333", margin: "12px 0" }} />;
+    const parts = line.split(/(\*\*[^*]+\*\*)/g).map((part, j) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return <strong key={j} style={{ color: "#fff", fontWeight: "bold" }}>{part.slice(2,-2)}</strong>;
+      }
+      return part;
+    });
+    return <span key={i}>{parts}<br /></span>;
+  });
+}
+
 export default function Share() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(false);
@@ -73,7 +87,7 @@ export default function Share() {
                 </div>
               </div>
               <div style={{ padding: "28px" }}>
-                <p style={{ color: level.value === 6 ? "#f0d090" : "#f0f0f0", fontSize: level.value === 6 ? 19 : 17, lineHeight: level.value === 6 ? 2.1 : 1.9, margin: "0 0 24px", whiteSpace: "pre-wrap", fontStyle: level.value === 6 ? "italic" : "normal" }}>{data.output}</p>
+                <p style={{ color: level.value === 6 ? "#f0d090" : "#f0f0f0", fontSize: level.value === 6 ? 19 : 17, lineHeight: level.value === 6 ? 2.1 : 1.9, margin: "0 0 24px", fontStyle: level.value === 6 ? "italic" : "normal" }}>{renderOutput(data.output)}</p>
                 {data.input && (
                   <div style={{ borderTop: `1px solid ${level.color}22`, paddingTop: 20 }}>
                     <div style={{ fontSize: 11, letterSpacing: 3, color: "#444", textTransform: "uppercase", marginBottom: 8 }}>The bland original</div>

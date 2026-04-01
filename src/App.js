@@ -292,6 +292,20 @@ export default function App() {
     setSharpenLoading(false);
   };
 
+  const renderOutput = (text) => {
+    if (!text) return null;
+    return text.split("\n").map((line, i) => {
+      if (line.match(/^---+$/)) return <hr key={i} style={{ border: "none", borderTop: "1px solid #333", margin: "12px 0" }} />;
+      const parts = line.split(/(\*\*[^*]+\*\*)/g).map((part, j) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          return <strong key={j} style={{ color: "#fff", fontWeight: "bold" }}>{part.slice(2,-2)}</strong>;
+        }
+        return part;
+      });
+      return <span key={i}>{parts}<br /></span>;
+    });
+  };
+
   const track = (event, extra = {}) => {
     fetch("/api/track", {
       method: "POST",
@@ -524,7 +538,7 @@ export default function App() {
                   ? <p style={{ color: "#f3722c", fontSize: 15, fontStyle: "italic", margin: 0 }}>This is too hot for even super fast broadband to handle. Please refresh and try again. You're worth it.</p>
                   : <>
                       <p style={{ color: isWWTD ? "#f0d090" : "#f0f0f0", fontSize: isWWTD ? 19 : 17, lineHeight: isWWTD ? 2.1 : 1.9, margin: "0 0 24px", whiteSpace: "pre-wrap", fontStyle: isWWTD ? "italic" : "normal" }}>
-                        {isWWTD ? <GlitchText text={output} active={glitching} /> : output}
+                        {isWWTD ? <GlitchText text={output} active={glitching} /> : renderOutput(output)}
                       </p>
                       <div style={{ borderTop: `1px solid ${currentLevel.color}33`, paddingTop: 20, marginTop: 8 }}>
                         <p style={{ color: "#aaa", fontSize: 15, fontStyle: "italic", margin: "0 0 20px", lineHeight: 1.8 }}>
@@ -559,7 +573,7 @@ export default function App() {
               {!sharpenLoading && sharpenOutput && sharpenOutput !== "NONE" && (
                 <>
                   <div style={{ fontSize: 11, letterSpacing: 3, color: "#4a8a4a", textTransform: "uppercase", marginBottom: 16 }}>Sharpened rewrite</div>
-                  <p style={{ color: "#f0f0f0", fontSize: 17, lineHeight: 1.9, margin: "0 0 24px", whiteSpace: "pre-wrap" }}>{sharpenOutput}</p>
+                  <p style={{ color: "#f0f0f0", fontSize: 17, lineHeight: 1.9, margin: "0 0 24px" }}>{renderOutput(sharpenOutput)}</p>
                   <button onClick={() => { navigator.clipboard.writeText(sharpenOutput); setSharpenCopied(true); setTimeout(() => setSharpenCopied(false), 2000); }} style={{ background: "transparent", border: "1px solid #2a3a2a", color: sharpenCopied ? "#aaaacc" : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{sharpenCopied ? "Copied ✓" : "Copy"}</button>
                   <button onClick={async () => {
                     try {
@@ -612,7 +626,7 @@ export default function App() {
                   {!r.done
                     ? <div style={{ display: "flex", gap: 5 }}>{[0,1,2].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: r.color, animation: `bounce 1s ease-in-out ${i*0.15}s infinite`, opacity: 0.7 }} />)}</div>
                     : <>
-                        <p style={{ color: r.value === 6 ? "#f0d090" : "#f0f0f0", fontSize: 15, lineHeight: 1.85, margin: "0 0 16px", whiteSpace: "pre-wrap", fontStyle: r.value === 6 ? "italic" : "normal" }}>{r.output}</p>
+                        <p style={{ color: r.value === 6 ? "#f0d090" : "#f0f0f0", fontSize: 15, lineHeight: 1.85, margin: "0 0 16px", fontStyle: r.value === 6 ? "italic" : "normal" }}>{renderOutput(r.output)}</p>
                         <div style={{ borderTop: `1px solid ${r.color}22`, paddingTop: 12 }}>
                           <p style={{ color: "#555", fontSize: 12, fontStyle: "italic", margin: 0 }}>This is a starting point, not a final draft. Steal what works, kill what doesn't. Tequila got you here — your voice takes it home.</p>
                         </div>
