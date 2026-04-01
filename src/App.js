@@ -562,8 +562,24 @@ export default function App() {
                       </p>
                       <div style={{ borderTop: `1px solid ${currentLevel.color}33`, paddingTop: 20, marginTop: 8 }}>
                         {!showSharpen && (
-                          <button onClick={handleSharpen} style={{ width: "100%", padding: "14px", background: "transparent", border: `1px dashed ${currentLevel.color}88`, borderRadius: 8, color: "#fff", fontSize: 16, cursor: "pointer", fontFamily: "'EB Garamond', serif", letterSpacing: 1, transition: "all 0.2s", fontWeight: "600" }}>
-                            Don't leave it half naked. 3 quick questions will fix that.
+                          <button onClick={handleSharpen} style={{
+                            width: "100%",
+                            padding: "14px",
+                            background: substance && substance.score <= 6 ? `${currentLevel.color}15` : "transparent",
+                            border: `1px dashed ${currentLevel.color}${substance && substance.score <= 6 ? "ff" : "88"}`,
+                            borderRadius: 8,
+                            color: "#fff",
+                            fontSize: 16,
+                            cursor: "pointer",
+                            fontFamily: "'EB Garamond', serif",
+                            letterSpacing: 1,
+                            fontWeight: "600",
+                            animation: substance && substance.score <= 6 ? "pulse 2s ease-in-out infinite" : "none"
+                          }}>
+                            {substance && substance.score <= 6
+                              ? `Your score was ${substance.score}/10. Don't leave it half naked — 3 questions will fix that.`
+                              : "Don't leave it half naked. 3 quick questions will fix that."
+                            }
                           </button>
                         )}
                       </div>
