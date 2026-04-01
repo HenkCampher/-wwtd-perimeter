@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 
 const LEVELS = [
-  { value: 1, label: "Hello There",           short: "HELLO", desc: "You've got my attention.",        color: "#a8e063", glow: "rgba(168,224,99,0.25)",  emoji: "👀" },
-  { value: 2, label: "Say What Now",          short: "SAY W", desc: "Wait — did they just—",           color: "#f9c74f", glow: "rgba(249,199,79,0.25)",  emoji: "🤨" },
-  { value: 3, label: "Oh That's Dangerous",   short: "DNGRS", desc: "Bold and they know it.",          color: "#f8961e", glow: "rgba(248,150,30,0.3)",   emoji: "😏" },
-  { value: 4, label: "Someone Call Security", short: "SECUR", desc: "This should not be allowed.",     color: "#f3722c", glow: "rgba(243,114,44,0.35)",  emoji: "🚨" },
-  { value: 5, label: "I'm Not Okay",          short: "NOT OK",desc: "Too far gone to care.",           color: "#e63946", glow: "rgba(230,57,70,0.4)",    emoji: "😵" },
+  { value: 1, label: "Hello There",           short: "HELLO", desc: "Late funnel, warm relationships. You've earned their attention — now lead them home.",        color: "#a8e063", glow: "rgba(168,224,99,0.25)",  emoji: "👀" },
+  { value: 2, label: "Say What Now",          short: "SAY W", desc: "Mid funnel, some familiarity. Follow-ups, second touch, people who know your name.",           color: "#f9c74f", glow: "rgba(249,199,79,0.25)",  emoji: "🤨" },
+  { value: 3, label: "Oh That's Dangerous",   short: "DNGRS", desc: "Mid to top of funnel. Your network, people who follow you but don't know you well.",          color: "#f8961e", glow: "rgba(248,150,30,0.3)",   emoji: "😏" },
+  { value: 4, label: "Someone Call Security", short: "SECUR", desc: "Top of funnel, cold outreach, first DMs, first emails. You need to stop the scroll.",     color: "#f3722c", glow: "rgba(243,114,44,0.35)",  emoji: "🚨" },
+  { value: 5, label: "I'm Not Okay",          short: "NOT OK",desc: "Complete strangers, brutal inboxes. When you're one of 30 pitches hitting them today.",           color: "#e63946", glow: "rgba(230,57,70,0.4)",    emoji: "😵" },
 ];
-const WWTD = { value: 6, label: "What Would Tequila Do", short: "WWTD", desc: "No going back.", color: "#f5a623", glow: "rgba(245,166,35,0.6)", emoji: "🥃" };
+const WWTD = { value: 6, label: "What Would Tequila Do", short: "WWTD", desc: "When you need to be unforgettable to a stranger, or just want to have some fun with the people who know you best.", color: "#f5a623", glow: "rgba(245,166,35,0.6)", emoji: "🥃" };
 const ALL_LEVELS = [...LEVELS, WWTD];
 
 const SYSTEM_PROMPT = `You are the rewriter behind "What Would Tequila Do" — a tool that transforms bland, safe, forgettable communication into something that cuts through noise.
@@ -484,7 +484,10 @@ export default function App() {
                 {LEVELS.map(l => (
                   <button key={l.value} onClick={() => setLevel(l.value)} style={{ width: "100%", padding: "14px 20px", background: level === l.value ? `${l.color}18` : "#080810", border: `1px solid ${level === l.value ? l.color : "#1e1e35"}`, borderRadius: 8, color: level === l.value ? l.color : "#777", fontSize: 15, fontWeight: level === l.value ? "bold" : "normal", cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 14, textAlign: "left", fontFamily: "'EB Garamond', serif" }}>
                     <span style={{ fontSize: 20, lineHeight: 1 }}>{l.emoji}</span>
-                    <span style={{ flex: 1 }}>{l.label}</span>
+                    <span style={{ flex: 1 }}>
+                      <span style={{ display: "block" }}>{l.label}</span>
+                      <span style={{ display: "block", fontSize: 11, color: level === l.value ? `${l.color}99` : "#444", fontWeight: "normal", marginTop: 3, fontStyle: "italic" }}>{l.desc}</span>
+                    </span>
                     {level === l.value && <span style={{ fontSize: 10, letterSpacing: 2, opacity: 0.7, textTransform: "uppercase" }}>Selected</span>}
                   </button>
                 ))}
