@@ -557,27 +557,25 @@ export default function App() {
             )}
             {output && output !== "TIMEOUT" && !loading && !showSharpen && (
               <div style={{ padding: "14px 28px", borderBottom: `1px solid ${currentLevel.color}22`, background: isWWTD ? "#0a0600" : "#0a0a1a" }}>
-                <p style={{ color: "#bbb", fontSize: 14, fontStyle: "italic", margin: "0 0 8px", lineHeight: 1.6 }}>
-                  Hold on. Before you dive in — 3 questions will add the specifics this needs. <strong style={{ color: "#fff", fontStyle: "normal" }}>Spice gets attention. Substance keeps it.</strong>
-                </p>
                 <button onClick={handleSharpen} style={{
                   width: "100%",
-                  padding: "12px",
+                  padding: "12px 16px",
                   background: substance && substance.score <= 6 ? `${currentLevel.color}15` : "transparent",
                   border: `1px dashed ${currentLevel.color}${substance && substance.score <= 6 ? "ff" : "66"}`,
                   borderRadius: 8,
                   color: "#fff",
-                  fontSize: 15,
                   cursor: "pointer",
                   fontFamily: "'EB Garamond', serif",
-                  letterSpacing: 1,
-                  fontWeight: "600",
-                  animation: substance && substance.score <= 6 ? "pulse 2s ease-in-out infinite" : "none"
+                  animation: substance && substance.score <= 6 ? "pulse 2s ease-in-out infinite" : "none",
+                  textAlign: "center"
                 }}>
-                  {substance && substance.score <= 6
-                    ? `Your score was ${substance.score}/10. Don't leave it half naked — 3 questions will fix that.`
-                    : "Don't leave it half naked. 3 quick questions will fix that."
-                  }
+                  <div style={{ fontSize: 15, fontWeight: "600", letterSpacing: 1, marginBottom: 4 }}>
+                    {substance && substance.score <= 6
+                      ? `Your score was ${substance.score}/10. Don't leave it half naked — 3 questions will fix that.`
+                      : "Don't leave it half naked. 3 quick questions will fix that."
+                    }
+                  </div>
+                  <div style={{ fontSize: 12, fontStyle: "italic", color: "#aaa", fontWeight: "normal" }}>Spice gets attention. Substance keeps it.</div>
                 </button>
               </div>
             )}
