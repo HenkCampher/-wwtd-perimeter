@@ -49,8 +49,8 @@ export default function Stats() {
   const formatMax = stats ? Math.max(...Object.values(stats.formats || {}), 1) : 1;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#080810", color: "#e8e8e8", fontFamily: "'EB Garamond', Georgia, serif" }}>
-      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    <div style={{ minHeight: "100vh", background: "#080810", color: "#e8e8e8", fontFamily: "'Lora', Georgia, serif" }}>
+      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "48px 24px" }}>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <div style={{ fontSize: 12, letterSpacing: 4, color: "#555", textTransform: "uppercase", marginBottom: 12, fontStyle: "italic" }}>Behind the bar</div>

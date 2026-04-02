@@ -53,8 +53,8 @@ export default function Share() {
   const level = data ? ALL_LEVELS.find(l => l.value === data.level) || ALL_LEVELS[0] : null;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#080810", color: "#e8e8e8", fontFamily: "'EB Garamond', Georgia, serif" }}>
-      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    <div style={{ minHeight: "100vh", background: "#080810", color: "#e8e8e8", fontFamily: "'Lora', Georgia, serif" }}>
+      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
       <style>{`@keyframes bounce { 0%,100%{transform:translateY(0);opacity:0.4} 50%{transform:translateY(-6px);opacity:1} } @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }`}</style>
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "48px 24px" }}>
 
@@ -103,7 +103,7 @@ export default function Share() {
               <div style={{ padding: "28px" }}>
                 <p style={{ color: level.value === 6 ? "#f0d090" : "#f0f0f0", fontSize: level.value === 6 ? 19 : 17, lineHeight: level.value === 6 ? 2.1 : 1.9, margin: "0 0 16px", fontStyle: level.value === 6 ? "italic" : "normal" }}>{renderOutput(data.output)}</p>
                 <div style={{ marginBottom: 16 }}>
-                  <button onClick={() => navigator.clipboard.writeText(data.output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>Copy</button>
+                  <button onClick={() => navigator.clipboard.writeText(data.output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'Lora', serif" }}>Copy</button>
                 </div>
                 {data.input && (
                   <div style={{ borderTop: `1px solid ${level.color}22`, paddingTop: 20 }}>

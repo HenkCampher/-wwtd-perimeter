@@ -272,8 +272,8 @@ export default function App() {
         body: JSON.stringify({
           model: "claude-haiku-4-5-20251001",
           max_tokens: 1000,
-          system: `You are the rewriter behind What Would Tequila Do. Output ONLY the rewritten text. No preamble. No labels. No separators. No repetition of the input. Just the rewrite.`,
-          messages: [{ role: "user", content: `Rewrite this at spice level "${currentLevel.label}"${format ? ` as a ${format}${
+          system: `You are the rewriter behind What Would Tequila Do. You are REFINING an existing rewrite, not starting from scratch. CRITICAL RULES: (1) Only incorporate specifics that were actually provided in the answers. (2) If a question was skipped or left blank, DO NOT invent, assume, or substitute your own metrics, names, or claims for that point — leave that part as it was in the original rewrite. (3) Output ONLY the refined text. No preamble. No labels. No separators. Just the rewrite.`,
+          messages: [{ role: "user", content: `Refine this rewrite at spice level "${currentLevel.label}"${format ? ` as a ${format}${
   format === "Social Post" ? " (max 280 characters)" :
   format === "LinkedIn Post" ? " (max 1300 characters)" :
   format === "Ad Copy" ? " (max 150 characters)" :
@@ -281,7 +281,7 @@ export default function App() {
   format === "Bio" ? " (max 300 characters)" :
   format === "Email" ? " (must include a subject line)" :
   format === "Boilerplate" ? " (max 100 words, punchy and specific)" : ""
-}` : ""}, using the additional specifics below to make it sharper and more specific.\n\nORIGINAL: ${input}\n\nSPECIFICS TO WEAVE IN:\n${answeredQs}\n\nOutput only the rewritten text.` }]
+}` : ""} using ONLY the specifics provided below. For any skipped questions, preserve the existing content as is.\n\nFIRST REWRITE TO REFINE:\n${output}\n\nORIGINAL INPUT:\n${input}\n\nSPECIFICS PROVIDED (skipped questions have no answer — do not invent for these):\n${answeredQs}\n\nOutput only the refined text.` }]
         })
       });
       const data = await res.json();
@@ -359,8 +359,8 @@ export default function App() {
   const scoreColor = substance ? (substance.score <= 3 ? "#e63946" : substance.score <= 5 ? "#f3722c" : substance.score <= 7 ? "#f9c74f" : "#a8e063") : "#555";
 
   return (
-    <div style={{ minHeight: "100vh", background: bg, color: "#e8e8e8", fontFamily: "'EB Garamond', Georgia, serif", transition: "background 0.6s", position: "relative", overflow: "hidden" }}>
-      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    <div style={{ minHeight: "100vh", background: bg, color: "#e8e8e8", fontFamily: "'Lora', Georgia, serif", transition: "background 0.6s", position: "relative", overflow: "hidden" }}>
+      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
       <style>{`
         @keyframes pulse { 0%,100%{box-shadow:0 0 20px rgba(245,166,35,0.2)} 50%{box-shadow:0 0 40px rgba(245,166,35,0.6),0 0 80px rgba(245,166,35,0.2)} }
         @keyframes bounce { 0%,100%{transform:translateY(0);opacity:0.4} 50%{transform:translateY(-6px);opacity:1} }
@@ -399,7 +399,7 @@ export default function App() {
         <div style={{ textAlign: "center", marginBottom: 32 }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
             <button onClick={handleReset} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "EB Garamond, serif" }}>🍹 Clear the Bar</button>
-            <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "'EB Garamond', serif" }}>
+            <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "'Lora', serif" }}>
               {history.length > 0 ? `History (${history.length})` : "History"}
             </button>
           </div>
@@ -422,7 +422,7 @@ export default function App() {
         {/* Tabs */}
         <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
           {["rewrite", "compare"].map(t => (
-            <button key={t} onClick={() => setTab(t)} style={{ flex: 1, padding: "13px", background: tab === t ? "#1e1e35" : "transparent", border: `1px solid ${tab === t ? "#2a2a45" : "#1e1e35"}`, borderRadius: 8, color: tab === t ? "#ddd" : "#777", fontSize: 13, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", transition: "all 0.2s", fontFamily: "'EB Garamond', serif" }}>
+            <button key={t} onClick={() => setTab(t)} style={{ flex: 1, padding: "13px", background: tab === t ? "#1e1e35" : "transparent", border: `1px solid ${tab === t ? "#2a2a45" : "#1e1e35"}`, borderRadius: 8, color: tab === t ? "#ddd" : "#777", fontSize: 13, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", transition: "all 0.2s", fontFamily: "'Lora', serif" }}>
               {t === "rewrite" ? "✍️ Rewrite" : "⚡ Run the Gauntlet"}
             </button>
           ))}
@@ -432,7 +432,7 @@ export default function App() {
         <div style={{ background: isWWTD ? "#110900" : "#0f0f1e", border: `1px solid ${isWWTD ? "#3a2500" : "#1e1e35"}`, borderRadius: 12, overflow: "hidden", boxShadow: `0 0 60px ${currentLevel.glow}`, transition: "all 0.5s", marginBottom: 16 }}>
           <div style={{ padding: "24px 24px 0" }}>
             <div style={{ color: "#888", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Step 1: The Bland Original</div>
-            <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="Paste your copy here..." style={{ width: "100%", minHeight: 130, background: isWWTD ? "#0a0600" : "#080810", border: `1px solid ${isWWTD ? "#2a1800" : "#1e1e35"}`, borderRadius: 8, color: "#e8e8e8", fontSize: 15, padding: "16px", fontFamily: "'EB Garamond', serif", lineHeight: 1.7, resize: "vertical", boxSizing: "border-box" }} />
+            <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="Paste your copy here..." style={{ width: "100%", minHeight: 130, background: isWWTD ? "#0a0600" : "#080810", border: `1px solid ${isWWTD ? "#2a1800" : "#1e1e35"}`, borderRadius: 8, color: "#e8e8e8", fontSize: 15, padding: "16px", fontFamily: "'Lora', serif", lineHeight: 1.7, resize: "vertical", boxSizing: "border-box" }} />
 
 
             {/* Substance score */}
@@ -465,7 +465,7 @@ export default function App() {
             <div style={{ padding: "20px 24px 24px" }}>
               <div style={{ marginBottom: 18 }}>
                 <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Step 2: Pick Your Format (optional)</div>
-                <select value={format} onChange={e => setFormat(e.target.value)} style={{ width: "100%", padding: "12px 16px", background: "#080810", border: `1px solid ${format ? "#2a2a50" : "#1e1e35"}`, borderRadius: 8, color: format ? "#e8e8e8" : "#555", fontSize: 14, fontFamily: "'EB Garamond', serif", cursor: "pointer", appearance: "none", WebkitAppearance: "none", outline: "none" }}>
+                <select value={format} onChange={e => setFormat(e.target.value)} style={{ width: "100%", padding: "12px 16px", background: "#080810", border: `1px solid ${format ? "#2a2a50" : "#1e1e35"}`, borderRadius: 8, color: format ? "#e8e8e8" : "#555", fontSize: 14, fontFamily: "'Lora', serif", cursor: "pointer", appearance: "none", WebkitAppearance: "none", outline: "none" }}>
                   <option value="">No format — just make it bolder</option>
                   <option value="Social Post">Social Post (X, Bluesky, Threads)</option>
                   <option value="LinkedIn Post">LinkedIn Post</option>
@@ -483,7 +483,7 @@ export default function App() {
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 14 }}>
                 {LEVELS.map(l => (
-                  <button key={l.value} onClick={() => setLevel(l.value)} style={{ width: "100%", padding: "14px 20px", background: level === l.value ? `${l.color}18` : "#080810", border: `1px solid ${level === l.value ? l.color : "#1e1e35"}`, borderRadius: 8, color: level === l.value ? l.color : "#777", fontSize: 15, fontWeight: level === l.value ? "bold" : "normal", cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 14, textAlign: "left", fontFamily: "'EB Garamond', serif" }}>
+                  <button key={l.value} onClick={() => setLevel(l.value)} style={{ width: "100%", padding: "14px 20px", background: level === l.value ? `${l.color}18` : "#080810", border: `1px solid ${level === l.value ? l.color : "#1e1e35"}`, borderRadius: 8, color: level === l.value ? l.color : "#777", fontSize: 15, fontWeight: level === l.value ? "bold" : "normal", cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 14, textAlign: "left", fontFamily: "'Lora', serif" }}>
                     <span style={{ fontSize: 20, lineHeight: 1 }}>{l.emoji}</span>
                     <span style={{ flex: 1 }}>
                       <span style={{ display: "block" }}>{l.label}</span>
@@ -493,7 +493,7 @@ export default function App() {
                   </button>
                 ))}
                 {wwtdUnlocked && (
-                  <button onClick={() => setLevel(6)} style={{ width: "100%", padding: "14px 20px", background: isWWTD ? `${WWTD.color}18` : "#080810", border: `1px solid ${isWWTD ? WWTD.color : "#3a2500"}`, borderRadius: 8, color: isWWTD ? WWTD.color : "#f5a62388", fontSize: 15, fontWeight: "bold", cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 14, textAlign: "left", fontFamily: "'EB Garamond', serif" }}>
+                  <button onClick={() => setLevel(6)} style={{ width: "100%", padding: "14px 20px", background: isWWTD ? `${WWTD.color}18` : "#080810", border: `1px solid ${isWWTD ? WWTD.color : "#3a2500"}`, borderRadius: 8, color: isWWTD ? WWTD.color : "#f5a62388", fontSize: 15, fontWeight: "bold", cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 14, textAlign: "left", fontFamily: "'Lora', serif" }}>
                     <span style={{ fontSize: 20, lineHeight: 1 }}>🥃</span>
                     <span style={{ flex: 1 }}>What Would Tequila Do</span>
                     {isWWTD && <span style={{ fontSize: 10, letterSpacing: 2, opacity: 0.7, textTransform: "uppercase" }}>Selected</span>}
@@ -504,7 +504,7 @@ export default function App() {
                 <div style={{ height: "100%", width: isWWTD ? "100%" : `${((level-1)/4)*100}%`, background: isWWTD ? "linear-gradient(90deg,#f5a623,#fff176,#f5a623)" : "linear-gradient(90deg,#a8e063,#f9c74f,#f8961e,#f3722c,#e63946)", transition: "width 0.4s", boxShadow: isWWTD ? `0 0 8px ${WWTD.color}` : "none" }} />
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                <button onClick={rewrite} disabled={!input.trim() || loading} style={{ flex: 1, background: input.trim() && !loading ? (isWWTD ? "linear-gradient(135deg,#f5a623,#e8890a)" : `linear-gradient(135deg,${currentLevel.color},${LEVELS[Math.min(level,4)-1].color})`) : "#1e1e35", color: input.trim() && !loading ? "#000" : "#444", border: "none", borderRadius: 8, padding: "16px", fontSize: 15, fontWeight: "bold", letterSpacing: 2, textTransform: "uppercase", cursor: input.trim() && !loading ? "pointer" : "not-allowed", transition: "all 0.3s", fontFamily: "'EB Garamond', serif" }}>
+                <button onClick={rewrite} disabled={!input.trim() || loading} style={{ flex: 1, background: input.trim() && !loading ? (isWWTD ? "linear-gradient(135deg,#f5a623,#e8890a)" : `linear-gradient(135deg,${currentLevel.color},${LEVELS[Math.min(level,4)-1].color})`) : "#1e1e35", color: input.trim() && !loading ? "#000" : "#444", border: "none", borderRadius: 8, padding: "16px", fontSize: 15, fontWeight: "bold", letterSpacing: 2, textTransform: "uppercase", cursor: input.trim() && !loading ? "pointer" : "not-allowed", transition: "all 0.3s", fontFamily: "'Lora', serif" }}>
                   {loading ? "Rewriting..." : isWWTD ? "🥃 WWTD?" : `${currentLevel.emoji} Make it ${currentLevel.label} →`}
                 </button>
                 <button onClick={randomLevel} title="Random level" style={{ background: "#080810", border: "1px solid #1e1e35", color: "#777", borderRadius: 8, padding: "16px 18px", fontSize: 18, cursor: "pointer" }}>🎲</button>
@@ -515,7 +515,7 @@ export default function App() {
           {tab === "compare" && (
             <div style={{ padding: "20px 24px 24px" }}>
               <p style={{ color: "#777", fontSize: 14, lineHeight: 1.6, marginBottom: 16, fontStyle: "italic" }}>Runs your copy through all {activeLevels.length} levels sequentially. See the full arc at once.</p>
-              <button onClick={runGauntlet} disabled={!input.trim() || comparing} style={{ width: "100%", background: input.trim() && !comparing ? "linear-gradient(135deg,#a8e063,#f9c74f,#f8961e,#e63946)" : "#1e1e35", color: input.trim() && !comparing ? "#000" : "#444", border: "none", borderRadius: 8, padding: "16px", fontSize: 15, fontWeight: "bold", letterSpacing: 2, textTransform: "uppercase", cursor: input.trim() && !comparing ? "pointer" : "not-allowed", fontFamily: "'EB Garamond', serif" }}>
+              <button onClick={runGauntlet} disabled={!input.trim() || comparing} style={{ width: "100%", background: input.trim() && !comparing ? "linear-gradient(135deg,#a8e063,#f9c74f,#f8961e,#e63946)" : "#1e1e35", color: input.trim() && !comparing ? "#000" : "#444", border: "none", borderRadius: 8, padding: "16px", fontSize: 15, fontWeight: "bold", letterSpacing: 2, textTransform: "uppercase", cursor: input.trim() && !comparing ? "pointer" : "not-allowed", fontFamily: "'Lora', serif" }}>
                 {comparing ? "Running..." : "⚡ Run the Gauntlet"}
               </button>
             </div>
@@ -545,8 +545,8 @@ export default function App() {
                 </div>
                 {output && output !== "TIMEOUT" && (
                   <div style={{ display: "flex", gap: 8 }}>
-                    <button onClick={() => copy(output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: copied ? currentLevel.color : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{copied ? "Copied ✓" : "Copy"}</button>
-                    <button onClick={getShareLink} style={{ background: "transparent", border: "1px solid #2a2a40", color: linkCopied ? currentLevel.color : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{linkLoading ? "Saving..." : linkCopied ? "Link Copied ✓" : "Get Link"}</button>
+                    <button onClick={() => copy(output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: copied ? currentLevel.color : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'Lora', serif" }}>{copied ? "Copied ✓" : "Copy"}</button>
+                    <button onClick={getShareLink} style={{ background: "transparent", border: "1px solid #2a2a40", color: linkCopied ? currentLevel.color : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'Lora', serif" }}>{linkLoading ? "Saving..." : linkCopied ? "Link Copied ✓" : "Get Link"}</button>
                   </div>
                 )}
               </div>
@@ -566,7 +566,7 @@ export default function App() {
                   borderRadius: 8,
                   color: "#fff",
                   cursor: "pointer",
-                  fontFamily: "'EB Garamond', serif",
+                  fontFamily: "'Lora', serif",
                   animation: substance && substance.score <= 6 ? "pulse 2s ease-in-out infinite" : "none",
                   textAlign: "center"
                 }}>
@@ -616,14 +616,14 @@ export default function App() {
                 <>
                   <div style={{ fontSize: 11, letterSpacing: 3, color: "#4a8a4a", textTransform: "uppercase", marginBottom: 16 }}>Sharpened rewrite</div>
                   <p style={{ color: "#f0f0f0", fontSize: 17, lineHeight: 1.9, margin: "0 0 24px" }}>{renderOutput(sharpenOutput)}</p>
-                  <button onClick={() => { navigator.clipboard.writeText(sharpenOutput); setSharpenCopied(true); setTimeout(() => setSharpenCopied(false), 2000); }} style={{ background: "transparent", border: "1px solid #2a3a2a", color: sharpenCopied ? "#aaaacc" : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{sharpenCopied ? "Copied ✓" : "Copy"}</button>
+                  <button onClick={() => { navigator.clipboard.writeText(sharpenOutput); setSharpenCopied(true); setTimeout(() => setSharpenCopied(false), 2000); }} style={{ background: "transparent", border: "1px solid #2a3a2a", color: sharpenCopied ? "#aaaacc" : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'Lora', serif" }}>{sharpenCopied ? "Copied ✓" : "Copy"}</button>
                   <button onClick={async () => {
                     try {
                       const res = await fetch("/api/share", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ input, output: sharpenOutput, level, format }) });
                       const data = await res.json();
                       if (data.id) { await navigator.clipboard.writeText(`${window.location.origin}/share/${data.id}`); setSharpenLinkCopied(true); setTimeout(() => setSharpenLinkCopied(false), 2000); }
                     } catch(e) { console.error(e); }
-                  }} style={{ background: "transparent", border: "1px solid #2a3a2a", color: sharpenLinkCopied ? "#aaaacc" : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'EB Garamond', serif" }}>{sharpenLinkCopied ? "Link Copied ✓" : "Get Link"}</button>
+                  }} style={{ background: "transparent", border: "1px solid #2a3a2a", color: sharpenLinkCopied ? "#aaaacc" : "#777", borderRadius: 6, padding: "7px 14px", fontSize: 13, cursor: "pointer", fontFamily: "'Lora', serif" }}>{sharpenLinkCopied ? "Link Copied ✓" : "Get Link"}</button>
                 </>
               )}
               {!sharpenLoading && sharpenQuestions.length > 0 && (sharpenOutput === "NONE" || !sharpenOutput) && (
@@ -635,7 +635,7 @@ export default function App() {
                         value={sharpenAnswers[i] || ""}
                         onChange={e => setSharpenAnswers(prev => ({ ...prev, [i]: e.target.value }))}
                         placeholder="Your answer (or skip)..."
-                        style={{ width: "100%", minHeight: 70, background: "#080f08", border: "1px solid #1a2a1a", borderRadius: 6, color: "#e8e8e8", fontSize: 14, padding: "12px", fontFamily: "'EB Garamond', serif", lineHeight: 1.6, resize: "vertical", boxSizing: "border-box" }}
+                        style={{ width: "100%", minHeight: 70, background: "#080f08", border: "1px solid #1a2a1a", borderRadius: 6, color: "#e8e8e8", fontSize: 14, padding: "12px", fontFamily: "'Lora', serif", lineHeight: 1.6, resize: "vertical", boxSizing: "border-box" }}
                       />
                     </div>
                   ))}
@@ -685,7 +685,7 @@ export default function App() {
           <div style={{ textAlign: "center", marginTop: 28 }}>
             <div style={{ display: "inline-block", background: "linear-gradient(135deg,#1a0900,#2d1200)", border: "1px solid #f5a62355", borderRadius: 10, padding: "24px 40px", animation: "pulse 2s infinite" }}>
               <div style={{ color: "#f5a623", fontSize: 11, letterSpacing: 4, textTransform: "uppercase", marginBottom: 12, opacity: 0.8 }}>⚠️ Wait. There's more.</div>
-              <button onClick={() => { setWwtdUnlocked(true); setLevel(6); setShowHint(false); setOutput(""); }} style={{ background: "transparent", border: "none", color: "#f5a623", fontSize: 24, fontStyle: "italic", fontWeight: "bold", cursor: "pointer", display: "block", marginBottom: 12, textShadow: "0 0 20px rgba(245,166,35,0.8)", lineHeight: 1.4, fontFamily: "'EB Garamond', serif" }}>
+              <button onClick={() => { setWwtdUnlocked(true); setLevel(6); setShowHint(false); setOutput(""); }} style={{ background: "transparent", border: "none", color: "#f5a623", fontSize: 24, fontStyle: "italic", fontWeight: "bold", cursor: "pointer", display: "block", marginBottom: 12, textShadow: "0 0 20px rgba(245,166,35,0.8)", lineHeight: 1.4, fontFamily: "'Lora', serif" }}>
                 ...but what would tequila do?
               </button>
               <div style={{ color: "#f5a62399", fontSize: 13, fontStyle: "italic" }}>tap to find out ↑</div>
