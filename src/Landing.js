@@ -38,6 +38,7 @@ export default function Landing() {
           <p style={{ fontSize: "clamp(18px, 3vw, 26px)", color: "#ccc", maxWidth: 640, margin: "0 auto 16px", lineHeight: 1.5, fontWeight: 400 }}>
             Work is broken. We all know it.<br />Nobody says it out loud.<br /><strong style={{ color: "#fff" }}>This book does.</strong>
           </p>
+          <p style={{ fontSize: "clamp(14px, 2vw, 18px)", color: "#aaa", maxWidth: 560, margin: "0 auto 12px", lineHeight: 1.4, fontStyle: "italic" }}>52 Hard Truths For Better Decisions And Less Bullshit</p>
           <p style={{ fontSize: 14, color: "#555", letterSpacing: 2, textTransform: "uppercase", marginBottom: 48 }}>By Henk Campher</p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <a href="#signup" style={{ padding: "16px 40px", background: "#a8e063", color: "#080810", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer", animation: "pulse 3s ease-in-out infinite" }}>Get Notified at Launch</a>
@@ -48,7 +49,7 @@ export default function Landing() {
       </section>
 
       {/* Book Section */}
-      <section id="book" style={{ padding: "120px 24px", maxWidth: 1100, margin: "0 auto" }}>
+      <section id="book" style={{ padding: "80px 24px", maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
           
           {/* Book cover placeholder */}
@@ -59,6 +60,7 @@ export default function Landing() {
                 <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 52, letterSpacing: 2, lineHeight: 1, color: "#fff", marginBottom: 16 }}>What Would<br />Tequila Do</div>
                 <div style={{ width: 40, height: 2, background: "#a8e063", marginBottom: 24 }} />
                 <div style={{ fontSize: 13, color: "#555", letterSpacing: 2, textTransform: "uppercase" }}>Work is broken.<br />This book says it out loud.</div>
+              <div style={{ marginTop: 16, fontSize: 11, color: "#444", fontStyle: "italic", lineHeight: 1.5 }}>52 Hard Truths For Better Decisions And Less Bullshit</div>
               </div>
               <div>
                 <div style={{ fontSize: 24, marginBottom: 12 }}>🍹</div>
@@ -99,22 +101,22 @@ export default function Landing() {
       </section>
 
       {/* Email Signup */}
-      <section id="signup" style={{ padding: "120px 24px", maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+      <section id="signup" style={{ padding: "80px 24px", maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: 11, letterSpacing: 4, color: "#a8e063", textTransform: "uppercase", marginBottom: 20 }}>Stay in the Loop</div>
         <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: 3, color: "#fff", marginBottom: 24, lineHeight: 1 }}>Get Notified<br />at Launch</h2>
         <p style={{ color: "#aaa", fontSize: 17, lineHeight: 1.8, marginBottom: 48 }}>No noise. No newsletters that read like press releases. Just a heads up when the book drops and occasional sharp thinking on work, marketing, and what tequila would do.</p>
-        <div style={{ background: "#0f0f1e", border: "1px solid #1e1e35", borderRadius: 12, padding: "40px 32px", boxShadow: "0 0 60px rgba(168,224,99,0.06)" }}>
+        <div style={{ background: "#0f0f1e", border: "1px solid #1e1e35", borderRadius: 12, padding: "24px", boxShadow: "0 0 60px rgba(168,224,99,0.06)", overflow: "hidden" }}>
           <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
           <iframe src="https://subscribe-forms.beehiiv.com/a725fe51-a599-4b2b-8c42-9fa12878abd9" className="beehiiv-embed" data-test-id="beehiiv-embed" frameBorder="0" scrolling="no" style={{ width: "100%", height: 291, border: "none", background: "transparent", maxWidth: "100%" }} title="Newsletter signup" />
         </div>
       </section>
 
       {/* About */}
-      <section id="about" style={{ padding: "120px 24px", background: "#0a0a18" }}>
+      <section id="about" style={{ padding: "80px 24px", background: "#0a0a18" }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <div style={{ fontSize: 11, letterSpacing: 4, color: "#a8e063", textTransform: "uppercase", marginBottom: 20 }}>About the Author</div>
           <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: 3, color: "#fff", marginBottom: 48, lineHeight: 1 }}>Henk Campher</h2>
-          <div style={{ color: "#aaa", fontSize: 18, lineHeight: 1.9, display: "flex", flexDirection: "column", gap: 24 }}>
+          <div style={{ color: "#aaa", fontSize: 17, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 20 }}>
             <p>Henk Campher has spent twenty years being the person in the room who says the thing nobody else will. Salesforce. Hootsuite. Starbucks. Levi's. Arist. Thinkific. Deep Origin. Billion-dollar machines and scrappy startups. B2B and B2C. Tech, consumer, and industries that hadn't figured out what they were yet. The common thread: marketing that actually moves things instead of just measuring them.</p>
             <p>Three rules govern all of it: have fun, don't be an a**hole, and what would tequila do. This book is the third one applied to everything else.</p>
             <p>He wrote it because he got tired of watching smart people hide behind process, consensus, and the kind of busyness that feels productive and changes nothing. Someone had to say it. Might as well be him.</p>
@@ -134,7 +136,7 @@ export default function Landing() {
           <a href="https://substack.com/@henkcampher" target="_blank" rel="noopener noreferrer" style={{ color: "#555", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>Substack</a>
           <a href="https://wwtd-tool.vercel.app" target="_blank" rel="noopener noreferrer" style={{ color: "#555", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>The Tool</a>
         </div>
-        <div style={{ color: "#333", fontSize: 12 }}>© 2025 Henk Campher. Have fun. Don't be an a**hole.</div>
+        <div style={{ color: "#333", fontSize: 12 }}>© 2026 Henk Campher. Have fun. Don't be an a**hole.</div>
       </footer>
 
     </div>
