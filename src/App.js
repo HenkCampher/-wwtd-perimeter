@@ -69,7 +69,7 @@ async function callAPI(level, levelLabel, input, formatLabel = "", substanceScor
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001", max_tokens: 1000, system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: `${popCultureChoice ? `POP CULTURE ANGLE: Weave in a reference from ${popCultureChoice === "Surprise" ? "any pop culture universe — your choice, go unexpected" : popCultureChoice} when it genuinely fits and makes the point sharper. If it feels forced, skip it.\n\n` : ""}${substanceScore !== null ? `SUBSTANCE SCORE: ${substanceScore}/10. ${substanceScore <= 4 ? "The input lacks specifics and proof. Be bold in tone but DO NOT invent claims, stats, or outcomes that aren't in the original. Push hard on what IS there." : substanceScore <= 6 ? "Some substance present. Amplify what exists but don't overreach into unearned provocation." : "Strong substance. The proof is here — the provocation is fully earned. Go for it."}\n\n` : ""}Rewrite at level ${level} (${levelLabel})${formatLabel ? ` as a ${formatLabel}${
+      messages: [{ role: "user", content: `${popCultureChoice ? `POP CULTURE ANGLE: You MUST include a specific reference from ${popCultureChoice === "Surprise" ? "any pop culture universe — your choice, be unexpected and creative" : popCultureChoice}. Make it specific — name a character, scene, quote, or moment. Weave it naturally into the copy so it sharpens the point. This is not optional.\n\n` : ""}${substanceScore !== null ? `SUBSTANCE SCORE: ${substanceScore}/10. ${substanceScore <= 4 ? "The input lacks specifics and proof. Be bold in tone but DO NOT invent claims, stats, or outcomes that aren't in the original. Push hard on what IS there." : substanceScore <= 6 ? "Some substance present. Amplify what exists but don't overreach into unearned provocation." : "Strong substance. The proof is here — the provocation is fully earned. Go for it."}\n\n` : ""}Rewrite at level ${level} (${levelLabel})${formatLabel ? ` as a ${formatLabel}${
   formatLabel === "Social Post" ? " (max 280 characters)" :
   formatLabel === "LinkedIn Post" ? " (max 1300 characters)" :
   formatLabel === "Ad Copy" ? " (max 150 characters)" :
@@ -626,7 +626,7 @@ export default function App() {
                   ? <p style={{ color: "#f3722c", fontSize: 15, fontStyle: "italic", margin: 0 }}>This is too hot for even super fast broadband to handle. Please refresh and try again. You're worth it.</p>
                   : <>
                       <p style={{ color: isWWTD ? "#f0d090" : "#f0f0f0", fontSize: isWWTD ? 19 : 17, lineHeight: isWWTD ? 2.1 : 1.9, margin: "0 0 24px", fontStyle: isWWTD ? "italic" : "normal" }}>
-                        {isWWTD ? <GlitchText text={output} active={glitching} /> : renderOutput(output)}
+                        {isWWTD ? renderOutput(output) : renderOutput(output)}
                       </p>
                       <div style={{ borderTop: `1px solid ${currentLevel.color}33`, paddingTop: 20, marginTop: 8 }}>
 
