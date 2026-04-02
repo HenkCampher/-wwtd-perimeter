@@ -403,7 +403,7 @@ export default function App() {
               {history.length > 0 ? `History (${history.length})` : "History"}
             </button>
           </div>
-          <div style={{ fontSize: 12, letterSpacing: 4, color: "#777", textTransform: "uppercase", marginBottom: 10, fontStyle: "italic" }}>A tool from</div>
+          <div style={{ fontSize: 12, letterSpacing: 4, color: "#777", textTransform: "uppercase", marginBottom: 10, fontStyle: "italic" }}>An <span style={{ color: "#f5a623" }}>Edge Engine</span> Tool From</div>
           <h1 style={{
             fontFamily: "'Bebas Neue', sans-serif",
             fontSize: 64,
@@ -417,6 +417,11 @@ export default function App() {
             {isWWTD ? <GlitchText text="What Would Tequila Do" active={glitching} /> : "What Would Tequila Do"}
           </h1>
           <div style={{ color: "#777", fontSize: 13, letterSpacing: 3, textTransform: "uppercase" }}>Cut through the bland</div>
+        </div>
+
+        {/* 90/10 message */}
+        <div style={{ textAlign: "center", marginBottom: 16 }}>
+          <p style={{ color: "#555", fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: 0.5 }}>90% done. The last 10% is yours — make it unmistakably you.</p>
         </div>
 
         {/* Tabs */}
