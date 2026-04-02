@@ -556,8 +556,8 @@ export default function App() {
               </div>
             )}
             {output && output !== "TIMEOUT" && !loading && !showSharpen && (
-              <div style={{ padding: "16px 28px", borderBottom: `1px solid ${currentLevel.color}22`, background: isWWTD ? "#0a0600" : "#0a0a1a" }}>
-                <p style={{ color: "#bbb", fontSize: 14, fontStyle: "italic", margin: "0 0 12px", lineHeight: 1.6 }}>
+              <div style={{ padding: "14px 28px", borderBottom: `1px solid ${currentLevel.color}22`, background: isWWTD ? "#0a0600" : "#0a0a1a" }}>
+                <p style={{ color: "#bbb", fontSize: 14, fontStyle: "italic", margin: "0 0 8px", lineHeight: 1.6 }}>
                   Hold on. Before you dive in — 3 questions will add the specifics this needs. <strong style={{ color: "#fff", fontStyle: "normal" }}>Spice gets attention. Substance keeps it.</strong>
                 </p>
                 <button onClick={handleSharpen} style={{
