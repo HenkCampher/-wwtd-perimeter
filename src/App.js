@@ -555,6 +555,32 @@ export default function App() {
                 <p style={{ color: "#aaa", fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: 0.5 }}>90% done. The last 10% is yours — make it unmistakably you.</p>
               </div>
             )}
+            {output && output !== "TIMEOUT" && !loading && !showSharpen && (
+              <div style={{ padding: "16px 28px", borderBottom: `1px solid ${currentLevel.color}22`, background: isWWTD ? "#0a0600" : "#0a0a1a" }}>
+                <p style={{ color: "#bbb", fontSize: 14, fontStyle: "italic", margin: "0 0 12px", lineHeight: 1.6 }}>
+                  Hold on. Before you dive in — 3 questions will add the specifics this needs. <strong style={{ color: "#fff", fontStyle: "normal" }}>Spice gets attention. Substance keeps it.</strong>
+                </p>
+                <button onClick={handleSharpen} style={{
+                  width: "100%",
+                  padding: "12px",
+                  background: substance && substance.score <= 6 ? `${currentLevel.color}15` : "transparent",
+                  border: `1px dashed ${currentLevel.color}${substance && substance.score <= 6 ? "ff" : "66"}`,
+                  borderRadius: 8,
+                  color: "#fff",
+                  fontSize: 15,
+                  cursor: "pointer",
+                  fontFamily: "'EB Garamond', serif",
+                  letterSpacing: 1,
+                  fontWeight: "600",
+                  animation: substance && substance.score <= 6 ? "pulse 2s ease-in-out infinite" : "none"
+                }}>
+                  {substance && substance.score <= 6
+                    ? `Your score was ${substance.score}/10. Don't leave it half naked — 3 questions will fix that.`
+                    : "Don't leave it half naked. 3 quick questions will fix that."
+                  }
+                </button>
+              </div>
+            )}
             <div style={{ padding: "28px" }}>
               {loading
                 ? <div><div style={{ color: currentLevel.color, fontStyle: "italic", fontSize: 15, marginBottom: 16 }}>{isWWTD ? "Tequila is thinking..." : `Making it ${currentLevel.label}...`}</div><div style={{ display: "flex", gap: 6 }}>{[0,1,2].map(i => <div key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: currentLevel.color, animation: `bounce 1s ease-in-out ${i*0.15}s infinite` }} />)}</div></div>
@@ -565,27 +591,7 @@ export default function App() {
                         {isWWTD ? <GlitchText text={output} active={glitching} /> : renderOutput(output)}
                       </p>
                       <div style={{ borderTop: `1px solid ${currentLevel.color}33`, paddingTop: 20, marginTop: 8 }}>
-                        {!showSharpen && (
-                          <button onClick={handleSharpen} style={{
-                            width: "100%",
-                            padding: "14px",
-                            background: substance && substance.score <= 6 ? `${currentLevel.color}15` : "transparent",
-                            border: `1px dashed ${currentLevel.color}${substance && substance.score <= 6 ? "ff" : "88"}`,
-                            borderRadius: 8,
-                            color: "#fff",
-                            fontSize: 16,
-                            cursor: "pointer",
-                            fontFamily: "'EB Garamond', serif",
-                            letterSpacing: 1,
-                            fontWeight: "600",
-                            animation: substance && substance.score <= 6 ? "pulse 2s ease-in-out infinite" : "none"
-                          }}>
-                            {substance && substance.score <= 6
-                              ? `Your score was ${substance.score}/10. Don't leave it half naked — 3 questions will fix that.`
-                              : "Don't leave it half naked. 3 quick questions will fix that."
-                            }
-                          </button>
-                        )}
+
                       </div>
                     </>
               }
