@@ -478,7 +478,7 @@ export default function App() {
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
                 <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 3: Pick Your Spice Level</div>
-                <div style={{ color: "#666", fontSize: 13, fontStyle: "italic" }}>{currentLevel.desc}</div>
+
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 14 }}>
                 {LEVELS.map(l => (
@@ -486,7 +486,7 @@ export default function App() {
                     <span style={{ fontSize: 20, lineHeight: 1 }}>{l.emoji}</span>
                     <span style={{ flex: 1 }}>
                       <span style={{ display: "block" }}>{l.label}</span>
-                      <span style={{ display: "block", fontSize: 11, color: level === l.value ? `${l.color}99` : "#444", fontWeight: "normal", marginTop: 3, fontStyle: "italic" }}>{l.desc}</span>
+                      <span style={{ display: "block", fontSize: 12, color: level === l.value ? `${l.color}cc` : "#666", fontWeight: "normal", marginTop: 4, fontStyle: "italic" }}>{l.desc}</span>
                     </span>
                     {level === l.value && <span style={{ fontSize: 10, letterSpacing: 2, opacity: 0.7, textTransform: "uppercase" }}>Selected</span>}
                   </button>
