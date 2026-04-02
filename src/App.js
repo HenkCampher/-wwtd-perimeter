@@ -421,7 +421,7 @@ export default function App() {
 
         {/* 90/10 message */}
         <div style={{ textAlign: "center", marginBottom: 16 }}>
-          <p style={{ color: "#555", fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: 0.5 }}>90% done. The last 10% is yours — make it unmistakably you.</p>
+          <p style={{ color: "#888", fontSize: 14, fontStyle: "italic", margin: 0, letterSpacing: 0.5 }}>90% done. The last 10% is yours — make it unmistakably you.</p>
         </div>
 
         {/* Tabs */}
