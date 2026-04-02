@@ -76,7 +76,7 @@ async function callAPI(level, levelLabel, input, formatLabel = "", substanceScor
   formatLabel === "Elevator Pitch" ? " (max 300 characters)" :
   formatLabel === "Bio" ? " (max 300 characters)" :
   formatLabel === "Email" ? " (must include a subject line)" : ""
-}` : ""}:\n\n${input}${popCultureChoice ? `\n\nFINAL INSTRUCTION — THIS IS MANDATORY: You MUST include a specific reference from ${popCultureChoice === "Surprise" ? "any pop culture universe of your choice — be unexpected and creative" : popCultureChoice}. Name a specific character, scene, quote, or moment. Work it into the copy naturally. Do not skip this.` : ""}` }]
+}` : ""}:\n\n${input}${popCultureChoice ? `\n\nFINAL INSTRUCTION — THIS IS MANDATORY: You MUST include a specific reference from ${popCultureChoice === "Surprise" ? "any pop culture universe of your choice — be unexpected and creative" : popCultureChoice}. YOU choose which specific property, character, scene, or moment to use — do not ask the user for clarification. Just pick one and use it. Name it specifically and weave it naturally into the copy. Do not skip this. Do not ask questions.` : ""}` }]
     })
   });
   clearTimeout(timeout);
