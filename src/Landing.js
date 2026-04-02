@@ -54,7 +54,7 @@ export default function Landing() {
           
           {/* Book cover placeholder */}
           <div style={{ position: "relative" }}>
-            <div style={{ aspectRatio: "2/3", background: "#0f0f1e", border: "1px solid #1e1e35", borderRadius: 8, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "40px 32px", boxShadow: "0 0 80px rgba(168,224,99,0.1), -8px 8px 0 #a8e06322" }}>
+            <div style={{ aspectRatio: "3/4", background: "#0f0f1e", border: "1px solid #1e1e35", borderRadius: 8, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "40px 32px", boxShadow: "0 0 80px rgba(168,224,99,0.1), -8px 8px 0 #a8e06322" }}>
               <div>
                 <div style={{ width: 40, height: 2, background: "#a8e063", marginBottom: 24 }} />
                 <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 52, letterSpacing: 2, lineHeight: 1, color: "#fff", marginBottom: 16 }}>What Would<br />Tequila Do</div>
@@ -88,7 +88,7 @@ export default function Landing() {
       </section>
 
       {/* Tool Section */}
-      <section id="tool" style={{ padding: "120px 24px", background: "#0a0a18" }}>
+      <section id="tool" style={{ padding: "80px 24px 60px", background: "#0a0a18" }}>
         <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
           <div style={{ fontSize: 11, letterSpacing: 4, color: "#a8e063", textTransform: "uppercase", marginBottom: 20 }}>Try It Now</div>
           <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: 3, color: "#fff", marginBottom: 16, lineHeight: 1 }}>The Peri-Ometer</h2>
@@ -105,9 +105,11 @@ export default function Landing() {
         <div style={{ fontSize: 11, letterSpacing: 4, color: "#a8e063", textTransform: "uppercase", marginBottom: 20 }}>Stay in the Loop</div>
         <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: 3, color: "#fff", marginBottom: 24, lineHeight: 1 }}>Get Notified<br />at Launch</h2>
         <p style={{ color: "#aaa", fontSize: 17, lineHeight: 1.8, marginBottom: 48 }}>No noise. No newsletters that read like press releases. Just a heads up when the book drops and occasional sharp thinking on work, marketing, and what tequila would do.</p>
-        <div style={{ background: "#0f0f1e", border: "1px solid #1e1e35", borderRadius: 12, padding: "24px", boxShadow: "0 0 60px rgba(168,224,99,0.06)", overflow: "hidden" }}>
-          <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
-          <iframe src="https://subscribe-forms.beehiiv.com/a725fe51-a599-4b2b-8c42-9fa12878abd9" className="beehiiv-embed" data-test-id="beehiiv-embed" frameBorder="0" scrolling="no" style={{ width: "100%", height: 291, border: "none", background: "transparent", maxWidth: "100%" }} title="Newsletter signup" />
+        <div style={{ background: "#0f0f1e", border: "1px solid #1e1e35", borderRadius: 12, overflow: "hidden", boxShadow: "0 0 60px rgba(168,224,99,0.06)", height: 120, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: "100%", marginTop: -120, overflow: "hidden" }}>
+            <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
+            <iframe src="https://subscribe-forms.beehiiv.com/a725fe51-a599-4b2b-8c42-9fa12878abd9" className="beehiiv-embed" data-test-id="beehiiv-embed" frameBorder="0" scrolling="no" style={{ width: "100%", height: 291, border: "none", background: "transparent", maxWidth: "100%", display: "block" }} title="Newsletter signup" />
+          </div>
         </div>
       </section>
 
@@ -115,15 +117,15 @@ export default function Landing() {
       <section id="about" style={{ padding: "80px 24px", background: "#0a0a18" }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <div style={{ fontSize: 11, letterSpacing: 4, color: "#a8e063", textTransform: "uppercase", marginBottom: 20 }}>About the Author</div>
-          <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: 3, color: "#fff", marginBottom: 48, lineHeight: 1 }}>Henk Campher</h2>
+          <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: 3, color: "#fff", marginBottom: 24, lineHeight: 1 }}>Henk Campher</h2>
           <div style={{ color: "#aaa", fontSize: 17, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 20 }}>
             <p>Henk Campher has spent twenty years being the person in the room who says the thing nobody else will. Salesforce. Hootsuite. Starbucks. Levi's. Arist. Thinkific. Deep Origin. Billion-dollar machines and scrappy startups. B2B and B2C. Tech, consumer, and industries that hadn't figured out what they were yet. The common thread: marketing that actually moves things instead of just measuring them.</p>
             <p>Three rules govern all of it: have fun, don't be an a**hole, and what would tequila do. This book is the third one applied to everything else.</p>
             <p>He wrote it because he got tired of watching smart people hide behind process, consensus, and the kind of busyness that feels productive and changes nothing. Someone had to say it. Might as well be him.</p>
           </div>
-          <div style={{ marginTop: 48, display: "flex", gap: 16 }}>
-            <a href="https://www.linkedin.com/in/henkcampher/" target="_blank" rel="noopener noreferrer" style={{ padding: "12px 28px", border: "1px solid #2a2a40", borderRadius: 6, color: "#777", fontSize: 13, letterSpacing: 2, textTransform: "uppercase" }}>LinkedIn</a>
-            <a href="https://substack.com/@henkcampher" target="_blank" rel="noopener noreferrer" style={{ padding: "12px 28px", border: "1px solid #2a2a40", borderRadius: 6, color: "#777", fontSize: 13, letterSpacing: 2, textTransform: "uppercase" }}>Substack</a>
+          <div style={{ marginTop: 40, display: "flex", gap: 16 }}>
+            <a href="https://www.linkedin.com/in/henkcampher/" target="_blank" rel="noopener noreferrer" style={{ padding: "12px 28px", border: "1px solid #a8e063", borderRadius: 6, color: "#a8e063", fontSize: 13, letterSpacing: 2, textTransform: "uppercase" }}>LinkedIn</a>
+            <a href="https://substack.com/@henkcampher" target="_blank" rel="noopener noreferrer" style={{ padding: "12px 28px", border: "1px solid #a8e063", borderRadius: 6, color: "#a8e063", fontSize: 13, letterSpacing: 2, textTransform: "uppercase" }}>Substack</a>
           </div>
         </div>
       </section>
