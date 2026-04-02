@@ -30,7 +30,7 @@ export default function Landing() {
       <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "120px 24px 80px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 60%, rgba(168,224,99,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ animation: "fadeIn 0.8s ease both" }}>
-          <div style={{ fontSize: 12, letterSpacing: 6, color: "#555", textTransform: "uppercase", marginBottom: 24, fontStyle: "italic" }}>Coming Soon</div>
+          <div style={{ fontSize: 12, letterSpacing: 6, color: "#888", textTransform: "uppercase", marginBottom: 24, fontStyle: "italic" }}>Coming Soon</div>
           <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(64px, 12vw, 140px)", letterSpacing: 4, lineHeight: 0.9, marginBottom: 32, background: "linear-gradient(135deg, #a8e063, #f9c74f, #f8961e, #e63946)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             What Would<br />Tequila Do
           </h1>
@@ -39,13 +39,13 @@ export default function Landing() {
             Work is broken. We all know it.<br />Nobody says it out loud.<br /><strong style={{ color: "#fff" }}>This book does.</strong>
           </p>
           <p style={{ fontSize: "clamp(14px, 2vw, 18px)", color: "#aaa", maxWidth: 560, margin: "0 auto 12px", lineHeight: 1.4, fontStyle: "italic" }}>52 Hard Truths For Better Decisions And Less Bullshit</p>
-          <p style={{ fontSize: 14, color: "#555", letterSpacing: 2, textTransform: "uppercase", marginBottom: 48 }}>By Henk Campher</p>
+          <p style={{ fontSize: 14, color: "#888", letterSpacing: 2, textTransform: "uppercase", marginBottom: 48 }}>By Henk Campher</p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <a href="#signup" style={{ padding: "16px 40px", background: "#a8e063", color: "#080810", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer", animation: "pulse 3s ease-in-out infinite" }}>Get Notified at Launch</a>
             <a href="#tool" style={{ padding: "16px 40px", background: "transparent", border: "1px solid #2a2a40", color: "#777", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer" }}>Try the Tool</a>
           </div>
         </div>
-        <div style={{ position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)", color: "#333", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>↓</div>
+        <div style={{ position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)", color: "#666", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>↓</div>
       </section>
 
       {/* Book Section */}
@@ -59,13 +59,13 @@ export default function Landing() {
                 <div style={{ width: 40, height: 2, background: "#a8e063", marginBottom: 24 }} />
                 <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 52, letterSpacing: 2, lineHeight: 1, color: "#fff", marginBottom: 16 }}>What Would<br />Tequila Do</div>
                 <div style={{ width: 40, height: 2, background: "#a8e063", marginBottom: 24 }} />
-                <div style={{ fontSize: 13, color: "#555", letterSpacing: 2, textTransform: "uppercase" }}>Work is broken.<br />This book says it out loud.</div>
-              <div style={{ marginTop: 16, fontSize: 11, color: "#444", fontStyle: "italic", lineHeight: 1.5 }}>52 Hard Truths For Better Decisions And Less Bullshit</div>
+                <div style={{ fontSize: 13, color: "#888", letterSpacing: 2, textTransform: "uppercase" }}>Work is broken.<br />This book says it out loud.</div>
+              <div style={{ marginTop: 16, fontSize: 11, color: "#777", fontStyle: "italic", lineHeight: 1.5 }}>52 Hard Truths For Better Decisions And Less Bullshit</div>
               </div>
               <div>
                 <div style={{ fontSize: 24, marginBottom: 12 }}>🍹</div>
                 <div style={{ fontSize: 13, color: "#777", letterSpacing: 1 }}>Henk Campher</div>
-                <div style={{ fontSize: 11, color: "#444", letterSpacing: 2, textTransform: "uppercase", marginTop: 4 }}>Coming Soon</div>
+                <div style={{ fontSize: 11, color: "#777", letterSpacing: 2, textTransform: "uppercase", marginTop: 4 }}>Coming Soon</div>
               </div>
             </div>
           </div>
@@ -132,11 +132,11 @@ export default function Landing() {
       <footer style={{ padding: "48px 24px", borderTop: "1px solid #1e1e35", textAlign: "center" }}>
         <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, letterSpacing: 4, marginBottom: 16, background: "linear-gradient(135deg, #a8e063, #f9c74f, #f8961e, #e63946)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>What Would Tequila Do</div>
         <div style={{ display: "flex", gap: 24, justifyContent: "center", marginBottom: 24 }}>
-          <a href="https://www.linkedin.com/in/henkcampher/" target="_blank" rel="noopener noreferrer" style={{ color: "#555", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>LinkedIn</a>
-          <a href="https://substack.com/@henkcampher" target="_blank" rel="noopener noreferrer" style={{ color: "#555", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>Substack</a>
-          <a href="https://wwtd-tool.vercel.app" target="_blank" rel="noopener noreferrer" style={{ color: "#555", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>The Tool</a>
+          <a href="https://www.linkedin.com/in/henkcampher/" target="_blank" rel="noopener noreferrer" style={{ color: "#888", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>LinkedIn</a>
+          <a href="https://substack.com/@henkcampher" target="_blank" rel="noopener noreferrer" style={{ color: "#888", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>Substack</a>
+          <a href="https://wwtd-tool.vercel.app" target="_blank" rel="noopener noreferrer" style={{ color: "#888", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>The Tool</a>
         </div>
-        <div style={{ color: "#333", fontSize: 12 }}>© 2026 Henk Campher. Have fun. Don't be an a**hole.</div>
+        <div style={{ color: "#666", fontSize: 12 }}>© 2026 Henk Campher. Have fun. Don't be an a**hole.</div>
       </footer>
 
     </div>

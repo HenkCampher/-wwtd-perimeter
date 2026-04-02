@@ -59,16 +59,16 @@ export default function Share() {
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "48px 24px" }}>
 
         <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <div style={{ fontSize: 12, letterSpacing: 4, color: "#555", textTransform: "uppercase", marginBottom: 12, fontStyle: "italic" }}>This copy got the treatment.</div>
+          <div style={{ fontSize: 12, letterSpacing: 4, color: "#888", textTransform: "uppercase", marginBottom: 12, fontStyle: "italic" }}>This copy got the treatment.</div>
           <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 52, letterSpacing: 3, margin: "0 0 12px", lineHeight: 1, background: "linear-gradient(135deg, #a8e063, #f9c74f, #f8961e, #e63946)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             What Would Tequila Do
           </h1>
-          <div style={{ color: "#555", fontSize: 13, letterSpacing: 3, textTransform: "uppercase" }}>Cut through the bland</div>
+          <div style={{ color: "#888", fontSize: 13, letterSpacing: 3, textTransform: "uppercase" }}>Cut through the bland</div>
         </div>
 
         {!data && !error && (
           <div style={{ textAlign: "center", padding: "48px 0" }}>
-            <div style={{ color: "#555", fontSize: 14, letterSpacing: 3, textTransform: "uppercase", fontStyle: "italic", marginBottom: 16 }}>Loading...</div>
+            <div style={{ color: "#888", fontSize: 14, letterSpacing: 3, textTransform: "uppercase", fontStyle: "italic", marginBottom: 16 }}>Loading...</div>
             <div style={{ display: "flex", gap: 6, justifyContent: "center" }}>
               {[0,1,2].map(i => (
                 <div key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: "#f5a623", animation: `bounce 1s ease-in-out ${i*0.15}s infinite` }} />
@@ -81,7 +81,7 @@ export default function Share() {
           <div style={{ textAlign: "center", padding: "48px 0" }}>
             <div style={{ fontSize: 32, marginBottom: 16 }}>😵</div>
             <div style={{ color: "#e63946", fontSize: 16, marginBottom: 8 }}>This link has expired or doesn't exist.</div>
-            <div style={{ color: "#555", fontSize: 14, fontStyle: "italic" }}>Go make your own.</div>
+            <div style={{ color: "#888", fontSize: 14, fontStyle: "italic" }}>Go make your own.</div>
           </div>
         )}
 
@@ -96,7 +96,7 @@ export default function Share() {
                     <span style={{ fontFamily: "'Bebas Neue', sans-serif", color: level.color, fontSize: 32, letterSpacing: 2, textShadow: `0 0 20px ${level.color}55` }}>{level.label}</span>
                   </div>
                   {data.format && (
-                    <div style={{ fontSize: 11, letterSpacing: 2, color: "#555", textTransform: "uppercase", border: "1px solid #1e1e35", borderRadius: 4, padding: "4px 10px" }}>{data.format}</div>
+                    <div style={{ fontSize: 11, letterSpacing: 2, color: "#888", textTransform: "uppercase", border: "1px solid #1e1e35", borderRadius: 4, padding: "4px 10px" }}>{data.format}</div>
                   )}
                 </div>
               </div>
@@ -107,15 +107,15 @@ export default function Share() {
                 </div>
                 {data.input && (
                   <div style={{ borderTop: `1px solid ${level.color}22`, paddingTop: 20 }}>
-                    <div style={{ fontSize: 11, letterSpacing: 3, color: "#444", textTransform: "uppercase", marginBottom: 8 }}>The bland original</div>
-                    <p style={{ color: "#444", fontSize: 14, lineHeight: 1.7, margin: 0, fontStyle: "italic" }}>{data.input}</p>
+                    <div style={{ fontSize: 11, letterSpacing: 3, color: "#777", textTransform: "uppercase", marginBottom: 8 }}>The bland original</div>
+                    <p style={{ color: "#777", fontSize: 14, lineHeight: 1.7, margin: 0, fontStyle: "italic" }}>{data.input}</p>
                   </div>
                 )}
               </div>
             </div>
 
             <div style={{ textAlign: "center", padding: "8px 0 48px" }}>
-              <div style={{ color: "#555", fontSize: 14, fontStyle: "italic", marginBottom: 20 }}>Your copy could look like this.</div>
+              <div style={{ color: "#888", fontSize: 14, fontStyle: "italic", marginBottom: 20 }}>Your copy could look like this.</div>
               <a href="/" style={{ display: "inline-block", padding: "18px 40px", background: "linear-gradient(135deg, #f5a623, #e63946)", borderRadius: 8, color: "#fff", fontFamily: "'Bebas Neue', sans-serif", fontSize: 24, letterSpacing: 3, textDecoration: "none", boxShadow: "0 0 40px rgba(245,166,35,0.3)" }}>
                 Now do yours.
               </a>

@@ -379,12 +379,12 @@ export default function App() {
           <button onClick={() => setSidebarOpen(false)} style={{ background: "none", border: "none", color: "#777", fontSize: 22, cursor: "pointer", lineHeight: 1 }}>×</button>
         </div>
         {history.length === 0
-          ? <div style={{ color: "#555", fontSize: 14, fontStyle: "italic" }}>No rewrites yet.</div>
+          ? <div style={{ color: "#888", fontSize: 14, fontStyle: "italic" }}>No rewrites yet.</div>
           : history.map(h => (
             <div key={h.id} style={{ marginBottom: 16, background: "#080810", border: `1px solid ${h.level.color}33`, borderRadius: 8, padding: "14px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
                 <span style={{ color: h.level.color, fontSize: 13, fontWeight: "bold" }}>{h.level.emoji} {h.level.label}</span>
-                <span style={{ color: "#555", fontSize: 11 }}>{h.ts}</span>
+                <span style={{ color: "#888", fontSize: 11 }}>{h.ts}</span>
               </div>
               <div style={{ color: "#666", fontSize: 12, marginBottom: 8, fontStyle: "italic" }}>{h.input}</div>
               <div style={{ color: "#aaa", fontSize: 13, lineHeight: 1.6, marginBottom: 10 }}>{h.output.slice(0, 140)}...</div>
@@ -446,7 +446,7 @@ export default function App() {
             {(scoringSubstance || substance) && (
               <div style={{ margin: "14px 0 4px", padding: "14px 16px", background: "#080810", border: `1px solid ${scoreColor}33`, borderRadius: 8, animation: "scoreIn 0.3s" }}>
                 {scoringSubstance ? (
-                  <div style={{ color: "#444", fontSize: 13, fontStyle: "italic" }}>Checking substance...</div>
+                  <div style={{ color: "#777", fontSize: 13, fontStyle: "italic" }}>Checking substance...</div>
                 ) : substance && (
                   <>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
@@ -505,7 +505,7 @@ export default function App() {
                     </button>
                   ))}
                 </div>
-                {popCulture && <div style={{ color: "#555", fontSize: 12, fontStyle: "italic", marginTop: 8 }}>
+                {popCulture && <div style={{ color: "#888", fontSize: 12, fontStyle: "italic", marginTop: 8 }}>
                   {[
                     { value: "Sci-Fi", desc: "Star Wars, Star Trek, The Matrix, Dune..." },
                     { value: "Fantasy", desc: "Lord of the Rings, Game of Thrones, Harry Potter..." },
@@ -711,7 +711,7 @@ export default function App() {
                     : <>
                         <p style={{ color: r.value === 6 ? "#f0d090" : "#f0f0f0", fontSize: 15, lineHeight: 1.85, margin: "0 0 16px", fontStyle: r.value === 6 ? "italic" : "normal" }}>{renderOutput(r.output)}</p>
                         <div style={{ borderTop: `1px solid ${r.color}22`, paddingTop: 12 }}>
-                          <p style={{ color: "#555", fontSize: 12, fontStyle: "italic", margin: 0 }}>This is a starting point, not a final draft. Steal what works, kill what doesn't. Tequila got you here — your voice takes it home.</p>
+                          <p style={{ color: "#888", fontSize: 12, fontStyle: "italic", margin: 0 }}>This is a starting point, not a final draft. Steal what works, kill what doesn't. Tequila got you here — your voice takes it home.</p>
                         </div>
                       </>
                   }
@@ -737,7 +737,7 @@ export default function App() {
         {/* Footer */}
         <div style={{ textAlign: "center", marginTop: 48, borderTop: "1px solid #111", paddingTop: 24 }}>
           <div style={{ fontFamily: "'Bebas Neue', sans-serif", color: "#777", fontSize: 18, letterSpacing: 3, marginBottom: 6 }}>What Would Tequila Do</div>
-          <div style={{ color: "#555", fontSize: 13, fontStyle: "italic" }}>The book. Coming soon.</div>
+          <div style={{ color: "#888", fontSize: 13, fontStyle: "italic" }}>The book. Coming soon.</div>
         </div>
       </div>
     </div>
