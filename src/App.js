@@ -61,7 +61,7 @@ function GlitchText({ text, active }) {
   return <span>{disp}</span>;
 }
 
-async function callAPI(level, levelLabel, input, formatLabel = "") {
+async function callAPI(level, levelLabel, input, formatLabel = "", substanceScore = null) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 35000);
   const res = await fetch("/api/rewrite", {
@@ -69,7 +69,7 @@ async function callAPI(level, levelLabel, input, formatLabel = "") {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001", max_tokens: 1000, system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: `Rewrite at level ${level} (${levelLabel})${formatLabel ? ` as a ${formatLabel}${
+      messages: [{ role: "user", content: `${substanceScore !== null ? `SUBSTANCE SCORE: ${substanceScore}/10. ${substanceScore <= 4 ? "The input lacks specifics and proof. Be bold in tone but DO NOT invent claims, stats, or outcomes that aren't in the original. Push hard on what IS there." : substanceScore <= 6 ? "Some substance present. Amplify what exists but don't overreach into unearned provocation." : "Strong substance. The proof is here — the provocation is fully earned. Go for it."}\n\n` : ""}Rewrite at level ${level} (${levelLabel})${formatLabel ? ` as a ${formatLabel}${
   formatLabel === "Social Post" ? " (max 280 characters)" :
   formatLabel === "LinkedIn Post" ? " (max 1300 characters)" :
   formatLabel === "Ad Copy" ? " (max 150 characters)" :
@@ -163,7 +163,7 @@ export default function App() {
     setLoading(true); setOutput(""); setShowHint(false); setTimedOut(false);
     const timeoutWarning = setTimeout(() => setTimedOut(true), 30000);
     try {
-      const text = await callAPI(level, currentLevel.label, input, format);
+      const text = await callAPI(level, currentLevel.label, input, format, substance ? substance.score : null);
       if (window.gtag) window.gtag('event', 'rewrite', { level: currentLevel.label, format: format || 'none' });
       track('rewrite', { level: currentLevel.label, format: format || '' });
       clearTimeout(timeoutWarning);
