@@ -61,7 +61,7 @@ function GlitchText({ text, active }) {
   return <span>{disp}</span>;
 }
 
-async function callAPI(level, levelLabel, input, formatLabel = "", substanceScore = null) {
+async function callAPI(level, levelLabel, input, formatLabel = "", substanceScore = null, popCultureChoice = "") {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 35000);
   const res = await fetch("/api/rewrite", {
@@ -69,7 +69,7 @@ async function callAPI(level, levelLabel, input, formatLabel = "", substanceScor
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001", max_tokens: 1000, system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: `${substanceScore !== null ? `SUBSTANCE SCORE: ${substanceScore}/10. ${substanceScore <= 4 ? "The input lacks specifics and proof. Be bold in tone but DO NOT invent claims, stats, or outcomes that aren't in the original. Push hard on what IS there." : substanceScore <= 6 ? "Some substance present. Amplify what exists but don't overreach into unearned provocation." : "Strong substance. The proof is here — the provocation is fully earned. Go for it."}\n\n` : ""}Rewrite at level ${level} (${levelLabel})${formatLabel ? ` as a ${formatLabel}${
+      messages: [{ role: "user", content: `${popCultureChoice ? `POP CULTURE ANGLE: Weave in a reference from ${popCultureChoice === "Surprise" ? "any pop culture universe — your choice, go unexpected" : popCultureChoice} when it genuinely fits and makes the point sharper. If it feels forced, skip it.\n\n` : ""}${substanceScore !== null ? `SUBSTANCE SCORE: ${substanceScore}/10. ${substanceScore <= 4 ? "The input lacks specifics and proof. Be bold in tone but DO NOT invent claims, stats, or outcomes that aren't in the original. Push hard on what IS there." : substanceScore <= 6 ? "Some substance present. Amplify what exists but don't overreach into unearned provocation." : "Strong substance. The proof is here — the provocation is fully earned. Go for it."}\n\n` : ""}Rewrite at level ${level} (${levelLabel})${formatLabel ? ` as a ${formatLabel}${
   formatLabel === "Social Post" ? " (max 280 characters)" :
   formatLabel === "LinkedIn Post" ? " (max 1300 characters)" :
   formatLabel === "Ad Copy" ? " (max 150 characters)" :
@@ -132,6 +132,7 @@ export default function App() {
   const [substance, setSubstance] = useState(null);
   const [scoringSubstance, setScoringSubstance] = useState(false);
   const [format, setFormat] = useState("");
+  const [popCulture, setPopCulture] = useState("");
   const [sharpenQuestions, setSharpenQuestions] = useState([]);
   const [sharpenAnswers, setSharpenAnswers] = useState({});
   const [sharpenLoading, setSharpenLoading] = useState(false);
@@ -163,7 +164,7 @@ export default function App() {
     setLoading(true); setOutput(""); setShowHint(false); setTimedOut(false);
     const timeoutWarning = setTimeout(() => setTimedOut(true), 30000);
     try {
-      const text = await callAPI(level, currentLevel.label, input, format, substance ? substance.score : null);
+      const text = await callAPI(level, currentLevel.label, input, format, substance ? substance.score : null, popCulture);
       if (window.gtag) window.gtag('event', 'rewrite', { level: currentLevel.label, format: format || 'none' });
       track('rewrite', { level: currentLevel.label, format: format || '' });
       clearTimeout(timeoutWarning);
@@ -482,8 +483,41 @@ export default function App() {
                   <option value="Boilerplate">Boilerplate / About</option>
                 </select>
               </div>
+              <div style={{ marginBottom: 18 }}>
+                <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Step 3: Add a Pop Culture Angle (optional)</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {[
+                    { value: "Sci-Fi", label: "🚀 Sci-Fi", desc: "Star Wars, Star Trek, The Matrix, Dune..." },
+                    { value: "Fantasy", label: "🧙 Fantasy", desc: "Lord of the Rings, Game of Thrones, Harry Potter..." },
+                    { value: "Crime & Drama", label: "🔫 Crime & Drama", desc: "Breaking Bad, The Wire, Succession, Sopranos..." },
+                    { value: "Comedy", label: "😂 Comedy", desc: "The Office, Ted Lasso, Seinfeld, Arrested Development..." },
+                    { value: "Music", label: "🎵 Music", desc: "Taylor Swift, Beyoncé, The Beatles, Elvis, AC/DC, Bad Bunny..." },
+                    { value: "Sport", label: "🏉 Sport", desc: "Rugby, Soccer, Super Bowl, Olympics, World Cup..." },
+                    { value: "Horror", label: "😱 Horror", desc: "Walking Dead, Stranger Things, Get Out..." },
+                    { value: "Surprise", label: "🥃 You Pick — Go the tequila way", desc: "" },
+                  ].map(c => (
+                    <button key={c.value} onClick={() => setPopCulture(popCulture === c.value ? "" : c.value)}
+                      title={c.desc}
+                      style={{ padding: "8px 14px", background: popCulture === c.value ? "#1e1e35" : "transparent", border: `1px solid ${popCulture === c.value ? "#4a4a70" : "#1e1e35"}`, borderRadius: 20, color: popCulture === c.value ? "#ddd" : "#555", fontSize: 13, cursor: "pointer", fontFamily: "'Lora', serif", transition: "all 0.2s", whiteSpace: "nowrap" }}>
+                      {c.label}
+                    </button>
+                  ))}
+                </div>
+                {popCulture && <div style={{ color: "#555", fontSize: 12, fontStyle: "italic", marginTop: 8 }}>
+                  {[
+                    { value: "Sci-Fi", desc: "Star Wars, Star Trek, The Matrix, Dune..." },
+                    { value: "Fantasy", desc: "Lord of the Rings, Game of Thrones, Harry Potter..." },
+                    { value: "Crime & Drama", desc: "Breaking Bad, The Wire, Succession, Sopranos..." },
+                    { value: "Comedy", desc: "The Office, Ted Lasso, Seinfeld, Arrested Development..." },
+                    { value: "Music", desc: "Taylor Swift, Beyoncé, The Beatles, Elvis, AC/DC, Bad Bunny..." },
+                    { value: "Sport", desc: "Rugby, Soccer, Super Bowl, Olympics, World Cup..." },
+                    { value: "Horror", desc: "Walking Dead, Stranger Things, Get Out..." },
+                    { value: "Surprise", desc: "Anything goes. Tequila decides." },
+                  ].find(c => c.value === popCulture)?.desc}
+                </div>}
+              </div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-                <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 3: Pick Your Spice Level</div>
+                <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 4: Pick Your Spice Level</div>
 
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 14 }}>
