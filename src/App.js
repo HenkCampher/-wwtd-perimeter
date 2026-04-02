@@ -281,7 +281,8 @@ export default function App() {
   format === "Elevator Pitch" ? " (max 300 characters)" :
   format === "Bio" ? " (max 300 characters)" :
   format === "Email" ? " (must include a subject line)" :
-  format === "Boilerplate" ? " (max 100 words, punchy and specific)" : ""
+  format === "Boilerplate" ? " (max 100 words, punchy and specific)" :
+  format === "LinkedIn DM" ? " (max 300 characters for the opener, direct and personal, no corporate speak, one clear ask)" : ""
 }` : ""} using ONLY the specifics provided below. For any skipped questions, preserve the existing content as is.\n\nFIRST REWRITE TO REFINE:\n${output}\n\nORIGINAL INPUT:\n${input}\n\nSPECIFICS PROVIDED (skipped questions have no answer — do not invent for these):\n${answeredQs}\n\nOutput only the refined text.` }]
         })
       });
@@ -481,6 +482,7 @@ export default function App() {
                   <option value="Bio">Bio</option>
                   <option value="Email">Email (with subject line)</option>
                   <option value="Boilerplate">Boilerplate / About</option>
+                  <option value="LinkedIn DM">LinkedIn DM (cold outreach)</option>
                 </select>
               </div>
               <div style={{ marginBottom: 18 }}>
