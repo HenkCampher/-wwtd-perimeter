@@ -287,6 +287,7 @@ export default function App() {
       const data = await res.json();
       const text = data.content?.find(b => b.type === "text")?.text || "Something went wrong.";
       setSharpenOutput(text);
+      if (level === 5 && !wwtdUnlocked) setTimeout(() => setShowHint(true), 1200);
       if (window.gtag) window.gtag('event', 'sharpen_completed', { level: currentLevel.label, format: format || 'none' });
       track('sharpen_completed', { level: currentLevel.label, format: format || '' });
     } catch(e) { setSharpenOutput("Something went wrong. Try again."); }
