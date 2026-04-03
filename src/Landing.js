@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function Landing() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  
 
   return (
     <div style={{ background: "#080810", color: "#e8e8e8", fontFamily: "'Lora', Georgia, serif", minHeight: "100vh" }}>
@@ -30,7 +30,7 @@ export default function Landing() {
 
       {/* Nav */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: "20px 40px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "linear-gradient(to bottom, #080810ee, transparent)" }}>
-        <a href="#" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, letterSpacing: 3, color: "#a8e063", textDecoration: "none" }}>WWTD</a>
+        <a href="#top" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, letterSpacing: 3, color: "#a8e063", textDecoration: "none" }}>WWTD</a>
         <div className="nav-links" style={{ display: "flex", gap: 32, fontSize: 12, letterSpacing: 3, textTransform: "uppercase", color: "#777" }}>
           <a href="#book" style={{ cursor: "pointer" }}>The Book</a>
           <a href="#tool" style={{ cursor: "pointer" }}>The Tool</a>
