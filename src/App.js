@@ -158,7 +158,7 @@ export default function App() {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [loadingQuestions, setLoadingQuestions] = useState(false);
-  const [popCultureOpen, setPopCultureOpen] = useState(false);
+  const [popCultureOpen, setPopCultureOpen] = useState(false); // eslint-disable-line
   const scoreTimer = useRef(null);
 
   const isWWTD = level === 6;
