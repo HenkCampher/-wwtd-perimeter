@@ -474,7 +474,7 @@ export default function App() {
 
           {tab === "rewrite" && (
             <div style={{ padding: "20px 24px 24px" }}>
-              <div style={{ marginBottom: 18 }}>
+              <div style={{ marginBottom: 18, paddingBottom: 18, borderBottom: "1px solid #1e1e35" }}>
                 <button onClick={() => setShowFormat(!showFormat)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, marginBottom: showFormat ? 10 : 0 }}>
                   <div style={{ color: format ? "#e8e8e8" : "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 2: Pick Your Format (optional)</div>
                   <div style={{ color: format ? "#a8e063" : "#555", fontSize: 11 }}>{format ? `✓ ${format}` : showFormat ? "▲" : "▼"}</div>
@@ -494,7 +494,7 @@ export default function App() {
                   </select>
                 )}
               </div>
-              <div style={{ marginBottom: 18 }}>
+              <div style={{ marginBottom: 18, paddingBottom: 18, borderBottom: "1px solid #1e1e35" }}>
                 <button onClick={() => setShowPopCulture(!showPopCulture)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, marginBottom: showPopCulture ? 10 : 0 }}>
                   <div style={{ color: popCulture ? "#e8e8e8" : "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 3: Add a Pop Culture Angle (optional)</div>
                   <div style={{ color: popCulture ? "#a8e063" : "#555", fontSize: 11 }}>{popCulture ? `✓ ${popCulture}` : showPopCulture ? "▲" : "▼"}</div>
