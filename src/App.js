@@ -499,37 +499,31 @@ export default function App() {
                   <div style={{ color: popCulture ? "#e8e8e8" : "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 3: Add a Pop Culture Angle (optional)</div>
                   <div style={{ color: popCulture ? "#a8e063" : "#555", fontSize: 11 }}>{popCulture ? `✓ ${popCulture}` : showPopCulture ? "▲" : "▼"}</div>
                 </button>
-                {showPopCulture && <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {[
-                    { value: "Sci-Fi", label: "🚀 Sci-Fi", desc: "Star Wars, Star Trek, The Matrix, Dune..." },
-                    { value: "Fantasy", label: "🧙 Fantasy", desc: "Lord of the Rings, Game of Thrones, Harry Potter..." },
-                    { value: "Crime & Drama", label: "🔫 Crime & Drama", desc: "Breaking Bad, The Wire, Succession, Sopranos..." },
-                    { value: "Comedy", label: "😂 Comedy", desc: "The Office, Ted Lasso, Seinfeld, Arrested Development..." },
-                    { value: "Music", label: "🎵 Music", desc: "Taylor Swift, Beyoncé, The Beatles, Elvis, AC/DC, Bad Bunny..." },
-                    { value: "Sport", label: "🏉 Sport", desc: "Rugby, Soccer, Super Bowl, Olympics, World Cup..." },
-                    { value: "Horror", label: "😱 Horror", desc: "Walking Dead, Stranger Things, Get Out..." },
-                    { value: "Surprise", label: "🥃 You Pick — Go the tequila way", desc: "" },
-                  ].map(c => (
-                    <button key={c.value} onClick={() => setPopCulture(popCulture === c.value ? "" : c.value)}
-                      title={c.desc}
-                      style={{ padding: "8px 14px", background: popCulture === c.value ? "#1e1e35" : "transparent", border: `1px solid ${popCulture === c.value ? "#4a4a70" : "#1e1e35"}`, borderRadius: 20, color: popCulture === c.value ? "#ddd" : "#555", fontSize: 13, cursor: "pointer", fontFamily: "'Lora', serif", transition: "all 0.2s", whiteSpace: "nowrap" }}>
-                      {c.label}
-                    </button>
-                  ))}
-                </div>
-                {popCulture && <div style={{ color: "#888", fontSize: 12, fontStyle: "italic", marginTop: 8 }}>
-                  {[
-                    { value: "Sci-Fi", desc: "Star Wars, Star Trek, The Matrix, Dune..." },
-                    { value: "Fantasy", desc: "Lord of the Rings, Game of Thrones, Harry Potter..." },
-                    { value: "Crime & Drama", desc: "Breaking Bad, The Wire, Succession, Sopranos..." },
-                    { value: "Comedy", desc: "The Office, Ted Lasso, Seinfeld, Arrested Development..." },
-                    { value: "Music", desc: "Taylor Swift, Beyoncé, The Beatles, Elvis, AC/DC, Bad Bunny..." },
-                    { value: "Sport", desc: "Rugby, Soccer, Super Bowl, Olympics, World Cup..." },
-                    { value: "Horror", desc: "Walking Dead, Stranger Things, Get Out..." },
-                    { value: "Surprise", desc: "Anything goes. Tequila decides." },
-                  ].find(c => c.value === popCulture)?.desc}
-                </div>}
-                </div>}
+                {showPopCulture && (
+                  <div>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 8 }}>
+                      {[
+                        { value: "Sci-Fi", label: "🚀 Sci-Fi", desc: "Star Wars, Star Trek, The Matrix, Dune..." },
+                        { value: "Fantasy", label: "🧙 Fantasy", desc: "Lord of the Rings, Game of Thrones, Harry Potter..." },
+                        { value: "Crime & Drama", label: "🔫 Crime & Drama", desc: "Breaking Bad, The Wire, Succession, Sopranos..." },
+                        { value: "Comedy", label: "😂 Comedy", desc: "The Office, Ted Lasso, Seinfeld, Arrested Development..." },
+                        { value: "Music", label: "🎵 Music", desc: "Taylor Swift, Beyoncé, The Beatles, Elvis, AC/DC, Bad Bunny..." },
+                        { value: "Sport", label: "🏉 Sport", desc: "Rugby, Soccer, Super Bowl, Olympics, World Cup..." },
+                        { value: "Horror", label: "😱 Horror", desc: "Walking Dead, Stranger Things, Get Out..." },
+                        { value: "Surprise", label: "🥃 You Pick — Go the tequila way", desc: "" },
+                      ].map(c => (
+                        <button key={c.value} onClick={() => setPopCulture(popCulture === c.value ? "" : c.value)}
+                          title={c.desc}
+                          style={{ padding: "8px 14px", background: popCulture === c.value ? "#1e1e35" : "transparent", border: `1px solid ${popCulture === c.value ? "#4a4a70" : "#1e1e35"}`, borderRadius: 20, color: popCulture === c.value ? "#ddd" : "#555", fontSize: 13, cursor: "pointer", fontFamily: "'Lora', serif", transition: "all 0.2s", whiteSpace: "nowrap" }}>
+                          {c.label}
+                        </button>
+                      ))}
+                    </div>
+                    {popCulture && <div style={{ color: "#888", fontSize: 12, fontStyle: "italic" }}>
+                      {["Sci-Fi|Star Wars, Star Trek, The Matrix, Dune...","Fantasy|Lord of the Rings, Game of Thrones, Harry Potter...","Crime & Drama|Breaking Bad, The Wire, Succession, Sopranos...","Comedy|The Office, Ted Lasso, Seinfeld, Arrested Development...","Music|Taylor Swift, Beyoncé, The Beatles, Elvis, AC/DC, Bad Bunny...","Sport|Rugby, Soccer, Super Bowl, Olympics, World Cup...","Horror|Walking Dead, Stranger Things, Get Out...","Surprise|Anything goes. Tequila decides."].find(s => s.startsWith(popCulture + "|"))?.split("|")[1]}
+                    </div>}
+                  </div>
+                )}
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
                 <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 4: Pick Your Spice Level</div>
