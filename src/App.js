@@ -133,6 +133,8 @@ export default function App() {
   const [scoringSubstance, setScoringSubstance] = useState(false);
   const [format, setFormat] = useState("");
   const [popCulture, setPopCulture] = useState("");
+  const [showFormat, setShowFormat] = useState(false);
+  const [showPopCulture, setShowPopCulture] = useState(false);
   const [sharpenQuestions, setSharpenQuestions] = useState([]);
   const [sharpenAnswers, setSharpenAnswers] = useState({});
   const [sharpenLoading, setSharpenLoading] = useState(false);
@@ -241,7 +243,7 @@ export default function App() {
         body: JSON.stringify({
           model: "claude-haiku-4-5-20251001",
           max_tokens: 1000,
-          system: `You are a copy sharpener. A user has submitted marketing copy and received a rewrite at spice level "${currentLevel.label}". Your job is to identify 3 to 5 specific questions that, if answered, would make the rewrite dramatically more specific, personal, and powerful. Ask only about concrete details that are missing: real numbers, specific differentiators, named competitors, actual customer outcomes, unique process details. Never ask generic questions. Respond ONLY with valid JSON: {"questions": ["question 1", "question 2", "question 3"]}`,
+          system: `You are a copy sharpener. A user has submitted marketing copy and received a rewrite at spice level "${currentLevel.label}". Your job is to generate 3 to 5 questions that will make the rewrite more specific, personal, and relevant to the actual target audience. ALWAYS make the first question about the specific audience: who exactly is this for, what do you know about them, what keeps them up at night. Then ask about concrete missing details: real numbers, specific differentiators, named outcomes, unique proof points. Never ask generic questions. Respond ONLY with valid JSON: {"questions": ["question 1", "question 2", "question 3"]}`,
           messages: [{ role: "user", content: `Original copy: ${input}\n\nRewrite: ${output}\n\nWhat 3 to 5 specific questions would unlock the details needed to make this rewrite hit harder?` }]
         })
       });
@@ -353,6 +355,8 @@ export default function App() {
     setSharpenOutput("");
     setShowSharpen(false);
     setFormat("");
+    setShowFormat(false);
+    setShowPopCulture(false);
     setSharpenCopied(false);
     setSharpenLinkCopied(false);
     setLinkCopied(false);
@@ -412,7 +416,7 @@ export default function App() {
             letterSpacing: 3,
             margin: "0 0 10px",
             lineHeight: 1,
-            background: isWWTD ? "linear-gradient(135deg, #f5a623, #fff, #f5a623)" : "linear-gradient(135deg, #a8e063, #f9c74f, #f8961e, #e63946)",
+            background: isWWTD ? "linear-gradient(135deg, #f5a623, #ffd700, #f5a623)" : "linear-gradient(135deg, #a8e063, #f9c74f, #f8961e, #e63946)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent"
           }}>
@@ -471,23 +475,31 @@ export default function App() {
           {tab === "rewrite" && (
             <div style={{ padding: "20px 24px 24px" }}>
               <div style={{ marginBottom: 18 }}>
-                <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Step 2: Pick Your Format (optional)</div>
-                <select value={format} onChange={e => setFormat(e.target.value)} style={{ width: "100%", padding: "12px 16px", background: "#080810", border: `1px solid ${format ? "#2a2a50" : "#1e1e35"}`, borderRadius: 8, color: format ? "#e8e8e8" : "#555", fontSize: 14, fontFamily: "'Lora', serif", cursor: "pointer", appearance: "none", WebkitAppearance: "none", outline: "none" }}>
-                  <option value="">No format — just make it bolder</option>
-                  <option value="Social Post">Social Post (X, Bluesky, Threads)</option>
-                  <option value="LinkedIn Post">LinkedIn Post</option>
-                  <option value="Ad Copy">Ad Copy</option>
-                  <option value="Elevator Pitch">Elevator Pitch</option>
-                  <option value="Press Release">Press Release</option>
-                  <option value="Bio">Bio</option>
-                  <option value="Email">Email (with subject line)</option>
-                  <option value="Boilerplate">Boilerplate / About</option>
-                  <option value="LinkedIn DM">LinkedIn DM (cold outreach)</option>
-                </select>
+                <button onClick={() => setShowFormat(!showFormat)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, marginBottom: showFormat ? 10 : 0 }}>
+                  <div style={{ color: format ? "#e8e8e8" : "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 2: Pick Your Format (optional)</div>
+                  <div style={{ color: format ? "#a8e063" : "#555", fontSize: 11 }}>{format ? `✓ ${format}` : showFormat ? "▲" : "▼"}</div>
+                </button>
+                {showFormat && (
+                  <select value={format} onChange={e => setFormat(e.target.value)} style={{ width: "100%", padding: "12px 16px", background: "#080810", border: `1px solid ${format ? "#2a2a50" : "#1e1e35"}`, borderRadius: 8, color: format ? "#e8e8e8" : "#555", fontSize: 14, fontFamily: "'Lora', serif", cursor: "pointer", appearance: "none", WebkitAppearance: "none", outline: "none" }}>
+                    <option value="">No format — just make it bolder</option>
+                    <option value="Social Post">Social Post (X, Bluesky, Threads)</option>
+                    <option value="LinkedIn Post">LinkedIn Post</option>
+                    <option value="Ad Copy">Ad Copy</option>
+                    <option value="Elevator Pitch">Elevator Pitch</option>
+                    <option value="Press Release">Press Release</option>
+                    <option value="Bio">Bio</option>
+                    <option value="Email">Email (with subject line)</option>
+                    <option value="Boilerplate">Boilerplate / About</option>
+                    <option value="LinkedIn DM">LinkedIn DM (cold outreach)</option>
+                  </select>
+                )}
               </div>
               <div style={{ marginBottom: 18 }}>
-                <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Step 3: Add a Pop Culture Angle (optional)</div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                <button onClick={() => setShowPopCulture(!showPopCulture)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, marginBottom: showPopCulture ? 10 : 0 }}>
+                  <div style={{ color: popCulture ? "#e8e8e8" : "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 3: Add a Pop Culture Angle (optional)</div>
+                  <div style={{ color: popCulture ? "#a8e063" : "#555", fontSize: 11 }}>{popCulture ? `✓ ${popCulture}` : showPopCulture ? "▲" : "▼"}</div>
+                </button>
+                {showPopCulture && <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                   {[
                     { value: "Sci-Fi", label: "🚀 Sci-Fi", desc: "Star Wars, Star Trek, The Matrix, Dune..." },
                     { value: "Fantasy", label: "🧙 Fantasy", desc: "Lord of the Rings, Game of Thrones, Harry Potter..." },
@@ -516,6 +528,7 @@ export default function App() {
                     { value: "Horror", desc: "Walking Dead, Stranger Things, Get Out..." },
                     { value: "Surprise", desc: "Anything goes. Tequila decides." },
                   ].find(c => c.value === popCulture)?.desc}
+                </div>}
                 </div>}
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
@@ -643,8 +656,8 @@ export default function App() {
         {showSharpen && tab === "rewrite" && (
           <div style={{ background: "#0f0f18", border: "1px solid #8888aa", borderRadius: 12, overflow: "hidden", boxShadow: "0 0 40px rgba(180,180,220,0.15)", animation: "fadeIn 0.4s", marginTop: 16 }}>
             <div style={{ padding: "24px 28px 20px", borderBottom: "1px solid #2a2a40", background: "linear-gradient(135deg,#12121f,#0f0f18)" }}>
-              <div style={{ fontSize: 11, letterSpacing: 3, color: "#aaaacc", textTransform: "uppercase", marginBottom: 4 }}>Make it sharper</div>
-              <div style={{ color: "#ccc", fontSize: 16, fontFamily: "'Bebas Neue', sans-serif", letterSpacing: 2 }}>Give it more you.</div>
+              <div style={{ fontSize: 11, letterSpacing: 3, color: "#aaaacc", textTransform: "uppercase", marginBottom: 4 }}>Don't skip this part</div>
+              <div style={{ color: "#ccc", fontSize: 15, fontFamily: "'Lora', sans-serif", letterSpacing: 0.5, lineHeight: 1.6 }}>Answer these before you go further. It'll get your copy closer to your audience and give the spice something real to work with.</div>
             </div>
             <div style={{ padding: "28px" }}>
               {sharpenLoading && !sharpenOutput && (
