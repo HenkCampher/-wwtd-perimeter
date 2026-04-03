@@ -158,6 +158,7 @@ export default function App() {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [loadingQuestions, setLoadingQuestions] = useState(false);
+  const [popCultureOpen, setPopCultureOpen] = useState(false);
   const scoreTimer = useRef(null);
 
   const isWWTD = level === 6;
@@ -308,7 +309,7 @@ export default function App() {
     setCompareResults([]); setHistory([]); setSidebarOpen(false); setTimedOut(false);
     setFormat(""); setShowFormat(false); setShowPopCulture(false);
     setLinkCopied(false); setLinkLoading(false);
-    setShowQuestions(false); setQuestions([]); setAnswers({}); setLoadingQuestions(false);
+    setShowQuestions(false); setQuestions([]); setAnswers({}); setLoadingQuestions(false); setFormatOpen(false); setPopCultureOpen(false);
   };
 
   const scoreColor = substance ? (substance.score <= 3 ? "#e63946" : substance.score <= 5 ? "#f3722c" : substance.score <= 7 ? "#f9c74f" : "#a8e063") : "#555";
@@ -427,32 +428,32 @@ export default function App() {
             <div style={{ padding: "20px 24px 24px" }}>
               <div style={{ marginBottom: 18, paddingBottom: 18, borderBottom: "1px solid #1e1e35" }}>
                 <button onClick={() => setShowFormat(!showFormat)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, marginBottom: showFormat ? 10 : 0 }}>
-                  <div style={{ color: format ? "#e8e8e8" : "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 2: Pick Your Format (optional)</div>
+                  <div style={{ color: format ? "#e8e8e8" : "#bbb", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 2: Pick Your Format (optional)</div>
                   <div style={{ color: format ? "#a8e063" : "#555", fontSize: 11 }}>{format ? `✓ ${format}` : showFormat ? "▲" : "▼"}</div>
                 </button>
                 {showFormat && (
                   <div style={{ position: "relative", width: "100%" }}>
-                    <button onClick={() => setFormatOpen(!formatOpen)} style={{ width: "100%", padding: "12px 16px", background: "#080810", border: `1px solid ${format ? "#2a2a50" : "#1e1e35"}`, borderRadius: 8, color: format ? "#e8e8e8" : "#aaa", fontSize: 14, fontFamily: "'Lora', serif", cursor: "pointer", textAlign: "left", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span>{format || "No format — just make it bolder"}</span>
+                    <button onClick={() => setFormatOpen(!formatOpen)} style={{ width: "100%", padding: "12px 16px", background: "#080810", border: `1px solid ${format ? "#2a2a50" : "#1e1e35"}`, borderRadius: 8, color: format ? "#a8e063" : "#aaa", fontSize: 12, fontFamily: "'Lora', serif", cursor: "pointer", textAlign: "left", display: "flex", justifyContent: "space-between", alignItems: "center", letterSpacing: 2, textTransform: "uppercase" }}>
+                      <span>{format ? format.toUpperCase() : "NO FORMAT — JUST MAKE IT BOLDER"}</span>
                       <span style={{ fontSize: 11 }}>{formatOpen ? "▲" : "▼"}</span>
                     </button>
                     {formatOpen && (
                       <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "#0f0f1e", border: "1px solid #2a2a50", borderRadius: 8, zIndex: 50, marginTop: 4, overflow: "hidden" }}>
                         {[
-                          { value: "", label: "No format — just make it bolder" },
-                          { value: "Social Post", label: "Social Post (X, Bluesky, Threads)" },
-                          { value: "LinkedIn Post", label: "LinkedIn Post" },
-                          { value: "Ad Copy", label: "Ad Copy" },
-                          { value: "Elevator Pitch", label: "Elevator Pitch" },
-                          { value: "Press Release", label: "Press Release" },
-                          { value: "Bio", label: "Bio" },
-                          { value: "Email", label: "Email (with subject line)" },
-                          { value: "Boilerplate", label: "Boilerplate / About" },
-                          { value: "LinkedIn DM", label: "LinkedIn DM (cold outreach)" },
+                          { value: "", label: "NO FORMAT — JUST MAKE IT BOLDER" },
+                          { value: "Social Post", label: "SOCIAL POST (X, BLUESKY, THREADS)" },
+                          { value: "LinkedIn Post", label: "LINKEDIN POST" },
+                          { value: "Ad Copy", label: "AD COPY" },
+                          { value: "Elevator Pitch", label: "ELEVATOR PITCH" },
+                          { value: "Press Release", label: "PRESS RELEASE" },
+                          { value: "Bio", label: "BIO" },
+                          { value: "Email", label: "EMAIL (WITH SUBJECT LINE)" },
+                          { value: "Boilerplate", label: "BOILERPLATE / ABOUT" },
+                          { value: "LinkedIn DM", label: "LINKEDIN DM (COLD OUTREACH)" },
                         ].map(opt => (
-                          <button key={opt.value} onClick={() => { setFormat(opt.value); setFormatOpen(false); }} style={{ width: "100%", padding: "11px 16px", background: format === opt.value ? "#1e1e35" : "transparent", border: "none", borderBottom: "1px solid #1a1a2e", color: format === opt.value ? "#e8e8e8" : "#bbb", fontSize: 14, fontFamily: "'Lora', serif", cursor: "pointer", textAlign: "left", display: "block" }}
-                            onMouseEnter={e => e.target.style.background = "#1e1e35"}
-                            onMouseLeave={e => e.target.style.background = format === opt.value ? "#1e1e35" : "transparent"}>
+                          <button key={opt.value} onClick={() => { setFormat(opt.value); setFormatOpen(false); }} style={{ width: "100%", padding: "11px 16px", background: format === opt.value ? "#1e1e35" : "transparent", border: "none", borderBottom: "1px solid #1a1a2e", color: format === opt.value ? "#a8e063" : "#bbb", fontSize: 12, fontFamily: "'Lora', serif", cursor: "pointer", textAlign: "left", display: "block", letterSpacing: 2, textTransform: "uppercase" }}
+                            onMouseEnter={e => { e.currentTarget.style.background = "#1e1e35"; e.currentTarget.style.color = "#a8e063"; }}
+                            onMouseLeave={e => { e.currentTarget.style.background = format === opt.value ? "#1e1e35" : "transparent"; e.currentTarget.style.color = format === opt.value ? "#a8e063" : "#bbb"; }}>
                             {opt.label}
                           </button>
                         ))}
@@ -463,7 +464,7 @@ export default function App() {
               </div>
               <div style={{ marginBottom: 18, paddingBottom: 18, borderBottom: "1px solid #1e1e35" }}>
                 <button onClick={() => setShowPopCulture(!showPopCulture)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, marginBottom: showPopCulture ? 10 : 0 }}>
-                  <div style={{ color: popCulture ? "#e8e8e8" : "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 3: Add a Pop Culture Angle (optional)</div>
+                  <div style={{ color: popCulture ? "#e8e8e8" : "#bbb", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>Step 3: Add a Pop Culture Angle (optional)</div>
                   <div style={{ color: popCulture ? "#a8e063" : "#555", fontSize: 11 }}>{popCulture ? `✓ ${popCulture}` : showPopCulture ? "▲" : "▼"}</div>
                 </button>
                 {showPopCulture && (
