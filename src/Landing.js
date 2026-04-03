@@ -13,12 +13,25 @@ export default function Landing() {
         html { scroll-behavior: smooth; }
         a { color: inherit; text-decoration: none; }
         ::selection { background: #a8e06344; }
+        @media (max-width: 768px) {
+          .book-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .book-cover { max-width: 280px !important; margin: 0 auto !important; }
+          .nav-links { display: none !important; }
+          .hero-section { padding: 100px 20px 60px !important; }
+          .book-section { padding: 60px 20px !important; }
+          .tool-section { padding: 60px 20px !important; }
+          .signup-section { padding: 60px 20px !important; }
+          .about-section { padding: 60px 20px !important; }
+          .tool-iframe { height: 600px !important; }
+          .hero-buttons { flex-direction: column !important; align-items: center !important; }
+          .hero-buttons a { width: 100% !important; text-align: center !important; }
+        }
       `}</style>
 
       {/* Nav */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: "20px 40px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "linear-gradient(to bottom, #080810ee, transparent)" }}>
-        <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, letterSpacing: 3, color: "#a8e063" }}>WWTD</div>
-        <div style={{ display: "flex", gap: 32, fontSize: 12, letterSpacing: 3, textTransform: "uppercase", color: "#777" }}>
+        <a href="#" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, letterSpacing: 3, color: "#a8e063", textDecoration: "none" }}>WWTD</a>
+        <div className="nav-links" style={{ display: "flex", gap: 32, fontSize: 12, letterSpacing: 3, textTransform: "uppercase", color: "#777" }}>
           <a href="#book" style={{ cursor: "pointer" }}>The Book</a>
           <a href="#tool" style={{ cursor: "pointer" }}>The Tool</a>
           <a href="#about" style={{ cursor: "pointer" }}>About</a>
@@ -30,7 +43,7 @@ export default function Landing() {
       <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "120px 24px 80px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 60%, rgba(168,224,99,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ animation: "fadeIn 0.8s ease both" }}>
-          <div style={{ fontSize: 12, letterSpacing: 6, color: "#888", textTransform: "uppercase", marginBottom: 24, fontStyle: "italic" }}>Coming Soon</div>
+          <div style={{ fontSize: 12, letterSpacing: 6, color: "#888", textTransform: "uppercase", marginBottom: 24, fontStyle: "italic" }}>The Book. Coming Soon.</div>
           <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(64px, 12vw, 140px)", letterSpacing: 4, lineHeight: 0.9, marginBottom: 32, background: "linear-gradient(135deg, #a8e063, #f9c74f, #f8961e, #e63946)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             What Would<br />Tequila Do
           </h1>
@@ -40,7 +53,7 @@ export default function Landing() {
           </p>
           <p style={{ fontSize: "clamp(14px, 2vw, 18px)", color: "#aaa", maxWidth: 560, margin: "0 auto 12px", lineHeight: 1.4, fontStyle: "italic" }}>52 Hard Truths For Better Decisions And Less Bullshit</p>
           <p style={{ fontSize: 14, color: "#888", letterSpacing: 2, textTransform: "uppercase", marginBottom: 48 }}>By Henk Campher</p>
-          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+          <div className="hero-buttons" style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <a href="#signup" style={{ padding: "16px 40px", background: "#a8e063", color: "#080810", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer", animation: "pulse 3s ease-in-out infinite" }}>Get Notified at Launch</a>
             <a href="#tool" style={{ padding: "16px 40px", background: "transparent", border: "1px solid #2a2a40", color: "#777", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer" }}>Try the Tool</a>
           </div>
@@ -49,8 +62,8 @@ export default function Landing() {
       </section>
 
       {/* Book Section */}
-      <section id="book" style={{ padding: "80px 24px", maxWidth: 1100, margin: "0 auto" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+      <section id="book" className="book-section" style={{ padding: "80px 24px", maxWidth: 1100, margin: "0 auto" }}>
+        <div className="book-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
           
           {/* Book cover placeholder */}
           <div style={{ position: "relative" }}>
@@ -88,20 +101,20 @@ export default function Landing() {
       </section>
 
       {/* Tool Section */}
-      <section id="tool" style={{ padding: "80px 24px 60px", background: "#0a0a18" }}>
+      <section id="tool" className="tool-section" style={{ padding: "80px 24px 60px", background: "#0a0a18" }}>
         <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
           <div style={{ fontSize: 11, letterSpacing: 4, color: "#a8e063", textTransform: "uppercase", marginBottom: 20 }}>Try It Now</div>
           <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: 3, color: "#fff", marginBottom: 16, lineHeight: 1 }}>The Peri-Ometer</h2>
           <p style={{ color: "#777", fontSize: 16, marginBottom: 48, letterSpacing: 1 }}>An Edge Engine Tool From What Would Tequila Do</p>
           <p style={{ color: "#aaa", fontSize: 17, lineHeight: 1.8, maxWidth: 600, margin: "0 auto 48px" }}>Paste your copy. Pick your spice level. Watch bland become bold. The tool behind the book, live and free to use.</p>
           <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid #1e1e35", boxShadow: "0 0 80px rgba(168,224,99,0.08)" }}>
-            <iframe src="https://wwtd-tool.vercel.app" style={{ width: "100%", height: 800, border: "none", display: "block" }} title="What Would Tequila Do Peri-Ometer" />
+            <iframe src="https://wwtd-tool.vercel.app" className="tool-iframe" style={{ width: "100%", height: 800, border: "none", display: "block" }} title="What Would Tequila Do Peri-Ometer" />
           </div>
         </div>
       </section>
 
       {/* Email Signup */}
-      <section id="signup" style={{ padding: "80px 24px", maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+      <section id="signup" className="signup-section" style={{ padding: "80px 24px", maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: 11, letterSpacing: 4, color: "#a8e063", textTransform: "uppercase", marginBottom: 20 }}>Stay in the Loop</div>
         <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: 3, color: "#fff", marginBottom: 24, lineHeight: 1 }}>Get Notified<br />at Launch</h2>
         <p style={{ color: "#aaa", fontSize: 17, lineHeight: 1.8, marginBottom: 48 }}>No noise. No newsletters that read like press releases. Just a heads up when the book drops and occasional sharp thinking on work, marketing, and what tequila would do.</p>
@@ -114,7 +127,7 @@ export default function Landing() {
       </section>
 
       {/* About */}
-      <section id="about" style={{ padding: "80px 24px", background: "#0a0a18" }}>
+      <section id="about" className="about-section" style={{ padding: "80px 24px", background: "#0a0a18" }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <div style={{ fontSize: 11, letterSpacing: 4, color: "#a8e063", textTransform: "uppercase", marginBottom: 20 }}>About the Author</div>
           <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: 3, color: "#fff", marginBottom: 24, lineHeight: 1 }}>Henk Campher</h2>
