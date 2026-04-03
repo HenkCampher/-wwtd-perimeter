@@ -152,6 +152,7 @@ export default function App() {
   const [format, setFormat] = useState("");
   const [popCulture, setPopCulture] = useState("");
   const [showFormat, setShowFormat] = useState(false);
+  const [formatOpen, setFormatOpen] = useState(false);
   const [showPopCulture, setShowPopCulture] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
   const [questions, setQuestions] = useState([]);
@@ -326,19 +327,19 @@ export default function App() {
       <div style={{ position: "fixed", top: 0, right: sidebarOpen ? 0 : -380, width: 360, height: "100vh", background: "#0f0f1e", borderLeft: "1px solid #1e1e35", zIndex: 100, transition: "right 0.3s", overflowY: "auto", padding: "24px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
           <div style={{ color: "#aaa", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>History</div>
-          <button onClick={() => setSidebarOpen(false)} style={{ background: "none", border: "none", color: "#777", fontSize: 22, cursor: "pointer", lineHeight: 1 }}>×</button>
+          <button onClick={() => setSidebarOpen(false)} style={{ background: "none", border: "none", color: "#aaa", fontSize: 22, cursor: "pointer", lineHeight: 1 }}>×</button>
         </div>
         {history.length === 0
-          ? <div style={{ color: "#888", fontSize: 14, fontStyle: "italic" }}>No rewrites yet.</div>
+          ? <div style={{ color: "#bbb", fontSize: 14, fontStyle: "italic" }}>No rewrites yet.</div>
           : history.map(h => (
             <div key={h.id} style={{ marginBottom: 16, background: "#080810", border: `1px solid ${h.level.color}33`, borderRadius: 8, padding: "14px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
                 <span style={{ color: h.level.color, fontSize: 13, fontWeight: "bold" }}>{h.level.emoji} {h.level.label}</span>
-                <span style={{ color: "#888", fontSize: 11 }}>{h.ts}</span>
+                <span style={{ color: "#bbb", fontSize: 11 }}>{h.ts}</span>
               </div>
-              <div style={{ color: "#666", fontSize: 12, marginBottom: 8, fontStyle: "italic" }}>{h.input}</div>
+              <div style={{ color: "#999", fontSize: 12, marginBottom: 8, fontStyle: "italic" }}>{h.input}</div>
               <div style={{ color: "#aaa", fontSize: 13, lineHeight: 1.6, marginBottom: 10 }}>{h.output.slice(0, 140)}...</div>
-              <button onClick={() => copy(h.output)} style={{ background: "none", border: "1px solid #222", color: "#666", borderRadius: 4, padding: "4px 12px", fontSize: 12, cursor: "pointer" }}>Copy</button>
+              <button onClick={() => copy(h.output)} style={{ background: "none", border: "1px solid #222", color: "#999", borderRadius: 4, padding: "4px 12px", fontSize: 12, cursor: "pointer" }}>Copy</button>
             </div>
           ))
         }
@@ -348,17 +349,17 @@ export default function App() {
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "32px 24px" }}>
         <div style={{ textAlign: "center", marginBottom: 32 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-            <button onClick={handleReset} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "EB Garamond, serif" }}>🍹 Clear the Bar</button>
+            <button onClick={handleReset} style={{ background: "none", border: "1px solid #2a2a40", color: "#aaa", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "EB Garamond, serif" }}>🍹 Clear the Bar</button>
             <a href="https://whatwouldtequilado.com/#signup" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, letterSpacing: 2, color: "#a8e063", border: "1px solid #a8e06366", borderRadius: 6, padding: "7px 16px", textDecoration: "none", fontFamily: "'Lora', serif", whiteSpace: "nowrap", textTransform: "uppercase" }}>📖 Book Coming Soon — Get Notified</a>
-            <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "'Lora', serif" }}>
+            <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "1px solid #2a2a40", color: "#aaa", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "'Lora', serif" }}>
               {history.length > 0 ? `History (${history.length})` : "History"}
             </button>
           </div>
-          <div style={{ fontSize: 12, letterSpacing: 4, color: "#777", textTransform: "uppercase", marginBottom: 10, fontStyle: "italic" }}>An <span style={{ color: "#f5a623" }}>Edge Engine</span> Tool From</div>
+          <div style={{ fontSize: 12, letterSpacing: 4, color: "#aaa", textTransform: "uppercase", marginBottom: 10, fontStyle: "italic" }}>An <span style={{ color: "#f5a623" }}>Edge Engine</span> Tool From</div>
           <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 64, letterSpacing: 3, margin: "0 0 10px", lineHeight: 1, background: isWWTD ? "linear-gradient(135deg, #f5a623, #ffd700, #f5a623)" : "linear-gradient(135deg, #a8e063, #f9c74f, #f8961e, #e63946)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             {isWWTD ? <GlitchText text="What Would Tequila Do" active={glitching} /> : "What Would Tequila Do"}
           </h1>
-          <div style={{ color: "#777", fontSize: 13, letterSpacing: 3, textTransform: "uppercase" }}>Cut through the bland</div>
+          <div style={{ color: "#aaa", fontSize: 13, letterSpacing: 3, textTransform: "uppercase" }}>Cut through the bland</div>
         </div>
 
         <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
@@ -370,18 +371,18 @@ export default function App() {
         </div>
         <div style={{ background: isWWTD ? "#110900" : "#0f0f1e", border: `1px solid ${isWWTD ? "#3a2500" : "#1e1e35"}`, borderRadius: 12, overflow: "hidden", boxShadow: `0 0 60px ${currentLevel.glow}`, transition: "all 0.5s", marginBottom: 16 }}>
           <div style={{ padding: "24px 24px 0" }}>
-            <div style={{ color: "#888", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Step 1: The Bland Original</div>
+            <div style={{ color: "#bbb", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Step 1: The Bland Original</div>
             <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="Paste your copy here..." style={{ width: "100%", minHeight: 130, background: isWWTD ? "#0a0600" : "#080810", border: `1px solid ${isWWTD ? "#2a1800" : "#1e1e35"}`, borderRadius: 8, color: "#e8e8e8", fontSize: 15, padding: "16px", fontFamily: "'Lora', serif", lineHeight: 1.7, resize: "vertical", boxSizing: "border-box" }} />
 
             {(scoringSubstance || substance) && (
               <div style={{ margin: "14px 0 4px", padding: "14px 16px", background: "#080810", border: `1px solid ${scoreColor}33`, borderRadius: 8, animation: "scoreIn 0.3s" }}>
                 {scoringSubstance ? (
-                  <div style={{ color: "#777", fontSize: 13, fontStyle: "italic" }}>Checking substance...</div>
+                  <div style={{ color: "#aaa", fontSize: 13, fontStyle: "italic" }}>Checking substance...</div>
                 ) : substance && (
                   <>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <span style={{ color: "#777", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>Substance Score</span>
+                        <span style={{ color: "#aaa", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>Substance Score</span>
                         <span style={{ color: scoreColor, fontSize: 20, fontFamily: "'Bebas Neue', sans-serif", letterSpacing: 1 }}>{substance.score}/10</span>
                         <span style={{ color: scoreColor, fontSize: 13, fontStyle: "italic" }}>{substance.verdict}</span>
                       </div>
@@ -396,14 +397,14 @@ export default function App() {
                       <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${scoreColor}22` }}>
                         <button onClick={handleRevealQuestions} style={{ width: "100%", padding: "11px 16px", background: "transparent", border: `1px dashed ${scoreColor}88`, borderRadius: 7, color: "#ccc", fontSize: 13, cursor: "pointer", fontFamily: "'Lora', serif", textAlign: "left", lineHeight: 1.5, animation: "pulse 2s ease-in-out infinite" }}>
                           <span style={{ fontWeight: "600" }}>Get better results — answer 3-5 quick questions first</span>
-                          <span style={{ display: "block", color: "#888", fontSize: 12, fontStyle: "italic", marginTop: 3 }}>Spice gets attention. Substance keeps it. Skip if you're in a rush.</span>
+                          <span style={{ display: "block", color: "#bbb", fontSize: 12, fontStyle: "italic", marginTop: 3 }}>Spice gets attention. Substance keeps it. Skip if you're in a rush.</span>
                         </button>
                       </div>
                     )}
                     {showQuestions && (
                       <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${scoreColor}22`, animation: "fadeIn 0.3s" }}>
                         {loadingQuestions ? (
-                          <div style={{ color: "#777", fontSize: 13, fontStyle: "italic" }}>Finding the right questions...</div>
+                          <div style={{ color: "#aaa", fontSize: 13, fontStyle: "italic" }}>Finding the right questions...</div>
                         ) : (
                           <>
                             <div style={{ color: "#aaa", fontSize: 12, letterSpacing: 2, textTransform: "uppercase", marginBottom: 14 }}>Answer what you can. Skip what you can't.</div>
@@ -430,18 +431,34 @@ export default function App() {
                   <div style={{ color: format ? "#a8e063" : "#555", fontSize: 11 }}>{format ? `✓ ${format}` : showFormat ? "▲" : "▼"}</div>
                 </button>
                 {showFormat && (
-                  <select value={format} onChange={e => setFormat(e.target.value)} style={{ width: "100%", padding: "12px 16px", background: "#080810", border: `1px solid ${format ? "#2a2a50" : "#1e1e35"}`, borderRadius: 8, color: format ? "#e8e8e8" : "#555", fontSize: 14, fontFamily: "'Lora', serif", cursor: "pointer", appearance: "none", WebkitAppearance: "none", outline: "none" }}>
-                    <option value="">No format — just make it bolder</option>
-                    <option value="Social Post">Social Post (X, Bluesky, Threads)</option>
-                    <option value="LinkedIn Post">LinkedIn Post</option>
-                    <option value="Ad Copy">Ad Copy</option>
-                    <option value="Elevator Pitch">Elevator Pitch</option>
-                    <option value="Press Release">Press Release</option>
-                    <option value="Bio">Bio</option>
-                    <option value="Email">Email (with subject line)</option>
-                    <option value="Boilerplate">Boilerplate / About</option>
-                    <option value="LinkedIn DM">LinkedIn DM (cold outreach)</option>
-                  </select>
+                  <div style={{ position: "relative", width: "100%" }}>
+                    <button onClick={() => setFormatOpen(!formatOpen)} style={{ width: "100%", padding: "12px 16px", background: "#080810", border: `1px solid ${format ? "#2a2a50" : "#1e1e35"}`, borderRadius: 8, color: format ? "#e8e8e8" : "#aaa", fontSize: 14, fontFamily: "'Lora', serif", cursor: "pointer", textAlign: "left", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span>{format || "No format — just make it bolder"}</span>
+                      <span style={{ fontSize: 11 }}>{formatOpen ? "▲" : "▼"}</span>
+                    </button>
+                    {formatOpen && (
+                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "#0f0f1e", border: "1px solid #2a2a50", borderRadius: 8, zIndex: 50, marginTop: 4, overflow: "hidden" }}>
+                        {[
+                          { value: "", label: "No format — just make it bolder" },
+                          { value: "Social Post", label: "Social Post (X, Bluesky, Threads)" },
+                          { value: "LinkedIn Post", label: "LinkedIn Post" },
+                          { value: "Ad Copy", label: "Ad Copy" },
+                          { value: "Elevator Pitch", label: "Elevator Pitch" },
+                          { value: "Press Release", label: "Press Release" },
+                          { value: "Bio", label: "Bio" },
+                          { value: "Email", label: "Email (with subject line)" },
+                          { value: "Boilerplate", label: "Boilerplate / About" },
+                          { value: "LinkedIn DM", label: "LinkedIn DM (cold outreach)" },
+                        ].map(opt => (
+                          <button key={opt.value} onClick={() => { setFormat(opt.value); setFormatOpen(false); }} style={{ width: "100%", padding: "11px 16px", background: format === opt.value ? "#1e1e35" : "transparent", border: "none", borderBottom: "1px solid #1a1a2e", color: format === opt.value ? "#e8e8e8" : "#bbb", fontSize: 14, fontFamily: "'Lora', serif", cursor: "pointer", textAlign: "left", display: "block" }}
+                            onMouseEnter={e => e.target.style.background = "#1e1e35"}
+                            onMouseLeave={e => e.target.style.background = format === opt.value ? "#1e1e35" : "transparent"}>
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
               <div style={{ marginBottom: 18, paddingBottom: 18, borderBottom: "1px solid #1e1e35" }}>
@@ -467,14 +484,14 @@ export default function App() {
                         </button>
                       ))}
                     </div>
-                    {popCulture && <div style={{ color: "#888", fontSize: 12, fontStyle: "italic" }}>
+                    {popCulture && <div style={{ color: "#bbb", fontSize: 12, fontStyle: "italic" }}>
                       {["Sci-Fi|Star Wars, Star Trek, The Matrix, Dune...","Fantasy|Lord of the Rings, Game of Thrones, Harry Potter...","Crime & Drama|Breaking Bad, The Wire, Succession, Sopranos...","Comedy|The Office, Ted Lasso, Seinfeld, Arrested Development...","Music|Taylor Swift, Beyoncé, The Beatles, Elvis, AC/DC, Bad Bunny...","Sport|Rugby, Soccer, Super Bowl, Olympics, World Cup...","Horror|Walking Dead, Stranger Things, Get Out...","Surprise|Anything goes. Tequila decides."].find(s => s.startsWith(popCulture + "|"))?.split("|")[1]}
                     </div>}
                   </div>
                 )}
               </div>
               <div style={{ marginBottom: 14 }}>
-                <div style={{ color: "#777", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14 }}>Step 4: Pick Your Spice Level</div>
+                <div style={{ color: "#aaa", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14 }}>Step 4: Pick Your Spice Level</div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 14 }}>
                 {LEVELS.map(l => (
@@ -502,14 +519,14 @@ export default function App() {
                 <button onClick={rewrite} disabled={!input.trim() || loading} style={{ flex: 1, background: input.trim() && !loading ? (isWWTD ? "linear-gradient(135deg,#f5a623,#e8890a)" : `linear-gradient(135deg,${currentLevel.color},${LEVELS[Math.min(level,4)-1].color})`) : "#1e1e35", color: input.trim() && !loading ? "#000" : "#444", border: "none", borderRadius: 8, padding: "16px", fontSize: 15, fontWeight: "bold", letterSpacing: 2, textTransform: "uppercase", cursor: input.trim() && !loading ? "pointer" : "not-allowed", transition: "all 0.3s", fontFamily: "'Lora', serif" }}>
                   {loading ? "Rewriting..." : isWWTD ? "🥃 WWTD?" : `${currentLevel.emoji} Make it ${currentLevel.label} →`}
                 </button>
-                <button onClick={randomLevel} title="Random level" style={{ background: "#080810", border: "1px solid #1e1e35", color: "#777", borderRadius: 8, padding: "16px 18px", fontSize: 18, cursor: "pointer" }}>🎲</button>
+                <button onClick={randomLevel} title="Random level" style={{ background: "#080810", border: "1px solid #1e1e35", color: "#aaa", borderRadius: 8, padding: "16px 18px", fontSize: 18, cursor: "pointer" }}>🎲</button>
               </div>
             </div>
           )}
 
           {tab === "compare" && (
             <div style={{ padding: "20px 24px 24px" }}>
-              <p style={{ color: "#777", fontSize: 14, lineHeight: 1.6, marginBottom: 16, fontStyle: "italic" }}>Runs your copy through all {activeLevels.length} levels sequentially. See the full arc at once.</p>
+              <p style={{ color: "#aaa", fontSize: 14, lineHeight: 1.6, marginBottom: 16, fontStyle: "italic" }}>Runs your copy through all {activeLevels.length} levels sequentially. See the full arc at once.</p>
               <button onClick={runGauntlet} disabled={!input.trim() || comparing} style={{ width: "100%", background: input.trim() && !comparing ? "linear-gradient(135deg,#a8e063,#f9c74f,#f8961e,#e63946)" : "#1e1e35", color: input.trim() && !comparing ? "#000" : "#444", border: "none", borderRadius: 8, padding: "16px", fontSize: 15, fontWeight: "bold", letterSpacing: 2, textTransform: "uppercase", cursor: input.trim() && !comparing ? "pointer" : "not-allowed", fontFamily: "'Lora', serif" }}>
                 {comparing ? "Running..." : "⚡ Run the Gauntlet"}
               </button>
@@ -571,7 +588,7 @@ export default function App() {
                     <span style={{ fontFamily: "'Bebas Neue', sans-serif", color: r.color, fontSize: 20, letterSpacing: 1 }}>{r.label}</span>
                   </div>
                   {r.done && r.output && (
-                    <button onClick={() => copy(r.output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#777", borderRadius: 4, padding: "4px 12px", fontSize: 12, cursor: "pointer" }}>Copy</button>
+                    <button onClick={() => copy(r.output)} style={{ background: "transparent", border: "1px solid #2a2a40", color: "#aaa", borderRadius: 4, padding: "4px 12px", fontSize: 12, cursor: "pointer" }}>Copy</button>
                   )}
                 </div>
                 <div style={{ padding: "20px" }}>
@@ -580,7 +597,7 @@ export default function App() {
                     : <>
                         <p style={{ color: r.value === 6 ? "#f0d090" : "#f0f0f0", fontSize: 15, lineHeight: 1.85, margin: "0 0 16px", fontStyle: r.value === 6 ? "italic" : "normal" }}>{renderOutput(r.output)}</p>
                         <div style={{ borderTop: `1px solid ${r.color}22`, paddingTop: 12 }}>
-                          <p style={{ color: "#888", fontSize: 12, fontStyle: "italic", margin: 0 }}>This is a starting point, not a final draft. Steal what works, kill what doesn't. Tequila got you here — your voice takes it home.</p>
+                          <p style={{ color: "#bbb", fontSize: 12, fontStyle: "italic", margin: 0 }}>This is a starting point, not a final draft. Steal what works, kill what doesn't. Tequila got you here — your voice takes it home.</p>
                         </div>
                       </>
                   }
@@ -603,8 +620,8 @@ export default function App() {
         )}
 
         <div style={{ textAlign: "center", marginTop: 48, borderTop: "1px solid #111", paddingTop: 24 }}>
-          <div style={{ fontFamily: "'Bebas Neue', sans-serif", color: "#777", fontSize: 18, letterSpacing: 3, marginBottom: 6 }}>What Would Tequila Do</div>
-          <div style={{ color: "#888", fontSize: 13, fontStyle: "italic" }}>The book. Coming soon.</div>
+          <div style={{ fontFamily: "'Bebas Neue', sans-serif", color: "#aaa", fontSize: 18, letterSpacing: 3, marginBottom: 6 }}>What Would Tequila Do</div>
+          <div style={{ color: "#bbb", fontSize: 13, fontStyle: "italic" }}>The book. Coming soon.</div>
         </div>
       </div>
     </div>
