@@ -405,7 +405,7 @@ export default function App() {
         <div style={{ textAlign: "center", marginBottom: 32 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
             <button onClick={handleReset} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "EB Garamond, serif" }}>🍹 Clear the Bar</button>
-            <a href="https://whatwouldtequilado.com/#signup" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, letterSpacing: 1, color: "#a8e063", border: "1px solid #a8e06344", borderRadius: 6, padding: "7px 14px", textDecoration: "none", fontFamily: "'Lora', serif", whiteSpace: "nowrap" }}>📖 Book coming soon — get notified</a>
+            <a href="https://whatwouldtequilado.com/#signup" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, letterSpacing: 2, color: "#a8e063", border: "1px solid #a8e06366", borderRadius: 6, padding: "7px 16px", textDecoration: "none", fontFamily: "'Lora', serif", whiteSpace: "nowrap", textTransform: "uppercase" }}>📖 Book Coming Soon — Get Notified</a>
             <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "'Lora', serif" }}>
               {history.length > 0 ? `History (${history.length})` : "History"}
             </button>
