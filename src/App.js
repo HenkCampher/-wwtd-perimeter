@@ -480,7 +480,7 @@ export default function App() {
                         { value: "Horror", label: "😱 Horror" },
                         { value: "Surprise", label: "🥃 You Pick — Go the tequila way" },
                       ].map(c => (
-                        <button key={c.value} onClick={() => setPopCulture(popCulture === c.value ? "" : c.value)} style={{ padding: "8px 14px", background: popCulture === c.value ? "#1e1e35" : "transparent", border: `1px solid ${popCulture === c.value ? "#4a4a70" : "#1e1e35"}`, borderRadius: 20, color: popCulture === c.value ? "#ddd" : "#555", fontSize: 13, cursor: "pointer", fontFamily: "'Lora', serif", transition: "all 0.2s", whiteSpace: "nowrap" }}>
+                        <button key={c.value} onClick={() => setPopCulture(popCulture === c.value ? "" : c.value)} style={{ padding: "8px 14px", background: popCulture === c.value ? "#1e1e35" : "transparent", border: `1px solid ${popCulture === c.value ? "#4a4a70" : "#1e1e35"}`, borderRadius: 20, color: popCulture === c.value ? "#ddd" : "#aaa", fontSize: 11, cursor: "pointer", fontFamily: "'Lora', serif", transition: "all 0.2s", whiteSpace: "nowrap", textTransform: "uppercase", letterSpacing: 2 }}>
                           {c.label}
                         </button>
                       ))}
