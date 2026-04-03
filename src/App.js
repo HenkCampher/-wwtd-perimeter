@@ -403,8 +403,9 @@ export default function App() {
 
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 32 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
             <button onClick={handleReset} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "EB Garamond, serif" }}>🍹 Clear the Bar</button>
+            <a href="https://whatwouldtequilado.com/#signup" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, letterSpacing: 1, color: "#a8e063", border: "1px solid #a8e06344", borderRadius: 6, padding: "7px 14px", textDecoration: "none", fontFamily: "'Lora', serif", whiteSpace: "nowrap" }}>📖 Book coming soon — get notified</a>
             <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "1px solid #2a2a40", color: "#777", borderRadius: 6, padding: "7px 16px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", fontFamily: "'Lora', serif" }}>
               {history.length > 0 ? `History (${history.length})` : "History"}
             </button>
@@ -466,6 +467,11 @@ export default function App() {
                         Consider adding: {substance.missing.join(" · ")}
                       </div>
                     )}
+                    <div style={{ marginTop: 12, paddingTop: 12, borderTop: `1px solid ${scoreColor}22` }}>
+                      <p style={{ color: "#bbb", fontSize: 13, margin: 0, lineHeight: 1.6 }}>
+                        <strong style={{ color: "#fff" }}>Don't skip the questions below.</strong> They'll add your specifics, get closer to your audience, and give the spice something real to work with.
+                      </p>
+                    </div>
                   </>
                 )}
               </div>
