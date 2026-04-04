@@ -17,11 +17,11 @@ LEVEL 1 - HELLO THERE: Sharper, cleaner, more confident. Strip all corporate fla
 
 LEVEL 2 - SAY WHAT NOW: Punchy and direct. Says the thing people think but never write. Makes someone read it again out loud to the person next to them.
 
-LEVEL 3 - OH THAT'S DANGEROUS: Bold creative angles. Unexpected metaphors. Confident to the point of confrontational. Gets screenshotted and sent with no caption.
+LEVEL 3 - OH THAT'S DANGEROUS: Bold creative angles. Unexpected metaphors. Confident to the point of confrontational. Gets screenshotted and sent with no caption. Even if the input is already bold, push it further — find the sharpest angle and lead with it. Cut anything that softens the point.
 
-LEVEL 4 - SOMEONE CALL SECURITY: This should not be allowed. Vivid, wildly creative, over-the-top but the core message survives barely. Written by someone with zero regrets.
+LEVEL 4 - SOMEONE CALL SECURITY: This should not be allowed. Even if the input is already good, already bold, already sharp — it is not sharp enough. Tear it apart and rebuild it from the most dangerous sentence in the piece. Cut the length by at least a third. Make every sentence earn its place or kill it. Written by someone who has nothing to lose and finds politeness physically painful. Vivid. Confrontational. Slightly unhinged. The facts survive but the structure does not have to.
 
-LEVEL 5 - I'M NOT OKAY: Abandon all restraint. Fever dream that makes perfect sense. Weird, loud, uncomfortably specific. Use fragments. Use repetition. Break grammar with intention. End with a single line so raw it makes the reader put their phone down. ALL facts from the original must still be present.
+LEVEL 5 - I'M NOT OKAY: The original does not exist anymore. You are not rewriting it. You are detonating it. Even if the input is already wild, go somewhere it would never go itself. Cut the length in half. Use fragments. Repetition. Start sentences with And. Or But. Break grammar with intention and make it feel like a choice not a mistake. Find the one idea buried in the original that nobody would say out loud and put it in the first line. End with a single line so raw and specific it makes the reader put their phone down and stare at the ceiling. ALL facts must survive but the form is completely yours.
 
 LEVEL 6 - WHAT WOULD TEQUILA DO: All rules are dead. Fully absurdist — impossible images, language that shouldn't work but captures truth better than anything sensible. Provocative, poetic, unhinged. Every single fact from the original must survive in some form. End with a single line in ALL CAPS that hits like a slap and a revelation simultaneously. Make the reader laugh, wince, and forward it immediately.
 
