@@ -88,7 +88,11 @@ async function callAPI(level, levelLabel, input, formatLabel = "", substanceScor
   clearTimeout(timeout);
   const data = await res.json();
   if (data.error) throw new Error(data.error.message);
-  return data.content?.find(b => b.type === "text")?.text || "Something went wrong.";
+  const raw = data.content?.find(b => b.type === "text")?.text || "Something went wrong.";
+  return raw
+    .replace(/\n\n---\n\nWord count: \d+$/, '')
+    .replace(/\n\nWord count: \d+$/, '')
+    .trim();
 }
 
 async function scoreSubstance(input) {
@@ -247,7 +251,15 @@ export default function App() {
     if (!wwtdUnlocked) setTimeout(() => setShowHint(true), 800);
   };
 
-  const copy = (text) => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); };
+  const cleanForCopy = (text) => {
+    return text
+      .replace(/\*\*(.+?)\*\*/g, '$1')
+      .replace(/^---+$/gm, '')
+      .replace(/\n\n---\n\nWord count: \d+$/, '')
+      .replace(/\n\nWord count: \d+$/, '')
+      .trim();
+  };
+  const copy = (text) => { navigator.clipboard.writeText(cleanForCopy(text)); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   const getShareLink = async () => {
     if (window.gtag) window.gtag('event', 'get_link', { level: currentLevel.label, format: format || 'none' });
