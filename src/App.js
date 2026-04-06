@@ -65,6 +65,11 @@ async function callAPI(level, levelLabel, input, formatLabel = "", substanceScor
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 35000);
   const contextBlock = extraContext ? `\n\nADDITIONAL CONTEXT FROM USER:\n${extraContext}` : "";
+  const wordCount = input.trim().split(/\s+/).filter(Boolean).length;
+  const openFormats = ["Email", "Press Release", "Boilerplate", "LinkedIn DM", ""];
+  const isOpenFormat = openFormats.includes(formatLabel);
+  const wordCeiling = isOpenFormat ? Math.round(wordCount * 1.5) + (popCultureChoice ? 20 : 0) : null;
+  const wordLimitInstruction = wordCeiling ? `\n\nHARD WORD LIMIT: The input contains ${wordCount} words. Your output must not exceed ${wordCeiling} words under any circumstances. Count your words before you finish. This overrides all other instructions including spice level guidance.` : "";
   const res = await fetch("/api/rewrite", {
     method: "POST", signal: controller.signal,
     headers: { "Content-Type": "application/json" },
@@ -77,7 +82,7 @@ async function callAPI(level, levelLabel, input, formatLabel = "", substanceScor
   formatLabel === "Elevator Pitch" ? " (max 300 characters)" :
   formatLabel === "Bio" ? " (max 300 characters)" :
   formatLabel === "Email" ? " (must include a subject line)" : ""
-}` : ""}:\n\n${input}${contextBlock}${popCultureChoice ? `\n\nFINAL INSTRUCTION — THIS IS MANDATORY: You MUST include a specific reference from ${popCultureChoice === "Surprise" ? "any pop culture universe of your choice — be unexpected and creative" : popCultureChoice}. YOU choose which specific property, character, scene, or moment to use — do not ask the user for clarification. Just pick one and use it. Name it specifically and weave it naturally into the copy. Do not skip this. Do not ask questions.` : ""}` }]
+}` : ""}:\n\n${input}${contextBlock}${popCultureChoice ? `\n\nFINAL INSTRUCTION — THIS IS MANDATORY: You MUST include a specific reference from ${popCultureChoice === "Surprise" ? "any pop culture universe of your choice — be unexpected and creative" : popCultureChoice}. YOU choose which specific property, character, scene, or moment to use — do not ask the user for clarification. Just pick one and use it. Name it specifically and weave it naturally into the copy. Do not skip this. Do not ask questions.` : ""}${wordLimitInstruction}` }]
     })
   });
   clearTimeout(timeout);
