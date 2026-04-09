@@ -65,22 +65,9 @@ export default function Landing() {
       <section id="book" className="book-section" style={{ padding: "80px 24px", maxWidth: 1100, margin: "0 auto" }}>
         <div className="book-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
           
-          {/* Book cover placeholder */}
+          {/* Book cover */}
           <div style={{ position: "relative" }}>
-            <div style={{ aspectRatio: "3/4", background: "#0f0f1e", border: "1px solid #1e1e35", borderRadius: 8, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "40px 32px", boxShadow: "0 0 80px rgba(168,224,99,0.1), -8px 8px 0 #a8e06322" }}>
-              <div>
-                <div style={{ width: 40, height: 2, background: "#a8e063", marginBottom: 24 }} />
-                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 52, letterSpacing: 2, lineHeight: 1, color: "#fff", marginBottom: 16 }}>What Would<br />Tequila Do</div>
-                <div style={{ width: 40, height: 2, background: "#a8e063", marginBottom: 24 }} />
-                <div style={{ fontSize: 13, color: "#888", letterSpacing: 2, textTransform: "uppercase" }}>Work is broken.<br />This book says it out loud.</div>
-              <div style={{ marginTop: 16, fontSize: 11, color: "#777", fontStyle: "italic", lineHeight: 1.5 }}>52 Hard Truths For Better Decisions And Less Bullshit</div>
-              </div>
-              <div>
-                <div style={{ fontSize: 24, marginBottom: 12 }}>🍹</div>
-                <div style={{ fontSize: 13, color: "#777", letterSpacing: 1 }}>Henk Campher</div>
-                <div style={{ fontSize: 11, color: "#777", letterSpacing: 2, textTransform: "uppercase", marginTop: 4 }}>Coming Soon</div>
-              </div>
-            </div>
+            <img src="/book-cover.png" alt="What Would Tequila Do book cover" style={{ width: "100%", borderRadius: 8, boxShadow: "0 0 80px rgba(168,224,99,0.1), -8px 8px 0 #a8e06322", display: "block" }} />
           </div>
 
           {/* Premise */}
