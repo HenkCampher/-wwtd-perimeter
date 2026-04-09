@@ -1,6 +1,17 @@
 import React from "react";
+import { useEffect } from "react";
 
 export default function Landing() {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-LHQV3B1XZM';
+    script.async = true;
+    document.head.appendChild(script);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){window.dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LHQV3B1XZM');
+  }, []);
   
 
   return (
