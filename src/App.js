@@ -168,6 +168,8 @@ export default function App() {
   const [answers, setAnswers] = useState({});
   const [loadingQuestions, setLoadingQuestions] = useState(false);
   const [popCultureOpen, setPopCultureOpen] = useState(false); // eslint-disable-line
+  const [refineNote, setRefineNote] = useState("");
+  const [refineLevel, setRefineLevel] = useState(null);
   const scoreTimer = useRef(null);
 
   const isWWTD = level === 6;
@@ -225,6 +227,31 @@ export default function App() {
       clearTimeout(timeoutWarning);
       setTimedOut(false);
       setOutput(e.name === "AbortError" ? "TIMEOUT" : `Error: ${e.message}`);
+    }
+    setLoading(false);
+  };
+
+  const refine = async () => {
+    if (!output.trim()) return;
+    const targetLevel = refineLevel !== null ? refineLevel : level;
+    const targetLevelData = ALL_LEVELS.find(l => l.value === targetLevel) || currentLevel;
+    const refineInput = refineNote.trim()
+      ? output + "\n\nUSER REFINEMENT NOTE: " + refineNote.trim()
+      : output;
+    setLoading(true); setOutput(""); setTimedOut(false);
+    const timeoutWarning = setTimeout(() => setTimedOut(true), 30000);
+    try {
+      const text = await callAPI(targetLevel, targetLevelData.label, refineInput, format, substance ? substance.score : null, popCulture, "");
+      clearTimeout(timeoutWarning);
+      setTimedOut(false);
+      setOutput(text);
+      setLevel(targetLevel);
+      setRefineNote("");
+      setHistory(h => [{ id: Date.now(), level: targetLevelData, input: output.slice(0, 80) + (output.length > 80 ? "..." : ""), output: text, ts: new Date().toLocaleTimeString() }, ...h].slice(0, 20));
+    } catch (e) {
+      clearTimeout(timeoutWarning);
+      setTimedOut(false);
+      setOutput(e.name === "AbortError" ? "TIMEOUT" : "Error: " + e.message);
     }
     setLoading(false);
   };
@@ -622,6 +649,31 @@ export default function App() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {output && output !== "TIMEOUT" && !loading && tab === "rewrite" && (
+          <div style={{ background: "#0f0f1e", border: "1px solid #1e1e35", borderRadius: 12, padding: "24px", marginTop: 12, animation: "fadeIn 0.4s" }}>
+            <div style={{ color: "#aaa", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14 }}>Refine This</div>
+            <textarea
+              value={refineNote}
+              onChange={e => setRefineNote(e.target.value)}
+              placeholder="Optional: tell it what to change... (e.g. 'punchier opening', 'cut the last line', 'less metaphor')"
+              style={{ width: "100%", minHeight: 70, background: "#080810", border: "1px solid #1e1e35", borderRadius: 8, color: "#e8e8e8", fontSize: 14, padding: "12px 14px", fontFamily: "'Lora', serif", lineHeight: 1.6, resize: "vertical", boxSizing: "border-box", marginBottom: 12 }}
+            />
+            <div style={{ color: "#aaa", fontSize: 12, letterSpacing: 2, textTransform: "uppercase", marginBottom: 10 }}>Level</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
+              {(wwtdUnlocked ? ALL_LEVELS : LEVELS).map(l => (
+                <button key={l.value} onClick={() => setRefineLevel(refineLevel === l.value ? null : l.value)}
+                  style={{ padding: "8px 14px", background: (refineLevel === l.value || (refineLevel === null && l.value === level)) ? \`\${l.color}22\` : "transparent", border: \`1px solid \${(refineLevel === l.value || (refineLevel === null && l.value === level)) ? l.color : "#1e1e35"}\`, borderRadius: 20, color: (refineLevel === l.value || (refineLevel === null && l.value === level)) ? l.color : "#777", fontSize: 12, cursor: "pointer", fontFamily: "'Lora', serif", whiteSpace: "nowrap", letterSpacing: 1 }}>
+                  {l.emoji} {l.label}
+                </button>
+              ))}
+            </div>
+            <button onClick={refine} disabled={loading}
+              style={{ width: "100%", background: loading ? "#1e1e35" : "linear-gradient(135deg,#2a2a50,#3a3a70)", color: loading ? "#444" : "#ddd", border: "1px solid #3a3a60", borderRadius: 8, padding: "13px", fontSize: 13, fontWeight: "bold", letterSpacing: 2, textTransform: "uppercase", cursor: loading ? "not-allowed" : "pointer", fontFamily: "'Lora', serif" }}>
+              {loading ? "Refining..." : "↺ Refine This"}
+            </button>
           </div>
         )}
 
