@@ -170,6 +170,9 @@ export default function App() {
   const [popCultureOpen, setPopCultureOpen] = useState(false); // eslint-disable-line
   const [refineNote, setRefineNote] = useState("");
   const [refineLevel, setRefineLevel] = useState(null);
+  const [signupEmail, setSignupEmail] = useState("");
+  const [signupStatus, setSignupStatus] = useState("");
+  const [signupLoading, setSignupLoading] = useState(false);
   const scoreTimer = useRef(null);
 
   const isWWTD = level === 6;
@@ -346,6 +349,30 @@ export default function App() {
   };
 
   const bg = isWWTD ? "#0a0600" : "#080810";
+
+  const handleSignup = async () => {
+    if (!signupEmail.trim() || !signupEmail.includes('@')) {
+      setSignupStatus('error');
+      return;
+    }
+    setSignupLoading(true);
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: signupEmail.trim() }),
+      });
+      if (res.ok) {
+        setSignupStatus('success');
+        setSignupEmail('');
+      } else {
+        setSignupStatus('error');
+      }
+    } catch {
+      setSignupStatus('error');
+    }
+    setSignupLoading(false);
+  };
 
   const handleReset = () => {
     setInput(""); setOutput(""); setSubstance(null); setLevel(1); setTab("rewrite");
@@ -688,6 +715,30 @@ export default function App() {
             </div>
           </div>
         )}
+
+        <div style={{ marginTop: 32, padding: "24px", background: "#0f0f1e", border: "1px solid #1e1e35", borderRadius: 12, textAlign: "center" }}>
+          <div style={{ color: "#aaa", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 8 }}>We're always tweaking</div>
+          <div style={{ color: "#bbb", fontSize: 14, fontStyle: "italic", marginBottom: 16 }}>Sign up and we'll let you know when something new drops.</div>
+          {signupStatus === 'success' ? (
+            <div style={{ color: "#a8e063", fontSize: 14, fontStyle: "italic" }}>You're in. We'll be in touch. 🥃</div>
+          ) : (
+            <div style={{ display: "flex", gap: 8, maxWidth: 400, margin: "0 auto" }}>
+              <input
+                type="email"
+                value={signupEmail}
+                onChange={e => { setSignupEmail(e.target.value); setSignupStatus(''); }}
+                onKeyDown={e => e.key === 'Enter' && handleSignup()}
+                placeholder="your@email.com"
+                style={{ flex: 1, padding: "11px 14px", background: "#080810", border: `1px solid ${signupStatus === 'error' ? '#e63946' : '#1e1e35'}`, borderRadius: 8, color: "#e8e8e8", fontSize: 14, fontFamily: "'Lora', serif" }}
+              />
+              <button onClick={handleSignup} disabled={signupLoading}
+                style={{ padding: "11px 20px", background: signupLoading ? "#1e1e35" : "linear-gradient(135deg,#a8e063,#f9c74f)", color: signupLoading ? "#444" : "#000", border: "none", borderRadius: 8, fontSize: 13, fontWeight: "bold", letterSpacing: 2, textTransform: "uppercase", cursor: signupLoading ? "not-allowed" : "pointer", fontFamily: "'Lora', serif", whiteSpace: "nowrap" }}>
+                {signupLoading ? "..." : "Keep Me Posted"}
+              </button>
+            </div>
+          )}
+          {signupStatus === 'error' && <div style={{ color: "#e63946", fontSize: 12, fontStyle: "italic", marginTop: 8 }}>Something went wrong. Check your email and try again.</div>}
+        </div>
 
         <div style={{ textAlign: "center", marginTop: 48, borderTop: "1px solid #111", paddingTop: 24 }}>
           <div style={{ fontFamily: "'Bebas Neue', sans-serif", color: "#aaa", fontSize: 18, letterSpacing: 3, marginBottom: 6 }}>What Would Tequila Do</div>
