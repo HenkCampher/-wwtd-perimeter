@@ -665,7 +665,7 @@ export default function App() {
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
               {(wwtdUnlocked ? ALL_LEVELS : LEVELS).map(l => (
                 <button key={l.value} onClick={() => setRefineLevel(refineLevel === l.value ? null : l.value)}
-                  style={{ padding: "8px 14px", background: (refineLevel === l.value || (refineLevel === null && l.value === level)) ? \`\${l.color}22\` : "transparent", border: \`1px solid \${(refineLevel === l.value || (refineLevel === null && l.value === level)) ? l.color : "#1e1e35"}\`, borderRadius: 20, color: (refineLevel === l.value || (refineLevel === null && l.value === level)) ? l.color : "#777", fontSize: 12, cursor: "pointer", fontFamily: "'Lora', serif", whiteSpace: "nowrap", letterSpacing: 1 }}>
+                  style={{ padding: "8px 14px", background: (refineLevel === l.value || (refineLevel === null && l.value === level)) ? `${l.color}22` : "transparent", border: `1px solid ${(refineLevel === l.value || (refineLevel === null && l.value === level)) ? l.color : "#1e1e35"}`, borderRadius: 20, color: (refineLevel === l.value || (refineLevel === null && l.value === level)) ? l.color : "#777", fontSize: 12, cursor: "pointer", fontFamily: "'Lora', serif", whiteSpace: "nowrap", letterSpacing: 1 }}>
                   {l.emoji} {l.label}
                 </button>
               ))}
