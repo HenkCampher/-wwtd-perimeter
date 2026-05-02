@@ -62,7 +62,7 @@ export default function Landing() {
           <p style={{ fontSize: "clamp(18px, 3vw, 26px)", color: "#ccc", maxWidth: 640, margin: "0 auto 16px", lineHeight: 1.5, fontWeight: 400 }}>
             Work is broken. We all know it.<br />Nobody says it out loud.<br /><strong style={{ color: "#fff" }}>This book does.</strong>
           </p>
-          <p style={{ fontSize: "clamp(14px, 2vw, 18px)", color: "#aaa", maxWidth: 560, margin: "0 auto 12px", lineHeight: 1.4, fontStyle: "italic" }}>52 Hard Truths For Better Decisions And Less Bullshit</p>
+          <p style={{ fontSize: "clamp(14px, 2vw, 18px)", color: "#aaa", maxWidth: 560, margin: "0 auto 12px", lineHeight: 1.4, fontStyle: "italic" }}>52 }}>The Playbook For Thriving Despite Corporate Bullshit. 52 Shots. No Filler.</p>Hard Truths For Better Decisions And Less Bullshit</p>
           <p style={{ fontSize: 14, color: "#888", letterSpacing: 2, textTransform: "uppercase", marginBottom: 48 }}>By Henk Campher</p>
           <div className="hero-buttons" style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <a href="#signup" style={{ padding: "16px 40px", background: "#a8e063", color: "#080810", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer", animation: "pulse 3s ease-in-out infinite" }}>Get Notified at Launch</a>
