@@ -1,5 +1,49 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
+function SignupForm() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle");
+
+  async function handleSubmit() {
+    if (!email || !email.includes("@")) return;
+    setStatus("loading");
+    try {
+      const res = await fetch("https://api.beehiiv.com/v2/publications/pub_96fded85-c4dd-44bd-8f74-97d344b1f94a/subscriptions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${process.env.REACT_APP_BEEHIIV_API_KEY}` },
+        body: JSON.stringify({ email, reactivate_existing: false, send_welcome_email: false })
+      });
+      if (res.ok) { setStatus("success"); setEmail(""); }
+      else { setStatus("error"); }
+    } catch { setStatus("error"); }
+  }
+
+  if (status === "success") return (
+    <div style={{ padding: "32px", border: "1px solid #a8e06344", borderRadius: 12, color: "#a8e063", fontFamily: "'Bebas Neue', sans-serif", fontSize: 24, letterSpacing: 2 }}>
+      You're in. We'll let you know when it's ready to hold.
+    </div>
+  );
+
+  return (
+    <div style={{ display: "flex", gap: 0, maxWidth: 500, margin: "0 auto" }}>
+      <input
+        type="email"
+        placeholder="Your email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        onKeyDown={e => e.key === "Enter" && handleSubmit()}
+        style={{ flex: 1, padding: "16px 20px", background: "#0f0f1e", border: "1px solid #2a2a40", borderRight: "none", borderRadius: "6px 0 0 6px", color: "#e8e8e8", fontSize: 16, fontFamily: "'Lora', Georgia, serif", outline: "none" }}
+      />
+      <button
+        onClick={handleSubmit}
+        disabled={status === "loading"}
+        style={{ padding: "16px 28px", background: "#a8e063", color: "#080810", fontFamily: "'Bebas Neue', sans-serif", fontSize: 18, letterSpacing: 3, border: "none", borderRadius: "0 6px 6px 0", cursor: "pointer", whiteSpace: "nowrap" }}>
+        {status === "loading" ? "..." : "Notify Me"}
+      </button>
+      {status === "error" && <div style={{ position: "absolute", marginTop: 60, color: "#e63946", fontSize: 13 }}>Something went wrong. Try again.</div>}
+    </div>
+  );
+}
 
 export default function Landing() {
   useEffect(() => {
@@ -105,12 +149,7 @@ export default function Landing() {
         <div style={{ fontSize: 11, letterSpacing: 4, color: "#a8e063", textTransform: "uppercase", marginBottom: 20 }}>Stay in the Loop</div>
         <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: 3, color: "#fff", marginBottom: 24, lineHeight: 1 }}>Stay in<br />the Loop</h2>
         <p style={{ color: "#aaa", fontSize: 17, lineHeight: 1.8, marginBottom: 48 }}>The ebook is ready. The paperback lands June 16. Drop your email and we'll let you know the moment you can hold it.</p>
-        <div style={{ background: "#0f0f1e", border: "1px solid #1e1e35", borderRadius: 12, overflow: "hidden", boxShadow: "0 0 60px rgba(168,224,99,0.06)", height: 120, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ width: "100%", marginTop: -120, overflow: "hidden" }}>
-            <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
-            <iframe src="https://subscribe-forms.beehiiv.com/a725fe51-a599-4b2b-8c42-9fa12878abd9" className="beehiiv-embed" data-test-id="beehiiv-embed" frameBorder="0" scrolling="no" style={{ width: "100%", height: 291, border: "none", background: "transparent", maxWidth: "100%", display: "block" }} title="Newsletter signup" />
-          </div>
-        </div>
+        <SignupForm />
       </section>
 
       {/* About */}
