@@ -8,10 +8,10 @@ function SignupForm() {
     if (!email || !email.includes("@")) return;
     setStatus("loading");
     try {
-      const res = await fetch("https://api.beehiiv.com/v2/publications/pub_96fded85-c4dd-44bd-8f74-97d344b1f94a/subscriptions", {
+      const res = await fetch("/api/subscribe", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${process.env.REACT_APP_BEEHIIV_API_KEY}` },
-        body: JSON.stringify({ email, reactivate_existing: false, send_welcome_email: false })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
       });
       if (res.ok) { setStatus("success"); setEmail(""); }
       else { setStatus("error"); }
