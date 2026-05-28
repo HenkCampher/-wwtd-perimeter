@@ -159,7 +159,7 @@ export default function Landing() {
           <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: 3, color: "#fff", marginBottom: 24, lineHeight: 1 }}>Henk Campher</h2>
           <div style={{ color: "#aaa", fontSize: 17, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 20 }}>
             <p>Henk Campher has spent twenty years being the person in the room who says the thing nobody else will. Salesforce. Hootsuite. Starbucks. Levi's. Arist. Thinkific. Deep Origin. Billion-dollar machines and scrappy startups. B2B and B2C. Tech, consumer, and industries that hadn't figured out what they were yet. The common thread: marketing that actually moves things instead of just measuring them.</p>
-            <p>Three rules govern all of it: have fun, don't be an a**hole, and what would tequila do. This book is the third one applied to everything else.</p>
+            <p>Three rules govern all of it: have fun, don't be an asshole, and what would tequila do. This book is the third one applied to everything else.</p>
             <p>He wrote it because he got tired of watching smart people hide behind process, consensus, and the kind of busyness that feels productive and changes nothing. Someone had to say it. Might as well be him.</p>
           </div>
           <div style={{ marginTop: 40, display: "flex", gap: 16 }}>
@@ -177,7 +177,7 @@ export default function Landing() {
           <a href="https://substack.com/@henkcampher" target="_blank" rel="noopener noreferrer" style={{ color: "#888", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>Substack</a>
           <a href="https://wwtd-tool.vercel.app" target="_blank" rel="noopener noreferrer" style={{ color: "#888", fontSize: 12, letterSpacing: 2, textTransform: "uppercase" }}>The Tool</a>
         </div>
-        <div style={{ color: "#666", fontSize: 12 }}>© 2026 Henk Campher. Have fun. Don't be an a**hole.</div>
+        <div style={{ color: "#666", fontSize: 12 }}>© 2026 Henk Campher. Have fun. Don't be an asshole.</div>
       </footer>
 
     </div>
