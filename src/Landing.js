@@ -165,6 +165,7 @@ export default function Landing() {
           <div style={{ marginTop: 40, display: "flex", gap: 16 }}>
             <a href="https://www.linkedin.com/in/henkcampher/" target="_blank" rel="noopener noreferrer" style={{ padding: "12px 28px", border: "1px solid #a8e063", borderRadius: 6, color: "#a8e063", fontSize: 13, letterSpacing: 2, textTransform: "uppercase" }}>LinkedIn</a>
             <a href="https://substack.com/@henkcampher" target="_blank" rel="noopener noreferrer" style={{ padding: "12px 28px", border: "1px solid #a8e063", borderRadius: 6, color: "#a8e063", fontSize: 13, letterSpacing: 2, textTransform: "uppercase" }}>Substack</a>
+            <a href="https://www.amazon.com/author/henkcampher" target="_blank" rel="noopener noreferrer" style={{ padding: "12px 28px", border: "1px solid #a8e063", borderRadius: 6, color: "#a8e063", fontSize: 13, letterSpacing: 2, textTransform: "uppercase" }}>Author Page</a>
           </div>
         </div>
       </section>
