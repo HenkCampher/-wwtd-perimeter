@@ -108,8 +108,8 @@ export default function Landing() {
           <p style={{ fontSize: "clamp(14px, 2vw, 18px)", color: "#aaa", maxWidth: 560, margin: "0 auto 12px", lineHeight: 1.4, fontStyle: "italic" }}>The Playbook For Thriving Despite Corporate Bullshit. 52 Shots. No Filler.</p>
           <p style={{ fontSize: 14, color: "#888", letterSpacing: 2, textTransform: "uppercase", marginBottom: 48 }}>By Henk Campher</p>
           <div className="hero-buttons" style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-            <a href="https://www.amazon.com/dp/B0H27KBQ52" target="_blank" rel="noopener noreferrer" style={{ padding: "16px 40px", background: "#a8e063", color: "#080810", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer", animation: "pulse 3s ease-in-out infinite" }}>Pre-Order the Ebook</a>
-            <a href="#book" style={{ padding: "16px 40px", background: "transparent", border: "1px solid #2a2a40", color: "#777", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer" }}>Paperback — June 16</a>
+            <a href="https://www.amazon.com/dp/B0H27KBQ52" target="_blank" rel="noopener noreferrer" style={{ padding: "16px 40px", background: "#a8e063", color: "#080810", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer", animation: "pulse 3s ease-in-out infinite" }}>Get the Ebook</a>
+            <a href="https://www.amazon.com/dp/B0H31YK4T5" target="_blank" rel="noopener noreferrer" style={{ padding: "16px 40px", background: "transparent", border: "1px solid #a8e063", color: "#a8e063", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer" }}>Get the Paperback</a>
           </div>
         </div>
         <div style={{ position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)", color: "#666", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>↓</div>
@@ -135,8 +135,8 @@ export default function Landing() {
               <p>52 chapters. Any order. No framework. No fluff. Just the things most people know but have been trained not to say out loud. Pick one. Read it. Then go do something that would have made you nervous two years ago.</p>
             </div>
             <div style={{ marginTop: 40, display: "flex", gap: 16, flexWrap: "wrap" }}>
-              <a href="https://www.amazon.com/dp/B0H27KBQ52" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "14px 32px", background: "#a8e063", color: "#080810", fontFamily: "'Bebas Neue', sans-serif", fontSize: 18, letterSpacing: 3, borderRadius: 6 }}>Pre-Order the Ebook</a>
-              <a href="#signup" style={{ display: "inline-block", padding: "14px 32px", background: "transparent", border: "1px solid #2a2a40", color: "#777", fontFamily: "'Bebas Neue', sans-serif", fontSize: 18, letterSpacing: 3, borderRadius: 6 }}>Paperback — June 16</a>
+              <a href="https://www.amazon.com/dp/B0H27KBQ52" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "14px 32px", background: "#a8e063", color: "#080810", fontFamily: "'Bebas Neue', sans-serif", fontSize: 18, letterSpacing: 3, borderRadius: 6 }}>Get the Ebook</a>
+              <a href="https://www.amazon.com/dp/B0H31YK4T5" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "14px 32px", background: "transparent", border: "1px solid #a8e063", color: "#a8e063", fontFamily: "'Bebas Neue', sans-serif", fontSize: 18, letterSpacing: 3, borderRadius: 6 }}>Get the Paperback</a>
             </div>
           </div>
         </div>
@@ -148,7 +148,7 @@ export default function Landing() {
       <section id="signup" className="signup-section" style={{ padding: "80px 24px", maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: 11, letterSpacing: 4, color: "#a8e063", textTransform: "uppercase", marginBottom: 20 }}>Stay in the Loop</div>
         <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: 3, color: "#fff", marginBottom: 24, lineHeight: 1 }}>Stay in<br />the Loop</h2>
-        <p style={{ color: "#aaa", fontSize: 17, lineHeight: 1.8, marginBottom: 48 }}>The ebook is ready. The paperback lands June 16. Drop your email and we'll let you know the moment you can hold it.</p>
+        <p style={{ color: "#aaa", fontSize: 17, lineHeight: 1.8, marginBottom: 48 }}>The book is out. Drop your email and we'll keep you in the loop on what comes next.</p>
         <SignupForm />
       </section>
 
