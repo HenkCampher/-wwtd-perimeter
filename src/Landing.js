@@ -110,6 +110,8 @@ export default function Landing() {
           <div className="hero-buttons" style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <a href="https://www.amazon.com/dp/B0H27KBQ52" target="_blank" rel="noopener noreferrer" style={{ padding: "16px 40px", background: "#a8e063", color: "#080810", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer", animation: "pulse 3s ease-in-out infinite" }}>Get the Ebook</a>
             <a href="https://www.amazon.com/dp/B0H2LN93Z9" target="_blank" rel="noopener noreferrer" style={{ padding: "16px 40px", background: "transparent", border: "1px solid #a8e063", color: "#a8e063", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer" }}>Get the Paperback</a>
+            <a href="https://bookshop.org/p/books/what-would-tequila-do-the-playbook-for-thriving-despite-corporate-bullshit-52-shots-no-filler-henk-campher/46c8fe00459faad5?ean=9798996021222" target="_blank" rel="noopener noreferrer" style={{ padding: "16px 40px", background: "transparent", border: "1px solid #a8e063", color: "#a8e063", fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, letterSpacing: 3, borderRadius: 6, cursor: "pointer" }}>Buy from an Indie</a>
+            <p style={{ flexBasis: "100%", margin: "8px 0 0", fontSize: 14, color: "#888", textAlign: "center" }}>Allergic to Amazon? Every Bookshop.org order puts 10% into a pool split equally among indie bookstores. US and UK only.</p>
           </div>
         </div>
         <div style={{ position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)", color: "#666", fontSize: 12, letterSpacing: 3, textTransform: "uppercase" }}>↓</div>
@@ -137,6 +139,8 @@ export default function Landing() {
             <div style={{ marginTop: 40, display: "flex", gap: 16, flexWrap: "wrap" }}>
               <a href="https://www.amazon.com/dp/B0H27KBQ52" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "14px 32px", background: "#a8e063", color: "#080810", fontFamily: "'Bebas Neue', sans-serif", fontSize: 18, letterSpacing: 3, borderRadius: 6 }}>Get the Ebook</a>
               <a href="https://www.amazon.com/dp/B0H2LN93Z9" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "14px 32px", background: "transparent", border: "1px solid #a8e063", color: "#a8e063", fontFamily: "'Bebas Neue', sans-serif", fontSize: 18, letterSpacing: 3, borderRadius: 6 }}>Get the Paperback</a>
+              <a href="https://bookshop.org/p/books/what-would-tequila-do-the-playbook-for-thriving-despite-corporate-bullshit-52-shots-no-filler-henk-campher/46c8fe00459faad5?ean=9798996021222" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "14px 32px", background: "transparent", border: "1px solid #a8e063", color: "#a8e063", fontFamily: "'Bebas Neue', sans-serif", fontSize: 18, letterSpacing: 3, borderRadius: 6 }}>Buy from an Indie</a>
+              <p style={{ flexBasis: "100%", margin: "8px 0 0", fontSize: 14, color: "#888" }}>Allergic to Amazon? Every Bookshop.org order puts 10% into a pool split equally among indie bookstores. US and UK only.</p>
             </div>
           </div>
         </div>
